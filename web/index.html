@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Targeted Vegetation Movement</title>
+    <link rel="stylesheet" href="app.css">
+    <script type="module" src="app.mjs"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to current page</a>
+    <header class="app-header">
+      <a class="app-name" href="#study">Targeted Vegetation Movement</a>
+      <a href="/" data-hosted-only hidden>All experiments</a>
+      <div id="study-identity">Targeted Vegetation Movement</div>
+      <span id="mode-label" class="mode-label">Connecting</span>
+    </header>
+    <nav class="app-navigation" aria-label="Study pages">
+      <a href="#study">Study</a>
+      <a href="#setup">Setup</a>
+      <a href="#tree">Tree</a>
+      <a href="#history" data-hosted-only hidden>History</a>
+      <a href="#clock" data-hosted-only hidden>Clock</a>
+      <a href="#series" data-hosted-only hidden>Series</a>
+      <a href="#recordings">Recordings</a>
+      <a href="#results">Results</a>
+    </nav>
+    <div id="connection" class="connection" role="status" aria-live="polite"></div>
+    <div id="notice" class="notice" role="status" aria-live="polite"></div>
+    <div id="error" class="error" role="alert" hidden></div>
+    <div id="retry" class="retry" hidden></div>
+    <main id="main" tabindex="-1"><h1>Connecting to the local service</h1><p>Your existing study and session will be reopened.</p></main>
+    <footer class="app-footer"><p id="footer-message">Recordings stay on this Mac. Timing and audio are owned by the local service.</p><button type="button" id="quit">Quit study service</button></footer>
+    <noscript>The Targeted Vegetation Movement interface needs JavaScript. Enable it in the existing browser and reload.</noscript>
+  </body>
+</html>

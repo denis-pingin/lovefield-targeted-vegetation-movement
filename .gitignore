@@ -1,0 +1,7 @@
+node_modules/
+.build/
+.wrangler/
+.yarn/
+__pycache__/
+.pytest_cache/
+web/current-study/

@@ -1,0 +1,1709 @@
+{
+  "experimentSlug": "wind-prestudy",
+  "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+  "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+  "config": {
+    "version": "wind-prestudy-3",
+    "experimentSlug": "wind-prestudy",
+    "mode": "tree",
+    "purpose": "preparation",
+    "global": {
+      "absentSeconds": [
+        300,
+        600
+      ],
+      "passiveSeconds": [
+        300,
+        600
+      ],
+      "activeSeconds": [
+        1200,
+        1800
+      ],
+      "settlementSeconds": 1200
+    },
+    "local": {
+      "baselineSeconds": 10,
+      "responseSeconds": 10,
+      "recoverySeconds": 20,
+      "announceRelease": true,
+      "count": 2
+    },
+    "tree": {
+      "responseSeconds": 15,
+      "recoverySeconds": 0,
+      "announceRelease": false,
+      "count": 16
+    },
+    "siteId": null,
+    "setupId": null,
+    "seriesId": null,
+    "analysisProfileId": "development-1"
+  },
+  "tickets": [
+    {
+      "ticketId": "b8a4965cd33bc47f",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-1",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "e995616f-c5cc-4586-b843-d271c71735b0"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "b8a4965cd33bc47f",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "e995616f-c5cc-4586-b843-d271c71735b0",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-1",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "e995616f-c5cc-4586-b843-d271c71735b0"
+          },
+          "ticketData": {
+            "ticketId": "b8a4965cd33bc47f",
+            "previousTicketId": null,
+            "nextTicketId": "9594d302976c33af"
+          },
+          "completionTime": "2026-09-25 15:30:12Z",
+          "serialNumber": 105
+        },
+        "signature": "D/vBzC7WazbVqIWJ/xWOLNxBZ8JXsJJYcbCpSdc4/ae1QS1+ElC3lLyiiaozJoUm2rsoG5BlQUNDZ/7CkC+WPUUHp/2N/ZmKgH8bGZBGCvjhhBOHNChcFjsNIreJST0wC9sz+t9mt1xSSd5RHptXiPnNtkVWRpVn71XhrZfsXDjrnTNN5D8Qe6mE4VKnisSne01lRfjgTxyOBNDBq7w/WzMKMEy3mKTWP4W+K5FD/za/+kJy0TA1ES66r0TrtFE54yX/ZNE9OEd7u6xsSV3+ewkNOjJ9WegWz6RDwCSQlBcIyvxczQ37Ng9CtWIceRl9dThfaR9tosQJCoSdqvq7UmEA3ok9SJSahXogBlgP1RAo3i6L37iL6j16wBPAQ+0gIlTC9XFdhu3YfXGAzW2QEcLZZi3v0z8qC1Ax0wfmNGkeN01wMscsV3fnd9yKL5iQVdXduQk+hLM3qXoN6/FyzZSA+zMPti8dwZMrNTgDtJhaUsZsRgcwOPSpj/gVmqSJk3chFt5GTJdoTNv20ZYf6OiErHWxX4nqSBHAhhqrqI5vuIqJqjs99sF03vTgkMdKYf+qIVAsMTZTslAm8Ge7foUxd0R6gFkDIJlzPKUHEc6xLFwhnf2FPDFnCZWg2bI9zJIj11X6q+5e0xV8C7GRI9KXSPOQeA0MeHbYHtDYoFw=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249895,
+        "requestsLeft": 895,
+        "advisoryDelay": 240
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-1"
+        }
+      }
+    },
+    {
+      "ticketId": "43b658ee67c8456e",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-2",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350228125"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "43b658ee67c8456e",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350228125",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-2",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350228125"
+          },
+          "ticketData": {
+            "ticketId": "43b658ee67c8456e",
+            "previousTicketId": null,
+            "nextTicketId": "94e2a3315d75434f"
+          },
+          "completionTime": "2026-09-25 15:30:28Z",
+          "serialNumber": 106
+        },
+        "signature": "GU3XUK0jSCkcx6HG/T3MeMk/R5Y1WlKKKHWgElHAazmAdGfQNx+2tz2ejhaFTNCgGlMWRI/1u48wStYSeRj2EvK9pKKwE+cIGkqjctu4HRwh9anXcOl8nYJk/pA/g6KMvNA9lKIfRrNuPlZtu5zd5VKBw/ltCyG6ejXPjI+DLMPzlRbuEtSfLG5mZ5U0ucCxG5JVSTf4MlQg76JMGLV9e9cJWKVKHgWySx/uxWIrQ5+iAbjPbiHHjms7MKEpoxHpA2vmZmNG+XI5KWOmd0hzX2JtyoQ0jOgs68xbK6eMVMIPwuaPJzGiPPojcKLV0lVNFgCcJmEL+iPG7XojQ+CgIB+FsCW817dAzBir4pVQe8xf5zjCwQDG5zrZB592LGR6yczgoyyt2InHXM0la7sC7D7EzIEcQADbdMhG6o8rEuHxxBhOlsevqwbo0ga4FHtfGmttZIn+LGV5eQ26uddHMaaOBr7bnRb3nORY7S3RULnOivdqzM+7rE5AbItxt95kb0LRUKC1/9eq08plhvg/ENvL5ZHsmIX9h7jam4fe/70qF9WflbUNezkGmohK63rhCK84vzbGA8jQ4pH1T+Ixr1s+1Avn6We8E5qLTVwyeZQclqGksStfP7nfvpzepAAlgSfVYKhbuKMqBBoAAv+bmKkQYn7rKf7j4SFhRmaqsAA=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249894,
+        "requestsLeft": 894,
+        "advisoryDelay": 330
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-2"
+        }
+      }
+    },
+    {
+      "ticketId": "7a0d8cf89f3a3458",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-3",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350243326"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "7a0d8cf89f3a3458",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350243326",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-3",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350243326"
+          },
+          "ticketData": {
+            "ticketId": "7a0d8cf89f3a3458",
+            "previousTicketId": null,
+            "nextTicketId": "474e1a963ecc9442"
+          },
+          "completionTime": "2026-09-25 15:30:43Z",
+          "serialNumber": 107
+        },
+        "signature": "YGbAagZu1CQEl4mppFiX/MrrquwRikhFiRHTKuJhiTtmLu4sgx8U9K4zdXCu8ou1McboWM5XxAkv9F30DI1tfsndoD2RTK73Kc43qFRqATJ98dAkn7qM4XHtkE+0EzcF8rwmog3O/wekRuLX2LOO4meMcMF0lNx9D4qk35BHqCsy62xH6+AjaSkv5wzF3ohYlZIeRZ4Ug/ay772z2JiSmNGWM8ZJzHp+iZEN/Gr7rGfImFBfy0wMa2ZVa8/cL1GvDfDcljSRDDbOjhlKXIxDkMmEWNynWTBT4wxDq+RTUiptzvrQkKmpc+mV4koJX84xDnm8smk1zohBDgsqsxKtOJJslMSBEvtj8dhzIfu0Fg3BF3v2KeQ/IKhiUJz4t9x5HjZRakTaJSe+ILy/7na+b6jU2kfy8jZKH8QchZ22P5y1x1kcWDs1okD139pn5PFVwc/NYJ9vTdI/WyqZhwuJ1IAqymbSCC8OGQJJ6W+0zSAkP66/ohlZfRAwbGgbGDnW8OnKYyQFZSiXflErPqtE7VBRpB7D3WV2SoNvht6h2klDGPZeZsCSgB3cDonJ9fdlwPqPr34I8YkKyQECgJ8gifFSSq9hsDx7DN4nQhEul6wlQAO9WRUc698PiQAveN7QGCbyUfl422hwcq22m1eFsLU5WEasJmMxv1i+qU6/AyI=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249893,
+        "requestsLeft": 893,
+        "advisoryDelay": 250
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-3"
+        }
+      }
+    },
+    {
+      "ticketId": "d58a4be94971a476",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-4",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350258529"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "d58a4be94971a476",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350258529",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            0
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-4",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350258529"
+          },
+          "ticketData": {
+            "ticketId": "d58a4be94971a476",
+            "previousTicketId": null,
+            "nextTicketId": "1ba72a60f349501c"
+          },
+          "completionTime": "2026-09-25 15:30:58Z",
+          "serialNumber": 108
+        },
+        "signature": "0WWkpzyrpcv/ztkCcr8A3jU8zBbC0PLsa/hoFotdJu4u9+mFitqIa9aDZdrpbPPjMM6BWmCwz+u7rWfD0sVVIcFUOqsJb79+12YxjlUCFCr4xeIPZSSbCTehY+xwdk4CCabeSAzaILoTBXCgY+9/rQHktt8SFCPq/ASr/HHB7Yzp/noxX9u/1ed3cm4bwzK8ImZyiklbdR0Ei03bDheV1pzk43ixQNp0cRM3eC5qavnRpLSjdB6nGHttGP2s0vdlTKSLXOJfmCbF1tz7BJWKjp9UmjNLRhkxWWfSgYAVy9OhG7JqA2f5SVGKGE5djaZHMyQj902wH04Gf4DARR+sSV3Ml1yBZEziN9j7NdX3ulBevZEbAck7rILHi82q9iB1nosbZkVVuGQn8U9duT1RtKodXfElG34dSQ+eXb9LBfpZlz6WCEdKd7KghyZVV8rEqfw7SMO4ztQtdH2PaTlexHecKgQhEKh7u3MngYEaMd27i8LkgOwMSGkCaHwDdw1FaR2qGBDVQQtOvkq3/HTGM55vpy9eWI1TOPkWHAN99+9KOWT7Td0YX9rLgRhyVuj1PwJdR7tZMM8WRRVOR5aQfDmSDT0SW6Lu8p/56Xi1v+FGJ8QXigUtq6m7hqJ2vrUueGHdRwAVOJFlCx4ir4aQ6wIy+C/s3JWdHrcygCigEKI=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249892,
+        "requestsLeft": 892,
+        "advisoryDelay": 200
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-4"
+        }
+      }
+    },
+    {
+      "ticketId": "1b5e9cb570a44b4f",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-5",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350273817"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "1b5e9cb570a44b4f",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350273817",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            0
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-5",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350273817"
+          },
+          "ticketData": {
+            "ticketId": "1b5e9cb570a44b4f",
+            "previousTicketId": null,
+            "nextTicketId": "d38c4960bc3ddc49"
+          },
+          "completionTime": "2026-09-25 15:31:13Z",
+          "serialNumber": 109
+        },
+        "signature": "kbGkVTzaRI/SC/9lD3XWhvV8vipls7dQSfwZClYDqduzy04taw3Axsyt3o2p1sN2vOBf0yC2OKQYNZnnZJXFxoCJmwaZZ5fogKEBlUaT62AWrUClDanzffwYkeMQCLCXWEJnig5uuZHqQrNOwgLC6IzvgpdUSGIGOO3Lw+Eyrwgii3qCzq9SukyO1jUo4p+jCyKwoRjePTA2L7O6MWsUq/TCZHL7hPEGM04TUWWoZuWQf6J7R+Qsgq96NcJgHgSPa01TfwiJAu4fE0BOiAgwftHSQVDhEx34CIdBGmPu023X3gWkL6l55S/CIuDWCTWl8UEbherDjld2Z8mYOh1Mngg7BDxifRTMqOSeifHbE8CApy9iQJiFJb5Ss5DrJXgcsMCLAh9lYzHWPv8Uuw8hKxEYMiUcOsY2eJrCFzr55Xi1rKIwIIs+0yWZQctkM/6/Iw7NmO/QoDlmEQafVTrdrekXW43qNOLmUq9v8H+DLkBBolOENJKJU9aaGjPmelALsf0FB2mKfbM4/CxvjOyAAMUIXgGuO944Rx7mKtLEa7cGJ/7Ud+OxJHVXy6vyjFOkpLNbUtfOLpkOndrLQDDKZ64nfIFyKgIpcRUciJWiOhlIuXvEJ3HAUE9PIpeN8Ib6Wtps0kY5OdPIsAGu+wogHTIZBIRl4c7i/bzca1+KX5w=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249891,
+        "requestsLeft": 891,
+        "advisoryDelay": 220
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-5"
+        }
+      }
+    },
+    {
+      "ticketId": "982a0c4249cf5646",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-6",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350289099"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "982a0c4249cf5646",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350289099",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            0
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-6",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350289099"
+          },
+          "ticketData": {
+            "ticketId": "982a0c4249cf5646",
+            "previousTicketId": null,
+            "nextTicketId": "f5aaaf9ea48d3951"
+          },
+          "completionTime": "2026-09-25 15:31:29Z",
+          "serialNumber": 110
+        },
+        "signature": "Y31OtGhQpWj+Edj80RpS58Ab9o8eoI4q1uIZmka6J6bAA4rqZ7MF9roboLiJeXy95QPdnKUSieOzOmogGSU6hNrnUSRDl7kYAEvPiyZDKFMOn9fX+rnFjRqlLcM9r0IMYqKUkxOQZ0jR8J0/CyRThqtE4QcaFOSxrZQeJQWiRz35ssB4e8DohUABE4vMyNiYY6C/HZ9Pt/N4OiJW0mKMvKnuvHlw6hSS4yDN8whZ4eqnXDB5FIggTfMid3bkxWfQLWl0YfT4X5yq0FctZDv0rtsFgGNE5cpUymoUbPNojF8B1pyC8OAZfIp1g44fB4vgnbG8geT0HFSpdMv8NjmpJQawz8RrrABpy25/616bFgCbNFM0VEbFSYJSGIA1jsmO9ozHy9MfzpS5GjEbbKF6SfVL7dlf6qRScTHM0h48/lNywV+dOPixlWSRPu56J8XnhjY+peMDFqgdsy6QSsmhvh0KncSyBPygEaIBi22nfvsVa9V3U38lS5hSBoIe++CB5NCBNpaS4UusV3vVTLr98ooV+nW3+Cmm6lOlQ5ZG7eBtlL6Zmt0lUOaa8kdUW05T8ArPWHXqwQk6m0okYhHh/WgaYe0b3oicc0mpnCpcLEECUjZMmvaxvFP6cSf1/IebAZgnePbMZoEZXZlkPOMed/fUA0VV/FnNGYIUhc7/0v0=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249890,
+        "requestsLeft": 890,
+        "advisoryDelay": 170
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-6"
+        }
+      }
+    },
+    {
+      "ticketId": "791ec30f73b9fc12",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-7",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350304308"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "791ec30f73b9fc12",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350304308",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-7",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350304308"
+          },
+          "ticketData": {
+            "ticketId": "791ec30f73b9fc12",
+            "previousTicketId": null,
+            "nextTicketId": "0e85776bd1567d26"
+          },
+          "completionTime": "2026-09-25 15:31:44Z",
+          "serialNumber": 111
+        },
+        "signature": "ieVczN9lGTXibzbFTc/PCUzayGeqfcMGtvT4z5ZUNaVsTWm5d9udk+RV/tr2aX868SrO0NdkYrDiwCu9k6xGhoAkkkHdp/4Uon+GI2muS0Ro4hb8Jny2j1yi29MJn2VQ+rPQHSFmPl3sNm+AIf8Zlyg+G4NX11navJxw/K+vdGnmamoxXWA48E7OfTR/TGZ6lEelOb4g1IYe4uyNmGA840pY+uAHVgUI4cS5Z/Uk4wrgnn5Ha/aT6GchqJMtLnns+5NoIlKUtV0ZWRvBRtfHwia8gbfic0OCvHMgRorP/n2UZdeHm1DWbkvRGSgz+0Jkm5qW2v/W2k0Dn0+7dZE5bvE8mHYevcpqICTKfMQcOGzeiPz8bA5Zb3pG1gG+HtdZfEpGuk4zVrwPbEHSpdW9nZfmIR/6T0tb4bv3OoEUQXW9gEzgQabzWeSqDR0kTFv1f3xY4V/X8QPKRB0sJgkbk4NoTBd4RxoxTN9jR3BGq1Pfj5VHSGgyQ50oUsT0x0LJmVx3gpjjRQ/zOWG9ngqUd6chpLl/371Vi1CigwGizVeyElYE21zRY6IsZVOtaMQKpLbsD+5evXLuz0Yl3tLtBu7JAXN+cGHuIDrHSlu9ez4UsIM4ZOCZ7Ag52wftwUIK51w1Dk/8iuyKd7AsWv2TInpvTQ9fpbINMzgXqUDeDqs=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249889,
+        "requestsLeft": 889,
+        "advisoryDelay": 290
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-7"
+        }
+      }
+    },
+    {
+      "ticketId": "e0afcc6a569588e2",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-8",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350319567"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "e0afcc6a569588e2",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350319567",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-8",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350319567"
+          },
+          "ticketData": {
+            "ticketId": "e0afcc6a569588e2",
+            "previousTicketId": null,
+            "nextTicketId": "89775ad286842924"
+          },
+          "completionTime": "2026-09-25 15:31:59Z",
+          "serialNumber": 112
+        },
+        "signature": "PptNyXfAxj+FiC5DbTtNWSNLDRVoHCxv0tVUDpeXw1CzjZmeTyeHFJfuwq6MWP5GFeYfr9Rns3yX01jCTI9GhpTeu++T4at/uT2vKoWYX6ElmCru1MR2KrgeIpBEZhgJwxA8gBR9IX9m74Q9huyjMejeOzf6wAnG7liUViusa9RUE9EiNtOny24xoDxg7mubIwHCh1+5JAQk6JtzLivqMr1nBDkqMJv/7cdiZVN5a5H1IvZMJlaW1XmKM3/MWkX27i3KHov1KkWprP2TqjIlb9/6HZ6PSssyAL9Q2IpTSJvCy5YVelCiFp2by+uF4IOUDICpP+e2jpAMiF02ctlD5JY3yXnzJy4sFrDC/A3xiLshFxa8AnGVM4N8TNCJP2tPMtn5bDTzlg3gsq0VcD7cSGgLIuvIJd61M9YuzZpLiEk1geqVz4U4e0AcRyp+0FDfD1ap4v+e29QW5IwZDpSUtII9cKmxyMzBQIBQkjrSdPkWVRdbytqiC2Q7nEvQJmfbe4JPpLcycyvlnadnFnQT4Zg3sfcrU5aekuAkzr8BvPei1JK3zjV14KvBy+Ta5tVXbGRu5yfoaQLWwMNOhW6q9h4px9kWJe+SrV+9OgKHWFjMJXVva204kRMXpWu2zBc0zNA1hYMEpaIwPxvg2xCIwIneaVA6OUDe6T7BGHLOclE=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249888,
+        "requestsLeft": 888,
+        "advisoryDelay": 300
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-8"
+        }
+      }
+    },
+    {
+      "ticketId": "5c340e2ce253ae12",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-9",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350334780"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "5c340e2ce253ae12",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350334780",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-9",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350334780"
+          },
+          "ticketData": {
+            "ticketId": "5c340e2ce253ae12",
+            "previousTicketId": null,
+            "nextTicketId": "8617c6f2ddf0486c"
+          },
+          "completionTime": "2026-09-25 15:32:14Z",
+          "serialNumber": 113
+        },
+        "signature": "zKOZOgkxDjkzVP4B583lGnTinUvsWGNGxNa7xagwgMTf6rwtcohn9mTHXJcuvSq3ynVmbDZ/V/Xli3P8+l382PIRsEBfNiR+c5b+cLmpi6+YVZevhs71cW+Zvvoqnx6OVa+INXam3ny0gNU9uDj0Rvf0vbk+5itQcsov7RBxdoeKpSrqFtoDS9oCLA8RH3NsUc/gX/wRE6pxes4qyi5rb1RpLaIec6tqXN/jxwyu6h+r3yJUa/eeDcD994182SQJ4xo08zcodTSwG+pBrQn4Zbd4NM3/wCLgG5hLdUvFWAGtaKa7n+icnfQPrDwXJaX/U240NcDlePLFGIf7XmNUogMo2TfHdrn8YbUI4KsXaSGggKushdvUa+clMXBFAHBi+dVvlt+6Hi+osEhwKRHAU7Ce2alnFOcrZIR15S7tefFnFsMcsUFZMfpAd3qkv4WjT8XxwC2zVwvozYojXMI0hFSacR59KcNmCH2FVULr86uuIYR29wInm3V7YwieRbQ4j+kBQUoEArQccqjdeo1EAQ3kAvO0mM8XFJzpOUcGcbZzMeB+w35jz7NCvQBrbpKvCjCAzQA5Ablyg3scmAj/uJoMDvlMP8R3Xc7WtzjjyrYy2fesB6TTRl5Dg4Tbma6WC1Oc4nIm45nkujpQX0BhpKvTTN2eTQxnJWjJJFUu0Xg=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249887,
+        "requestsLeft": 887,
+        "advisoryDelay": 300
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-9"
+        }
+      }
+    },
+    {
+      "ticketId": "351bbfe8f4f16049",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-10",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350350059"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "351bbfe8f4f16049",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350350059",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-10",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350350059"
+          },
+          "ticketData": {
+            "ticketId": "351bbfe8f4f16049",
+            "previousTicketId": null,
+            "nextTicketId": "f5f61be4bfe56043"
+          },
+          "completionTime": "2026-09-25 15:32:30Z",
+          "serialNumber": 114
+        },
+        "signature": "2ebqbJtZbUufiknCnPOLIt+D4VzRNOiFtns4iCalYgAAJbnYicN2LTlWiaj0xbetMyNX2BBwEg6xyXiW9kG87An/2udJIBiprL7o0Bbs3ab8OtSBDmnS0fOair0lk894nfJexpb4xqEsFQVsxmOSPDVG5PTJxp8OWffR+Xm42PTJ2/QV8BfuS7/uvlnfwFbN83WoFV3hH8jCWe6bu30hTTY27KI7oBMjCCaNe4SEreeIlL/3+xJzx8hKgosYrdmlBS4ZjehndSt7RiUQPP13x1u0+Kfj8bRCJtzwZl/p0y5uWX07kOVocOnvQbJfzHhup/jcts9xHDKqYZHVkQEkqyl33njMUpoTh6a+R+mM918A0yfhE2dKIDwEQ14cz62tgRrg8Fota7eGfgaScVZDjb9iR+1u4DMld4Zv1hrqAe1dj+iCWZoSFgFCyd2FljNV39Ski/48BWYhMGZELmBm+WNk1/aoT+FqRTfxZQ+0F39nMPMAuunbN8wQOzdlhnymgugzWxnypR6BNZWu7bq51f7YNpxShvKUF5QZMnlbZczptSaZkHtP8IJGAx/TR4UDeoducMAqDcEdUNG/pmxWQVnYCgZONbbGQdWQ7l8cvA/eIsECvzshyqRklo0KS8kHa2zCwHdOycsaVBXE3qw5RDnm9RX6OkgBy3i8GgI2b+M=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249886,
+        "requestsLeft": 886,
+        "advisoryDelay": 230
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-10"
+        }
+      }
+    },
+    {
+      "ticketId": "3c5cf5671c23786c",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-11",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350365257"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "3c5cf5671c23786c",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350365257",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            0
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-11",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350365257"
+          },
+          "ticketData": {
+            "ticketId": "3c5cf5671c23786c",
+            "previousTicketId": null,
+            "nextTicketId": "98ee1cbe24952ecf"
+          },
+          "completionTime": "2026-09-25 15:32:45Z",
+          "serialNumber": 115
+        },
+        "signature": "4qHkoAKEvAV76xAos5H8AcGFbY0cpf1RsIf9IEFpHjEHiH5fN3GEF7Gl9BepBwV3uz6PQ8bvkSXRPKAsgYE1SG0CbuvEcIRLjs3o7JjclXFwMjrGIxAZUFg89V0jb6lgr8fR4e5SvegiNNmDjKoX/R6s2tggKTdDZSkPu6PwPMj7aJR/Y0vaPvAbM9jCxsyzikvsQk2i97ZbCoKI9+Q9AdkXfKtRN+8eC25MVQBQD9TX7ni3X5QG8opIDLXf9VmezAw0vZVno0KKT4Jjs1tDk7aCpMmzSdLTb6SgmAzo0IigEvG7e1p2ZtwMc/JGGk3h0wI/IcGejGUj3EH7PxHkm7t8e5Fcp8Ir3phNPCbvvS5XsNp1gzGi5kYK7qi3s1E+1XRIAEOHvBF/+yL2Pl9ll8QFtu/bLFJqDFufPeT7ACcswAimi6ll+71RwJ9EndzaevpuqyKaH05JR2Gr+F/2tev1ebf0BTyLS17cZvqBvMN28+7OibQ0k3aPItQLZL8TvUkSvDx2QlQD1Kpa3zNq0bMGEDBnfliTfppEZlwIjEn2jMqRDsEyx5fEaRUk7VZ3gHUyzdyYytNWhGk7kr7hLyqKClcbgFgOxUrfHjd6EMAnEOUilethOb/qL7aGKY7+RKKDw3GlK+JukHvTWO4As+qZen0bcOIBBJTiVAz1ZAY=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249885,
+        "requestsLeft": 885,
+        "advisoryDelay": 180
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-11"
+        }
+      }
+    },
+    {
+      "ticketId": "934e04e62d816b14",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-12",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350380536"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "934e04e62d816b14",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350380536",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-12",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350380536"
+          },
+          "ticketData": {
+            "ticketId": "934e04e62d816b14",
+            "previousTicketId": null,
+            "nextTicketId": "30428b1006cce54a"
+          },
+          "completionTime": "2026-09-25 15:33:00Z",
+          "serialNumber": 116
+        },
+        "signature": "ysPYOFGbaCPwDaWHSukPkb+4gR69vDY0EwPYn79j/httjpZlvIhAEAR3xQUDbeLEKUxIZaoHkXY2v8lDW4+77RY9WKoXNyv+NHtgFJX9bymrcK/QBTmVq1qqbsU2nRYecrCObfm+YT+U0plEWcgSY75A9xkbolPfhU7immBO/OxRoKhNXuA1kJ1C79aIuBmzMOlRVyEZc0JN2mB4vmblmn7z2c4+4VBcSszVbKKlXv65Xi3eOx+kNUGvIQkeLpf4C/6BBfHIJwRvRph2lDNGwA0G9pQAX1LNaZvviFKqLEuz9ZmFq3A/8fMcbf+toLIxWKUA6lZQS8s4pkgG6osSJfkbOHZgdWOux5IakuVihyrMjx/4RqkrqNx/NpkPGbunJvu214/Unh1hxHUhsJ3hJKrOJCFv0b/8bqxYtytH7vJlNH73k9DVpWrzvbG8LUKGikvwFCBg/gl9pU6FAh0O7NB3jflsZ0qjIPJNG/A6jBJMyR0QUcyhlS/wUgKNMqmNaJFzEBBT4d/HElWc6gh1Ez+PFTvGpumCYMGXqieAuFsb7mbGNSSlJuCWtF4fZk97urJE+s/UNyyAnVyCk5Lkr7ll1TYlCYIPC2qA0ESh/FUiJ7eV/uGOlwdHERpNK+wiOvcn94pN+l/OB/ObwHLQ5Nh1yJd4YMsO4I+PQrgttBw=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249884,
+        "requestsLeft": 884,
+        "advisoryDelay": 220
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-12"
+        }
+      }
+    },
+    {
+      "ticketId": "4e947d4d088c10a7",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-13",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350395827"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "4e947d4d088c10a7",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350395827",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-13",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350395827"
+          },
+          "ticketData": {
+            "ticketId": "4e947d4d088c10a7",
+            "previousTicketId": null,
+            "nextTicketId": "35cce767020eadee"
+          },
+          "completionTime": "2026-09-25 15:33:15Z",
+          "serialNumber": 117
+        },
+        "signature": "UGvIAvvypi/5sLZd6moqF6XtCyIGpJ9bslQC5OBRLqEtRHPxe1Y/ojCv8e3oDFz80LWE+P1PNxNRpl9TYPfgsWik5mDErfiDvFr25Wh1gCRXgkog82IhsqBKgrgaMti1ivhHaeZG5crBv41gfWJOKLxDWUGP6LEIKERgoU53APEe6rMp/8PsxJTo+tAsP7VggP9U53Fm0gy89kO7sHpYCRw16UFUMHJV0V+wivw++mjk4oMAfwVUWhc1hYL5QA+1+40jGK9Se2Zu8K4Ev/OVe7pNa+3ha2LqwDo57d94zn1+ICSCkcr9HdDK6se+NfR7SVuBMQCXsJ7v9D4swl161XcT5b9xQFEuHo8EaTPdLVTEM+1C+2dlDbz2995rGmwosWIqv4HaA3RWHwPbJSYp2HBf8zitWFBMSd+R3337SUB+FAqaDl5Atv1N2eaQ8uUxAYjlgAZqch5wsrf9rRgppv+HSFS+JbyjluOCJYhGhInJzYaZvhpEogntrcZQFTHrE7Eb2v+lPN/IyY1hFySJoNa7APuNCEhQmQBL6f7OJeG7ntrQyNAq9tkaNRjRcBh6x6cj2PecOaoAPWRMzbgEJTl3Xa7/8ulvrxse8mBskrEoEFUuoaOL4KSayJ6AsG5RNS6nyVAHRqx7QGds+EmqN7z1ZoAjWMZYMO7dh5HaIU4=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249883,
+        "requestsLeft": 883,
+        "advisoryDelay": 170
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-13"
+        }
+      }
+    },
+    {
+      "ticketId": "fb0ae51af68855e1",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-14",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350411036"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "fb0ae51af68855e1",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350411036",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            1
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-14",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350411036"
+          },
+          "ticketData": {
+            "ticketId": "fb0ae51af68855e1",
+            "previousTicketId": null,
+            "nextTicketId": "ec9a3462a2d80bec"
+          },
+          "completionTime": "2026-09-25 15:33:31Z",
+          "serialNumber": 118
+        },
+        "signature": "tDhq2AYf3zAAVLnzMGUZvyS0lKLijHxQsrIKSem46GgIDzqkAViJub7uQOTFtlmVJ+fqmxGgQ8e7MEJXZucocrCgYjPR0pebyBn+8Qkq/x3d2vwemOf7RnYMZMSxmNEiYe21z7BALstombP+94GGfhB1YF89qVk8saQLChwZsaGCPr4aPPGh9WFb4gY2Vw3GtJqoDuCEGoK0TJdOuHoZNlVV1F7+KS+kSkliQoQ39kUE36OU8aytaS2ZVLJDNja6gtCfXD/xobeDUz+KUirm+p899WcSqX2p/DqW0pgKkNURfvjb1kKX3GJoSPhZ26H+fo0uNh62NmBl7QHVHhnVaPemLKolyGdjhM3E5m9lEgA//Ck+jIosDA3ypqjIdwqlhzHGIj/qDcE5R1aDNrwptn3Awe3HYX14mil7z7rW1feA9adAmsY1eVzT9A5kL4JL8q858bjDKYYRfCh7WUkTVIzmThICPT6DjMLAFMUGK5/TIFp1seGVUCUGm4Ax7tEH0idUQAHMd0vF1LmFFM11yDpHRv/o+qU4KpasflavHnB5BBwlGq2yDVCElUUz60JOkv9Trc4E2r24lh0N7myBgdNzJ6JgRxwVKclZ5gEi4qqkmDX6GrXygXu7TNsBDjT6bm/q61RvbRHUF6QBHRTLp1GSoS+FXD/zED0J4Y0feYs=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249882,
+        "requestsLeft": 882,
+        "advisoryDelay": 130
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-14"
+        }
+      }
+    },
+    {
+      "ticketId": "ff84e8705d70a65f",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-15",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350426263"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "ff84e8705d70a65f",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350426263",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            0
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-15",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350426263"
+          },
+          "ticketData": {
+            "ticketId": "ff84e8705d70a65f",
+            "previousTicketId": null,
+            "nextTicketId": "af06e37b54cd2cc4"
+          },
+          "completionTime": "2026-09-25 15:33:46Z",
+          "serialNumber": 119
+        },
+        "signature": "AKxEa+Ja98id9WHU+wwTXNMv18Vg6I3WGAoQfeF+1IKsYKlt6iI0M+8YhCaQGIOE5HRNmVL+HTY6nBZzmCMZtMrXG+fGxXVG9ebkezhv82ZZtpzexgnRXgPSZRfmUEMxOSCXhprUNSx90XaMonUyv47TDWzgfJStvBWOHySe0SK+NaTZ3ot7q8sSz3qxMfZ+cEnCMyBj8WQo2qPqZg9B6l2cfglcpB5l7KNsfvE2Dr5Lf9NnfYOlWX2bTdFJ9Ky6tHLfS8QRyCPxjYtZRURPmOw5TTVX8+7SpZDqeI2bT/tMRdiQ0fBQYPOr/fRvx3CUydLcM8ro65hcfRDhgzX5Yz3QL4EUirtNXQMeEWqJtqnebSm8rQ8cVdqlwW/+5hIPjVqqn361beOFoGFjKE2PNZFEmcmtW39unbiT83EdwSUkTqcqXjhBwEcaOhkPO2VO3Vadou+jH7zX0r1q3HuJPDhTfJY1DC7J2Y24yxqpjlLAlFZyIDIwruss97ZMdfP0s7J139VgbPtVIoX9MK1B4Q6VDKy6woycR4JgFPDBiGIYrbkRfDsnBBlFMz3U9AMMm/2LG5yjLTu41pVtmiYKdr+RisgCC4YD9z9Y4Cs9fmEj2dBtzc0Sto/GcW2LzYpW7LWuBvp37OIkS8m391FXgq3IWNPYQlWSOM561miGwC4=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249881,
+        "requestsLeft": 881,
+        "advisoryDelay": 240
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-15"
+        }
+      }
+    },
+    {
+      "ticketId": "b51599492bfcfdad",
+      "binding": {
+        "experimentSlug": "wind-prestudy",
+        "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+        "stream": "tree",
+        "opportunityId": "trial-16",
+        "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+        "actionId": "deadline-treeResponseEnd-1790350441612"
+      },
+      "rules": {
+        "0": "A",
+        "1": "B"
+      },
+      "status": "issued",
+      "providerTicket": {
+        "ticketId": "b51599492bfcfdad",
+        "creationTime": "2026-09-25 15:29:53Z",
+        "previousTicketId": null,
+        "nextTicketId": null
+      },
+      "ownerActionId": "deadline-treeResponseEnd-1790350441612",
+      "result": {
+        "random": {
+          "method": "generateSignedIntegers",
+          "hashedApiKey": "VCT6OdbdbVS9gtG/SQagaNMfL9f+qoXGgThlZfXnIYFcJgOTxKps9XCsCMkCIuk5fchEF3PTGSdafmrFWnfsIA==",
+          "n": 1,
+          "min": 0,
+          "max": 1,
+          "replacement": true,
+          "base": 10,
+          "pregeneratedRandomization": null,
+          "data": [
+            0
+          ],
+          "license": {
+            "type": "developer",
+            "text": "Random values licensed strictly for development and testing only",
+            "infoUrl": null
+          },
+          "licenseData": null,
+          "userData": {
+            "experimentSlug": "wind-prestudy",
+            "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+            "stream": "tree",
+            "opportunityId": "trial-16",
+            "configHash": "941f466f819bf52f2990b1d64939aabad2803ece1654486578df41d147313983",
+            "actionId": "deadline-treeResponseEnd-1790350441612"
+          },
+          "ticketData": {
+            "ticketId": "b51599492bfcfdad",
+            "previousTicketId": null,
+            "nextTicketId": "00e9a8ee18e4ca74"
+          },
+          "completionTime": "2026-09-25 15:34:01Z",
+          "serialNumber": 120
+        },
+        "signature": "aTyWoUSqufmsmgpDIZYpREcKuiE80CbUGvXqF44wNo72XykHDXyPluY1JHwlVnG1kDK/12vSldLWVAv362EFzt05Rl10fl0iGiEXbcMUxaOgmmfRhpYtbfrLwFZZhaV12fRaPvg98g1DqWMROhb0UgvQfe9Y3jAmEoKbd1zvfZ95afpN5s/PJx+ytatY3eIlP+leNs3nc/5hzHFwTaz4H5VdNLN4waF+gGEyNNU5RpmtKCF7X1nF7iNB5ssduwMrPhZGtT8j64XGQvomm5biC7FdN2uNEraNH7BmgdmBXZvwdGW1nhBhtYlOzK1OQxnmRdSqjI0o52aja4YTGZKoBP00hETXzr/P9beJhFq39c4RPNABzaPn/u6DYIIDVh2jdHrkMP9NnfyT/jO90NhepnClKP7DVFJBlFolNwgjABjCLAZg4WrM6q0Jsm/nV1W9s4cQ/IqsaIXQ42ms9rkJ+sARNGGTXoBA7DKYOK0aJTsvg+6/m9ePZE/67UYG25PiLdLNo6e7ek6dsUfygReKvTFwPUZOdMowPdMkfGS4La0VDI+xzTtfHAkrePRfntQbeo81E8a4nvDNrhEl8jbYpaCklu+YkpWx6TGJoSH6vD3KfbpiXqxX23FQyslrEGV8ofvfCBik41eBla9sUndriApQpiFBpZ1GxlLkpPMh/Kc=",
+        "cost": 0,
+        "bitsUsed": 1,
+        "bitsLeft": 249880,
+        "requestsLeft": 880,
+        "advisoryDelay": 300
+      },
+      "verification": {
+        "status": "verified",
+        "response": {
+          "jsonrpc": "2.0",
+          "result": {
+            "authenticity": true
+          },
+          "id": "verifySignature-16"
+        }
+      }
+    }
+  ],
+  "cues": [
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "9c4269fe-5e37-4eb3-8fa7-2a229e31e242",
+      "trialId": null,
+      "stream": "testAudio",
+      "text": "Test audio",
+      "dueAtMs": 1790350192494,
+      "issuedAtMs": 1790350192494,
+      "playedAtMs": 1790350192631,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350193603
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "0c797c64-ca75-41e1-946a-f965c3fc97fc",
+      "trialId": "trial-1",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350212877,
+      "issuedAtMs": 1790350212877,
+      "playedAtMs": 1790350213125,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350213941
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "27190539-90c3-497a-aa80-592d95527283",
+      "trialId": "trial-2",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350228261,
+      "issuedAtMs": 1790350228261,
+      "playedAtMs": 1790350228326,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350229126
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "805c6fc0-ce68-4e13-a9cf-6d3dfed32bfd",
+      "trialId": "trial-3",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350243464,
+      "issuedAtMs": 1790350243464,
+      "playedAtMs": 1790350243529,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350244336
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "e17c528c-0f99-4033-a479-6e2b99a71662",
+      "trialId": "trial-4",
+      "stream": "tree",
+      "text": "Target A",
+      "dueAtMs": 1790350258667,
+      "issuedAtMs": 1790350258667,
+      "playedAtMs": 1790350258817,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350259663
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "1ca63151-d6a4-4edd-b529-2e50a90b0aee",
+      "trialId": "trial-5",
+      "stream": "tree",
+      "text": "Target A",
+      "dueAtMs": 1790350273964,
+      "issuedAtMs": 1790350273964,
+      "playedAtMs": 1790350274099,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350274920
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "f42af242-f73a-4cd4-b6d2-2ee6270fc558",
+      "trialId": "trial-6",
+      "stream": "tree",
+      "text": "Target A",
+      "dueAtMs": 1790350289237,
+      "issuedAtMs": 1790350289237,
+      "playedAtMs": 1790350289308,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350290150
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "62f2c58a-ed82-445e-af15-555a33b332b6",
+      "trialId": "trial-7",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350304444,
+      "issuedAtMs": 1790350304444,
+      "playedAtMs": 1790350304567,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350305375
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "bc2bc453-a401-4263-a7f4-63b584c803b0",
+      "trialId": "trial-8",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350319708,
+      "issuedAtMs": 1790350319708,
+      "playedAtMs": 1790350319780,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350320586
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "c9e8a739-45f1-455c-879c-5c445a3d43f3",
+      "trialId": "trial-9",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350334910,
+      "issuedAtMs": 1790350334910,
+      "playedAtMs": 1790350335059,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350335869
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "4c713507-9604-4c72-8a6d-87054e039a2c",
+      "trialId": "trial-10",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350350193,
+      "issuedAtMs": 1790350350193,
+      "playedAtMs": 1790350350257,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350351060
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "7b27ef7a-8743-41d1-b855-aaccd28ffdd8",
+      "trialId": "trial-11",
+      "stream": "tree",
+      "text": "Target A",
+      "dueAtMs": 1790350365398,
+      "issuedAtMs": 1790350365398,
+      "playedAtMs": 1790350365536,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350366382
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "3fc9be6b-93f9-4f02-94a1-2c7824ca3adc",
+      "trialId": "trial-12",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350380705,
+      "issuedAtMs": 1790350380705,
+      "playedAtMs": 1790350380827,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350381631
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "f34657eb-2d9c-41fd-81ae-6e8e2bb819ba",
+      "trialId": "trial-13",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350395969,
+      "issuedAtMs": 1790350395969,
+      "playedAtMs": 1790350396036,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350396841
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "2d2ad114-1dba-4ef1-9361-f2833d2a9e80",
+      "trialId": "trial-14",
+      "stream": "tree",
+      "text": "Target B",
+      "dueAtMs": 1790350411183,
+      "issuedAtMs": 1790350411183,
+      "playedAtMs": 1790350411263,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350412075
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "450156c4-96bc-4299-897a-e3ae9ed3a562",
+      "trialId": "trial-15",
+      "stream": "tree",
+      "text": "Target A",
+      "dueAtMs": 1790350426456,
+      "issuedAtMs": 1790350426456,
+      "playedAtMs": 1790350426612,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350427461
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "f79b6f92-b380-4543-914e-978d830cb4e2",
+      "trialId": "trial-16",
+      "stream": "tree",
+      "text": "Target A",
+      "dueAtMs": 1790350441743,
+      "issuedAtMs": 1790350441743,
+      "playedAtMs": 1790350441816,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350442649
+    },
+    {
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "cueId": "24c03b7b-130b-4535-91b1-3ba73b6a390a",
+      "trialId": null,
+      "stream": "runFinished",
+      "text": "Run finished",
+      "dueAtMs": 1790350456817,
+      "issuedAtMs": 1790350456817,
+      "playedAtMs": 1790350457839,
+      "deliveryStatus": "played",
+      "deviceId": "1cdfab31-ae8b-4ec4-af98-e055dd6bfad4",
+      "endedAtMs": 1790350458803
+    }
+  ],
+  "events": [
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350212877,
+      "actionId": "e995616f-c5cc-4586-b843-d271c71735b0",
+      "actor": "server",
+      "data": {
+        "ticketId": "b8a4965cd33bc47f",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 7
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350228261,
+      "actionId": "deadline-treeResponseEnd-1790350228125",
+      "actor": "server",
+      "data": {
+        "ticketId": "43b658ee67c8456e",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 13
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350243464,
+      "actionId": "deadline-treeResponseEnd-1790350243326",
+      "actor": "server",
+      "data": {
+        "ticketId": "7a0d8cf89f3a3458",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 19
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350258667,
+      "actionId": "deadline-treeResponseEnd-1790350258529",
+      "actor": "server",
+      "data": {
+        "ticketId": "d58a4be94971a476",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 25
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350273964,
+      "actionId": "deadline-treeResponseEnd-1790350273817",
+      "actor": "server",
+      "data": {
+        "ticketId": "1b5e9cb570a44b4f",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 31
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350289237,
+      "actionId": "deadline-treeResponseEnd-1790350289099",
+      "actor": "server",
+      "data": {
+        "ticketId": "982a0c4249cf5646",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 37
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350304444,
+      "actionId": "deadline-treeResponseEnd-1790350304308",
+      "actor": "server",
+      "data": {
+        "ticketId": "791ec30f73b9fc12",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 43
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350319708,
+      "actionId": "deadline-treeResponseEnd-1790350319567",
+      "actor": "server",
+      "data": {
+        "ticketId": "e0afcc6a569588e2",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 49
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350334910,
+      "actionId": "deadline-treeResponseEnd-1790350334780",
+      "actor": "server",
+      "data": {
+        "ticketId": "5c340e2ce253ae12",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 55
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350350193,
+      "actionId": "deadline-treeResponseEnd-1790350350059",
+      "actor": "server",
+      "data": {
+        "ticketId": "351bbfe8f4f16049",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 61
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350365398,
+      "actionId": "deadline-treeResponseEnd-1790350365257",
+      "actor": "server",
+      "data": {
+        "ticketId": "3c5cf5671c23786c",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 67
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350380705,
+      "actionId": "deadline-treeResponseEnd-1790350380536",
+      "actor": "server",
+      "data": {
+        "ticketId": "934e04e62d816b14",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 73
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350395969,
+      "actionId": "deadline-treeResponseEnd-1790350395827",
+      "actor": "server",
+      "data": {
+        "ticketId": "4e947d4d088c10a7",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 79
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350411183,
+      "actionId": "deadline-treeResponseEnd-1790350411036",
+      "actor": "server",
+      "data": {
+        "ticketId": "fb0ae51af68855e1",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 85
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350426456,
+      "actionId": "deadline-treeResponseEnd-1790350426263",
+      "actor": "server",
+      "data": {
+        "ticketId": "ff84e8705d70a65f",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 91
+    },
+    {
+      "kind": "assignmentRecorded",
+      "serverAtMs": 1790350441743,
+      "actionId": "deadline-treeResponseEnd-1790350441612",
+      "actor": "server",
+      "data": {
+        "ticketId": "b51599492bfcfdad",
+        "late": false
+      },
+      "experimentSlug": "wind-prestudy",
+      "runId": "dddedcd7-e6d7-44e0-ae71-ca90033b1bec",
+      "sequence": 97
+    }
+  ]
+}

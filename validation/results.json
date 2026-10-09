@@ -1,0 +1,1797 @@
+{
+  "seed": 20260928,
+  "enumeration": {
+    "paths": 4096,
+    "mean_terminal_e": 0.9974097910766565,
+    "ever_crossed_20": 0,
+    "ever_missed_true_zero_in_any_interval": 0
+  },
+  "scenarios": {
+    "null_equal": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 0,
+      "selected_crossing_rate": 0.0,
+      "crossing_rate_mc_95pct_interval": [
+        4.336808689942018e-19,
+        0.007624340461552241
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 0.6603513703670912,
+      "median_whole_effect": -0.0008400609883497712,
+      "median_whole_interval_width": 0.10421553627418786,
+      "prior_carried_crossing_rate": 0.032,
+      "prior_run_product_crossing_rate": 0.022,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "null_region_bias": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 8,
+      "selected_crossing_rate": 0.016,
+      "crossing_rate_mc_95pct_interval": [
+        0.008129253033388314,
+        0.03125110853339426
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 0.4981167038984263,
+      "median_whole_effect": -0.0006879348491525498,
+      "median_whole_interval_width": 0.31743019289820135,
+      "prior_carried_crossing_rate": 0.02,
+      "prior_run_product_crossing_rate": 0.028,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "null_drift_carryover": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 16,
+      "selected_crossing_rate": 0.032,
+      "crossing_rate_mc_95pct_interval": [
+        0.019791513626571118,
+        0.051344869045441784
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 0.4449433541922464,
+      "median_whole_effect": -0.0008302045295747519,
+      "median_whole_interval_width": 0.1694848610474583,
+      "prior_carried_crossing_rate": 0.036,
+      "prior_run_product_crossing_rate": 0.038,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "null_adaptive_settings": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        160,
+        240
+      ],
+      "selected_ever_crossed_20": 1,
+      "selected_crossing_rate": 0.002,
+      "crossing_rate_mc_95pct_interval": [
+        0.00035313639455927456,
+        0.011240706705146758
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 0.5033237001926297,
+      "median_whole_effect": 0.00017447693881125488,
+      "median_whole_interval_width": 0.19813689816444618,
+      "prior_carried_crossing_rate": null,
+      "prior_run_product_crossing_rate": null,
+      "comparison_note": "Prior fixed-setting/complete-outcome comparison not applicable."
+    },
+    "null_selective_missing": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 0,
+      "selected_crossing_rate": 0.0,
+      "crossing_rate_mc_95pct_interval": [
+        4.336808689942018e-19,
+        0.007624340461552241
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 0.1908051887525166,
+      "median_whole_effect": null,
+      "median_whole_interval_width": 1.14710570134866,
+      "prior_carried_crossing_rate": null,
+      "prior_run_product_crossing_rate": null,
+      "comparison_note": "Prior fixed-setting/complete-outcome comparison not applicable."
+    },
+    "sustained_1pp": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 72,
+      "selected_crossing_rate": 0.144,
+      "crossing_rate_mc_95pct_interval": [
+        0.11593807411034973,
+        0.17749045629827542
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 2.8848921249016417,
+      "median_whole_effect": 0.009457046450631838,
+      "median_whole_interval_width": 0.10451963894564764,
+      "prior_carried_crossing_rate": 0.276,
+      "prior_run_product_crossing_rate": 0.374,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "sustained_5pp": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 500,
+      "selected_crossing_rate": 1.0,
+      "crossing_rate_mc_95pct_interval": [
+        0.9923756595384479,
+        1.0
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 12796463042.194088,
+      "median_whole_effect": 0.05005313783050842,
+      "median_whole_interval_width": 0.10858999065337428,
+      "prior_carried_crossing_rate": 1.0,
+      "prior_run_product_crossing_rate": 1.0,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "sustained_12pp": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 500,
+      "selected_crossing_rate": 1.0,
+      "crossing_rate_mc_95pct_interval": [
+        0.9923756595384479,
+        1.0
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 2.611621014984895e+28,
+      "median_whole_effect": 0.11993843734399737,
+      "median_whole_interval_width": 0.12684596695646416,
+      "prior_carried_crossing_rate": 1.0,
+      "prior_run_product_crossing_rate": 1.0,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "biased_5pp": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 496,
+      "selected_crossing_rate": 0.992,
+      "crossing_rate_mc_95pct_interval": [
+        0.9796129641658948,
+        0.9968846848199377
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 12032.13306326159,
+      "median_whole_effect": 0.050320189309547375,
+      "median_whole_interval_width": 0.31776578423979834,
+      "prior_carried_crossing_rate": 1.0,
+      "prior_run_product_crossing_rate": 1.0,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "early_12pp": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 500,
+      "selected_crossing_rate": 1.0,
+      "crossing_rate_mc_95pct_interval": [
+        0.9923756595384479,
+        1.0
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 1.1914914872106893e+27,
+      "median_whole_effect": 0.01597016496346018,
+      "median_whole_interval_width": 0.10509677466940036,
+      "prior_carried_crossing_rate": 1.0,
+      "prior_run_product_crossing_rate": 1.0,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "late_12pp": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 500,
+      "selected_crossing_rate": 1.0,
+      "crossing_rate_mc_95pct_interval": [
+        0.9923756595384479,
+        1.0
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 9.285177908322908e+26,
+      "median_whole_effect": 0.01602736081675242,
+      "median_whole_interval_width": 0.10490389691724299,
+      "prior_carried_crossing_rate": 1.0,
+      "prior_run_product_crossing_rate": 1.0,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "reversal_10pp": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 500,
+      "selected_crossing_rate": 1.0,
+      "crossing_rate_mc_95pct_interval": [
+        0.9923756595384479,
+        1.0
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 5.2753359094437835e+23,
+      "median_whole_effect": -0.0003058112201781795,
+      "median_whole_interval_width": 0.10457490331566274,
+      "prior_carried_crossing_rate": 1.0,
+      "prior_run_product_crossing_rate": 1.0,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    },
+    "opposite_8pp": {
+      "paths": 500,
+      "runs_per_path": 16,
+      "targets_min_max": [
+        256,
+        256
+      ],
+      "selected_ever_crossed_20": 0,
+      "selected_crossing_rate": 0.0,
+      "crossing_rate_mc_95pct_interval": [
+        4.336808689942018e-19,
+        0.007624340461552241
+      ],
+      "any_simultaneous_interval_missed_truth": 0,
+      "median_terminal_e": 0.21551527577419138,
+      "median_whole_effect": -0.07929578838789397,
+      "median_whole_interval_width": 0.11401613868131374,
+      "prior_carried_crossing_rate": 0.0,
+      "prior_run_product_crossing_rate": 0.0,
+      "comparison_note": "Same simulated camera motions, prior raw D with scale floor 1 versus bounded balance. This compares complete analysis choices, not one isolated formula change."
+    }
+  },
+  "examples": {
+    "no_systematic_change": {
+      "runs": 16,
+      "log_e": -0.31886491699207076,
+      "threshold_log_e": 2.995732273553991,
+      "streams": {
+        "-1": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975579,
+          "effect_estimate_bounds": [
+            0.0005883366671975579,
+            0.0005883366671975579
+          ],
+          "simultaneous_confidence_interval": [
+            -0.044631319500784916,
+            0.04580799283518003
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.3630021821756282,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.09563097168773617
+        },
+        "0": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.06842644411978306,
+            0.06960311745417817
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "1": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.06900514782348675,
+            0.07018182115788187
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "2": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.06958385152719047,
+            0.07076052486158559
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "3": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07016255523089417,
+            0.07133922856528928
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "4": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07074125893459789,
+            0.071917932268993
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "5": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07131996263830158,
+            0.07249663597269669
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "6": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07189866634200527,
+            0.07307533967640038
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "7": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07247737004570899,
+            0.0736540433801041
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "8": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07305607374941268,
+            0.0742327470838078
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "9": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07363477745311638,
+            0.07481145078751149
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "10": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.0742134811568201,
+            0.07539015449121521
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "11": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07479218486052379,
+            0.0759688581949189
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "12": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07537088856422751,
+            0.07654756189862262
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "13": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.0759495922679312,
+            0.07712626560232631
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "14": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.0765282959716349,
+            0.07770496930603
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        }
+      },
+      "regional_diagnostics": {
+        "A_targeting_difference_px_s": 0.0010622500603196805,
+        "B_targeting_difference_px_s": 0.0010622500603196805,
+        "A_assignments": 123,
+        "B_assignments": 133,
+        "transitions": {
+          "B-to-B": {
+            "count": 65,
+            "first_second_A_minus_previous_five_seconds": 0.007743245233743501,
+            "first_second_B_minus_previous_five_seconds": -0.0077432452337435126
+          },
+          "B-to-A": {
+            "count": 57,
+            "first_second_A_minus_previous_five_seconds": -0.004333335542915206,
+            "first_second_B_minus_previous_five_seconds": 0.004333335542915223
+          },
+          "A-to-A": {
+            "count": 59,
+            "first_second_A_minus_previous_five_seconds": -0.005931319402882375,
+            "first_second_B_minus_previous_five_seconds": 0.0059313194028823655
+          },
+          "A-to-B": {
+            "count": 59,
+            "first_second_A_minus_previous_five_seconds": -0.002407460249634219,
+            "first_second_B_minus_previous_five_seconds": 0.00240746024963423
+          }
+        }
+      }
+    },
+    "positive": {
+      "runs": 16,
+      "log_e": 80.36408903351271,
+      "threshold_log_e": 2.995732273553991,
+      "streams": {
+        "-1": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.06403797412338635,
+            0.17713869921100886
+          ],
+          "log_e": 80.5673560884279,
+          "evidence_total": 31.298397085223623,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "0": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.04024284950438821,
+            0.20093382383000702
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "1": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.03966414580068452,
+            0.20151252753371068
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "2": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.039085442096980796,
+            0.2020912312374144
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "3": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.038506738393277104,
+            0.20266993494111812
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "4": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.037928034689573384,
+            0.20324863864482184
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "5": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.03734933098586969,
+            0.2038273423485255
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "6": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.036770627282165985,
+            0.20440604605222923
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "7": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.03619192357846228,
+            0.20498474975593295
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "8": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.035613219874758587,
+            0.2055634534596366
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "9": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.03503451617105488,
+            0.20614215716334033
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "10": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.034455812467351174,
+            0.20672086086704405
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "11": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.03387710876364747,
+            0.20729956457074775
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "12": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.03329840505994376,
+            0.20787826827445144
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "13": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.032719701356240055,
+            0.20845697197815516
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        },
+        "14": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.12058833666719761,
+          "effect_estimate_bounds": [
+            0.12058833666719761,
+            0.12058833666719761
+          ],
+          "simultaneous_confidence_interval": [
+            0.03214099765253636,
+            0.20903567568185885
+          ],
+          "log_e": 80.56735608842793,
+          "evidence_total": 31.298397085223627,
+          "evidence_variance": 5.063665857742827,
+          "confidence_variance": 1.026267822895891
+        }
+      },
+      "regional_diagnostics": {
+        "A_targeting_difference_px_s": 0.24106225006031978,
+        "B_targeting_difference_px_s": 0.24106225006031956,
+        "A_assignments": 123,
+        "B_assignments": 133,
+        "transitions": {
+          "B-to-B": {
+            "count": 65,
+            "first_second_A_minus_previous_five_seconds": 0.007743245233743518,
+            "first_second_B_minus_previous_five_seconds": -0.007743245233743518
+          },
+          "B-to-A": {
+            "count": 57,
+            "first_second_A_minus_previous_five_seconds": 0.2356666644570848,
+            "first_second_B_minus_previous_five_seconds": -0.2356666644570848
+          },
+          "A-to-A": {
+            "count": 59,
+            "first_second_A_minus_previous_five_seconds": -0.005931319402882367,
+            "first_second_B_minus_previous_five_seconds": 0.005931319402882385
+          },
+          "A-to-B": {
+            "count": 59,
+            "first_second_A_minus_previous_five_seconds": -0.24240746024963422,
+            "first_second_B_minus_previous_five_seconds": 0.24240746024963425
+          }
+        }
+      }
+    },
+    "opposite": {
+      "runs": 16,
+      "log_e": -1.5888711689580215,
+      "threshold_log_e": 2.995732273553991,
+      "streams": {
+        "-1": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.17574197461286092,
+            -0.06308135205274407
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "0": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.19953709923185906,
+            -0.039286227433745935
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "1": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.20011580293556275,
+            -0.03870752373004224
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "2": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.20069450663926647,
+            -0.03812882002633852
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "3": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.20127321034297016,
+            -0.03755011632263483
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "4": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.20185191404667388,
+            -0.03697141261893111
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "5": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.20243061775037757,
+            -0.03639270891522742
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "6": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.2030093214540813,
+            -0.03581400521152371
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "7": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.20358802515778499,
+            -0.035235301507820005
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "8": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.20416672886148868,
+            -0.03465659780411631
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "9": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.2047454325651924,
+            -0.034077894100412606
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "10": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.2053241362688961,
+            -0.0334991903967089
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "11": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.20590283997259978,
+            -0.032920486693005194
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "12": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.2064815436763035,
+            -0.03234178298930149
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "13": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.20706024738000722,
+            -0.03176307928559778
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        },
+        "14": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": -0.1194116633328025,
+          "effect_estimate_bounds": [
+            -0.1194116633328025,
+            -0.1194116633328025
+          ],
+          "simultaneous_confidence_interval": [
+            -0.2076389510837109,
+            -0.03118437558189409
+          ],
+          "log_e": -3.6980030366053005,
+          "evidence_total": -32.02440144957491,
+          "evidence_variance": 4.9433189771436945,
+          "confidence_variance": 1.0081941204795817
+        }
+      },
+      "regional_diagnostics": {
+        "A_targeting_difference_px_s": -0.2389377499396802,
+        "B_targeting_difference_px_s": -0.2389377499396802,
+        "A_assignments": 123,
+        "B_assignments": 133,
+        "transitions": {
+          "B-to-B": {
+            "count": 65,
+            "first_second_A_minus_previous_five_seconds": 0.007743245233743507,
+            "first_second_B_minus_previous_five_seconds": -0.007743245233743507
+          },
+          "B-to-A": {
+            "count": 57,
+            "first_second_A_minus_previous_five_seconds": -0.24433333554291517,
+            "first_second_B_minus_previous_five_seconds": 0.24433333554291517
+          },
+          "A-to-A": {
+            "count": 59,
+            "first_second_A_minus_previous_five_seconds": -0.005931319402882364,
+            "first_second_B_minus_previous_five_seconds": 0.005931319402882383
+          },
+          "A-to-B": {
+            "count": 59,
+            "first_second_A_minus_previous_five_seconds": 0.23759253975036576,
+            "first_second_B_minus_previous_five_seconds": -0.23759253975036576
+          }
+        }
+      }
+    },
+    "brief": {
+      "runs": 16,
+      "log_e": 93.15119870618535,
+      "threshold_log_e": 2.995732273553991,
+      "streams": {
+        "-1": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.027255003333864235,
+          "effect_estimate_bounds": [
+            0.027255003333864235,
+            0.027255003333864235
+          ],
+          "simultaneous_confidence_interval": [
+            -0.01854321066559459,
+            0.07305321733332307
+          ],
+          "log_e": 13.716390906004925,
+          "evidence_total": 6.672864321690876,
+          "evidence_variance": 0.6762794217733371,
+          "confidence_variance": 0.14315027195621494
+        },
+        "0": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.20058833666719764,
+          "effect_estimate_bounds": [
+            0.20058833666719764,
+            0.20058833666719764
+          ],
+          "simultaneous_confidence_interval": [
+            0.10022162220499972,
+            0.3009550511293956
+          ],
+          "log_e": 95.9251749429219,
+          "evidence_total": 52.40599659682315,
+          "evidence_variance": 13.221238906246295,
+          "confidence_variance": 2.670692390367996
+        },
+        "1": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.20058833666719764,
+          "effect_estimate_bounds": [
+            0.20058833666719764,
+            0.20058833666719764
+          ],
+          "simultaneous_confidence_interval": [
+            0.09964291850129603,
+            0.30153375483309924
+          ],
+          "log_e": 95.9251749429219,
+          "evidence_total": 52.40599659682315,
+          "evidence_variance": 13.221238906246295,
+          "confidence_variance": 2.670692390367996
+        },
+        "2": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.06958385152719047,
+            0.07076052486158559
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "3": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07016255523089417,
+            0.07133922856528928
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "4": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07074125893459789,
+            0.071917932268993
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "5": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07131996263830158,
+            0.07249663597269669
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "6": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07189866634200527,
+            0.07307533967640038
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "7": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07247737004570899,
+            0.0736540433801041
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "8": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07305607374941268,
+            0.0742327470838078
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "9": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07363477745311638,
+            0.07481145078751149
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "10": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.0742134811568201,
+            0.07539015449121521
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "11": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07479218486052379,
+            0.0759688581949189
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "12": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.07537088856422751,
+            0.07654756189862262
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "13": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.0759495922679312,
+            0.07712626560232631
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        },
+        "14": {
+          "targets": 256,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.0005883366671975583,
+          "effect_estimate_bounds": [
+            0.0005883366671975583,
+            0.0005883366671975583
+          ],
+          "simultaneous_confidence_interval": [
+            -0.0765282959716349,
+            0.07770496930603
+          ],
+          "log_e": -0.40731624700151625,
+          "evidence_total": -0.36300218217562796,
+          "evidence_variance": 0.4374226177724034,
+          "confidence_variance": 0.0956309716877362
+        }
+      },
+      "regional_diagnostics": {
+        "A_targeting_difference_px_s": 0.054395583393653246,
+        "B_targeting_difference_px_s": 0.054395583393653024,
+        "A_assignments": 123,
+        "B_assignments": 133,
+        "transitions": {
+          "B-to-B": {
+            "count": 65,
+            "first_second_A_minus_previous_five_seconds": -0.1922567547662565,
+            "first_second_B_minus_previous_five_seconds": 0.19225675476625648
+          },
+          "B-to-A": {
+            "count": 57,
+            "first_second_A_minus_previous_five_seconds": 0.1956666644570848,
+            "first_second_B_minus_previous_five_seconds": -0.1956666644570848
+          },
+          "A-to-A": {
+            "count": 59,
+            "first_second_A_minus_previous_five_seconds": 0.19406868059711763,
+            "first_second_B_minus_previous_five_seconds": -0.19406868059711763
+          },
+          "A-to-B": {
+            "count": 59,
+            "first_second_A_minus_previous_five_seconds": -0.20240746024963424,
+            "first_second_B_minus_previous_five_seconds": 0.20240746024963424
+          }
+        }
+      }
+    }
+  },
+  "retained_preparation": {
+    "source_sha256": "d032b40269d83b482dae40c6cc0f28395d8b5d68790db3b46f47a5794e52a810",
+    "interpretation": "Calculation illustration on retained median-track measurements, not re-extraction with the new mean-track profile. Retrospective preparation only; not scored evidence or new data.",
+    "result": {
+      "runs": 1,
+      "log_e": 0.20396782478576847,
+      "threshold_log_e": 2.995732273553991,
+      "streams": {
+        "-1": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.025570824843332403,
+          "effect_estimate_bounds": [
+            0.025570824843332403,
+            0.025570824843332403
+          ],
+          "simultaneous_confidence_interval": [
+            -0.6837718207043805,
+            0.7349134703910453
+          ],
+          "log_e": 0.24879650539637965,
+          "evidence_total": 0.3392126623879408,
+          "evidence_variance": 0.06983374474666337,
+          "confidence_variance": 0.02288148709836793
+        },
+        "0": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.006601151254652409,
+          "effect_estimate_bounds": [
+            0.006601151254652409,
+            0.006601151254652409
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.01604443758877605,
+          "evidence_total": 0.0717509628671158,
+          "evidence_variance": 0.0829493675807868,
+          "confidence_variance": 0.023555171226701376
+        },
+        "1": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.023299696186578383,
+          "effect_estimate_bounds": [
+            0.023299696186578383,
+            0.023299696186578383
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.23456794669612552,
+          "evidence_total": 0.32030379175901,
+          "evidence_variance": 0.06536707480513416,
+          "confidence_variance": 0.02011494891079049
+        },
+        "2": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.020259425344035423,
+          "effect_estimate_bounds": [
+            0.020259425344035423,
+            0.020259425344035423
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.22607692292963438,
+          "evidence_total": 0.3451441602092003,
+          "evidence_variance": 0.11675953654268567,
+          "confidence_variance": 0.02893181518291047
+        },
+        "3": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.02092505524585366,
+          "effect_estimate_bounds": [
+            0.02092505524585366,
+            0.02092505524585366
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.19831356115866727,
+          "evidence_total": 0.2823658144989485,
+          "evidence_variance": 0.06993539684096228,
+          "confidence_variance": 0.020477599671548233
+        },
+        "4": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.024705543917410717,
+          "effect_estimate_bounds": [
+            0.024705543917410717,
+            0.024705543917410717
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.24294195189325724,
+          "evidence_total": 0.3291512448180266,
+          "evidence_variance": 0.06461507771567568,
+          "confidence_variance": 0.019727103299094908
+        },
+        "5": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.024254115444619417,
+          "effect_estimate_bounds": [
+            0.024254115444619417,
+            0.024254115444619417
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.27512111334325234,
+          "evidence_total": 0.378437409639127,
+          "evidence_variance": 0.0846395953508833,
+          "confidence_variance": 0.02586843482948631
+        },
+        "6": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.034115492405219196,
+          "effect_estimate_bounds": [
+            0.034115492405219196,
+            0.034115492405219196
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.38510100793615987,
+          "evidence_total": 0.49862174704121487,
+          "evidence_variance": 0.08781820056846969,
+          "confidence_variance": 0.029897297234754126
+        },
+        "7": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.029441523355232715,
+          "effect_estimate_bounds": [
+            0.029441523355232715,
+            0.029441523355232715
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.27801639373033477,
+          "evidence_total": 0.3803506397629655,
+          "evidence_variance": 0.08277434083832895,
+          "confidence_variance": 0.03188451061995423
+        },
+        "8": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.036917124868199085,
+          "effect_estimate_bounds": [
+            0.036917124868199085,
+            0.036917124868199085
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.3967943281595825,
+          "evidence_total": 0.5049984880888099,
+          "evidence_variance": 0.07968059070187683,
+          "confidence_variance": 0.02887978939982874
+        },
+        "9": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.03258873302854324,
+          "effect_estimate_bounds": [
+            0.03258873302854324,
+            0.03258873302854324
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.22773624809990245,
+          "evidence_total": 0.3279533705695689,
+          "evidence_variance": 0.08815750240321778,
+          "confidence_variance": 0.0330630790829011
+        },
+        "10": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.025611854539701436,
+          "effect_estimate_bounds": [
+            0.025611854539701436,
+            0.025611854539701436
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.23209319750888213,
+          "evidence_total": 0.35224793803849824,
+          "evidence_variance": 0.11716453561606749,
+          "confidence_variance": 0.032525094449002284
+        },
+        "11": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.025241614670251072,
+          "effect_estimate_bounds": [
+            0.025241614670251072,
+            0.025241614670251072
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.22393357428107258,
+          "evidence_total": 0.31102591187540635,
+          "evidence_variance": 0.069326009010679,
+          "confidence_variance": 0.020913766259335585
+        },
+        "12": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.034804601846500346,
+          "effect_estimate_bounds": [
+            0.034804601846500346,
+            0.034804601846500346
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.3414397192368237,
+          "evidence_total": 0.4568151838958313,
+          "evidence_variance": 0.09395614755272552,
+          "confidence_variance": 0.029735023532648935
+        },
+        "13": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.02375559726139407,
+          "effect_estimate_bounds": [
+            0.02375559726139407,
+            0.02375559726139407
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.21542758536471301,
+          "evidence_total": 0.31051417090657146,
+          "evidence_variance": 0.08292352952966471,
+          "confidence_variance": 0.02216392095972297
+        },
+        "14": {
+          "targets": 16,
+          "bounded_missing_targets": 0,
+          "effect_estimate": 0.02104084328179494,
+          "effect_estimate_bounds": [
+            0.02104084328179494,
+            0.02104084328179494
+          ],
+          "simultaneous_confidence_interval": [
+            -1.0,
+            1.0
+          ],
+          "log_e": 0.12718212691195874,
+          "evidence_total": 0.21850910184881767,
+          "evidence_variance": 0.0992902387049216,
+          "confidence_variance": 0.027898056840432155
+        }
+      }
+    }
+  }
+}

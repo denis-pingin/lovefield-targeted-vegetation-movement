@@ -1,0 +1,16 @@
+{
+  "test": {
+    "enabled": false,
+    "chainId": 84532,
+    "rpcUrl": "https://sepolia.base.org",
+    "signerAddress": null,
+    "fromBlock": null
+  },
+  "production": {
+    "enabled": false,
+    "chainId": 8453,
+    "rpcUrl": "https://mainnet.base.org",
+    "signerAddress": null,
+    "fromBlock": null
+  }
+}

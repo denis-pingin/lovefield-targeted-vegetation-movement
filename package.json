@@ -1,0 +1,22 @@
+{
+  "name": "lovefield-tree-targeting",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "packageManager": "yarn@4.18.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "test": "node --test tests/server/*.test.mjs tests/web/*.test.mjs",
+    "lint": "node scripts/lint.mjs",
+    "build": "python3 scripts/prepare-study-materials.py && wrangler deploy --dry-run --outdir .build"
+  },
+  "devDependencies": {
+    "wrangler": "4.147.0"
+  },
+  "dependencies": {
+    "viem": "2.57.3"
+  }
+}

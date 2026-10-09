@@ -1,0 +1,41 @@
+{
+  "profileId": "tree-development-area-1",
+  "version": "tree-profile-development-2",
+  "video": {
+    "featureDetection": {
+      "maxCorners": 3000,
+      "qualityLevel": 0.01,
+      "minDistancePixels": 7,
+      "blockSize": 7
+    },
+    "tracking": {
+      "windowSizePixels": [41, 41],
+      "maxLevel": 3,
+      "maxIterations": 30,
+      "epsilon": 0.01,
+      "maximumForwardBackwardErrorPixels": 1
+    },
+    "minimumTracks": {"target": 20, "background": 10},
+    "reseedSeconds": 1,
+    "minimumCoverageFraction": 0.95,
+    "shake": {"minimumBackgroundDisplacementPixels": 0.5, "consecutiveFramePairs": 3},
+    "measurement": {
+      "method": "area-grid-mean-v1",
+      "cellSizePixels": 128,
+      "pointsPerCell": 32,
+      "minimumTracksPerCell": 3,
+      "minimumSpatialCoverageFraction": 0.99,
+      "refreshPolicy": "timed"
+    }
+  },
+  "timing": {
+    "maximumPairwiseAlignmentSeconds": 0.5,
+    "clockExchangeCount": 5,
+    "maxCueWaitSeconds": 10
+  },
+  "treeAnalysis": {
+    "method": "tree-analysis-development-1",
+    "binSeconds": 1,
+    "contextBeforeSeconds": 5
+  }
+}
