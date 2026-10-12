@@ -57,6 +57,26 @@ Successful reproduction establishes agreement with the supplied inputs and
 software. The experimental interpretation still depends on the protocol's
 randomization, timing, measurement, and completeness assumptions.
 
+## Select setup and timing frames
+
+For setup, open **Tree setup image**, choose the camera clip, and select **Separate setup video** or **Main recording** to identify its source. Enter a frame number and press **Show frame**; **Previous frame** and **Next frame** move one frame at a time. Numbering starts at zero, and the last frame number is the decoded frame count minus one. **Export full-size setup PNG** saves an image named from the video, for example `tree-setup-DSC_0056.png`, preserving earlier exports. Define and save A, B, and background regions in hosted Setup. Scored regions are saved before targeting; retrospective main-recording setup is available for preparation.
+
+When the run is imported, **Saved regions** displays the exact image, polygons, source video, and selected frame. The run's setup identifiers resolve the image retained on the Mac. Import the matching retained setup records when using another installation.
+
+At **Two filmed clock references**, select one readable opening frame and one closing frame using the frame-number input and previous/next controls. For each, enter the server UTC timestamp and clock uncertainty visible on the phone. The closing input initially contains the final decoded frame number. After a mapping is saved, reopening the run restores the selected frames, timestamps, uncertainties, and image previews. Saved footage-review choices also reload.
+
+A smoothly advancing filmed clock permits any sharp readable frame. For preparation footage recorded with a once-per-second display, select the first readable frame at the transition to the new timestamp. The app supplies the frame allowance from the actual video cadence. **Save and check time mapping** retains the mapping used for analysis.
+
+The apparatus timing check uses a preparation recording with audible cues to compare their mapped video positions with recorded playback. Perform this during qualification of the setup. The field procedure retains its opening and closing references for each recording.
+
+## Compare preparation profiles
+
+Analyze identical run records, original videos, setup regions, clock mappings, footage reviews, and response boundaries under each candidate profile. Retain the original analyses when saving further revisions. Each side of a saved comparison uses one exact profile and statistical version, with the profile and analysis revision identified for every recording.
+
+The comparison retains a common chronological inventory and accumulates its resolved paired prefix. An unfinished analysis or different source inputs stops both sides at that recording until resolved. Completed analyses with unavailable bins retain their uncertainty bounds. Save a new comparison snapshot to include a revised analysis or additional recordings; an existing snapshot keeps its selected revisions.
+
+Inspect annotated tracking and coverage alongside individual and accumulating estimates, confidence ranges, and evidence. Comparisons of measurement methods use the same recordings, so they supply alternative analyses of one observation set. The [methods](analysis-methods.md#23-measurement-qualification-and-comparison) specify the qualification criteria.
+
 ## Source identity
 
 [source-inventory.json](source-inventory.json) lists the distributed files and
@@ -130,7 +150,7 @@ The publication contains the original videos, separately identified viewing
 copies where supplied, setup images and polygons, clock mappings, footage review,
 assignment/event records, profiles, analyses, and accumulating reports. Missing
 recordings retain their disposition and surviving inputs. Their statistical
-treatment follows the [missing-measurement rules](analysis-methods.md#6-missing-measurements-without-favorable-deletion).
+treatment follows the [missing-measurement rules](analysis-methods.md#6-missing-measurements).
 
 Uploads require the destination's Cloudflare Access service identity. The
 uploader supports an explicitly selected process-environment credential source

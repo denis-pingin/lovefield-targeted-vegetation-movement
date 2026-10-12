@@ -2,97 +2,48 @@
 
 ## Study objective
 
-Test whether measured movement in two predefined tree regions follows concealed
-random A/B instructions delivered to one practitioner, Denis Pingin. Measure both
-regions throughout;
-estimate the relative response, its size, and how it develops after each cue.
-The number of scored recordings is open-ended. The method permits examining
-accumulating results and choosing whether to collect more.
+Test whether measured movement in two predefined regions of a tree changes with concealed random A/B instructions delivered to one practitioner, Denis Pingin. Both regions are measured throughout each recording to estimate the relative response, its size, and its development after each cue. The number of scored recordings is open-ended; results accumulate as recordings are added.
 
-The [analysis methods](analysis-methods.md) define the calculations. The complete
-configuration, measurement profile and identified software releases accompany
-each scored series. The outcome is vegetation movement measured from video.
+The [analysis methods](analysis-methods.md) define the calculations. Each scored series retains its complete configuration, measurement profile, and identified software releases.
 
 ## Questions, predictions and scope
 
-The main prediction is that the relative balance of measured movement shifts
-toward the instructed region: toward A under A instructions, toward B under B
-instructions. A shift toward the targeted region can occur even when the other region
-still moves more overall.
-Repeated instructions can sustain an existing response; they need not produce
-another increase. No particular hand movement or internal technique is tested.
-The practitioner uses his chosen practice to act on the target announced by the app.
+The main prediction is that the relative balance of measured movement shifts toward the instructed region: toward A under A instructions and toward B under B instructions. A shift toward the targeted region can occur while the other region still moves more overall. Repeated instructions can sustain an existing response. The practitioner uses his chosen practice to act on the region announced by the app.
 
-The analysis also shows:
+The analysis also describes:
 
-- how A's movement differs when A rather than B is targeted, and conversely for B;
+- the difference in A's movement under A and B instructions, and the corresponding difference for B;
 - A-to-B versus A-to-A transitions, and B-to-A versus B-to-B transitions;
-- response at each elapsed second, including brief, delayed, sustained or
-  reversing differences;
-- movement during absent pre-roll and post-roll versus during targeting.
+- response at each elapsed second, including brief, delayed, sustained, or reversing differences;
+- movement before arrival and after departure alongside movement during targeting.
 
-The randomized comparison concerns the whole targeting procedure, including
-the practitioner's response to the cue. A supported result does not identify an
-energy,
-airflow or other mechanism, nor establish an effect of attention without
-physical movement. The camera outcome requires no wind sensor or CSV. Ordered
-pre/post-roll comparisons describe this recording's absent/present conditions;
-they do not independently establish that presence caused a change.
+The primary comparison estimates whether relative movement shifts toward the randomly assigned region during the response interval. It evaluates the complete targeting procedure performed by this practitioner under the recorded conditions, including his physical response to the cue. Its scope is a target-related movement response; identifying a mechanism would require further experiments.
 
-There is one practitioner. Repeated targets are repeated randomized instructions,
-not independent people or trees. Inference concerns the sampled sessions and
-conditions. Generalization to other practitioners or settings requires new data.
+There is one practitioner. Each target instruction is a randomized observation within his recorded sessions. Inference concerns those sessions and conditions; generalization to other practitioners or settings requires additional data.
+
+Pre-roll and post-roll are recorded periods of absence before arrival and after departure. Their comparison with targeting provides descriptive context. Their fixed order leaves changes over time inseparable from changes associated with practitioner presence.
 
 ## Preparation and scored collection
 
-Preparation allows changing settings between runs, inspecting results, revising
-regions, and developing the motion profile. Every revision retains the original
-inputs and settings. A recording contributes once to a selected analysis version;
-reanalysis is a revision, never another observation. Retrospective preparation
-results remain exploratory, including a threshold crossing after method tuning.
+Preparation establishes suitable collection settings, regions, and motion profiles. Each analysis revision retains its original inputs and settings. A recording contributes once to a selected analysis version. Results obtained while tuning the method are exploratory.
 
-A scored series begins with fresh recordings after publishing and freezing its
-protocol, code release, complete scientific configuration, collection settings,
-profile, quality rules and analysis version. Its target count and timing choices
-are identical across runs; its total number of runs is not fixed. The separate
-preparation history does not supply starting evidence. Start at E=1.
+A scored series uses fresh recordings after its protocol, code release, complete scientific configuration, collection settings, measurement profile, quality rules, and statistical version have been published and frozen. Target count and timing are fixed across its runs; the total number of runs is open-ended. Evidence begins at E=1 using only that series' scored recordings.
 
-The same analysis equations support both modes. Preparation may use different
-response durations and counts, recorded before each new run. A mixed preparation
-summary concerns those tested procedures collectively. It does not establish
-that the eventual locked procedure works equally well everywhere.
+The same equations support preparation analyses with different response durations and target counts, saved before each run. Such an accumulation estimates the response across the tested procedures. Detailed profile comparison and reanalysis instructions are provided in the software's operating documentation.
 
 ## Apparatus, roles and site
 
-Use a Nikon Z8, stable camera tripod, an Android instruction phone,
-and a Mac for setup and analysis. The study can be conducted solo. A helper is
-optional for practical setup, not a condition of the design. The phone/server
-records authenticated assignments and timing. The Mac retains the camera
-originals and performs analysis. Published results include the exported analyses and remain available
-independently of the analysis computer.
+Use a Nikon Z8, a stable camera tripod, an Android instruction phone, and a Mac for setup and analysis. The practitioner can conduct the procedure independently, with optional help for practical setup. The phone and server record authenticated assignments and timing. The Mac retains camera originals and performs the analysis. Exported analyses accompany published results.
 
-Choose an accessible tree and two non-overlapping regions visible in one fixed
-camera view. Keep the practitioner, other people, and equipment outside those
-regions. Include a
-stationary reference surface in the view for shake detection. Choose framing
-that makes the anticipated leaf or branch motion trackable; approximately
-similar region sizes are helpful, but exact equality is not required. Record
-weather/site context briefly without retrospectively selecting only favorable
-results. Conditions can justify postponing before the first randomized cue.
+Choose an accessible tree and two non-overlapping regions visible in one fixed camera view. Keep the practitioner, other people, and equipment outside those regions. Include a stationary reference surface for detecting camera shake. Frame the scene so that the expected leaf or branch motion can be tracked. Approximately similar region sizes are helpful; the measurement methods accommodate unequal polygon areas as specified in the analysis methods.
 
-The practitioner may visit, set up, and test at the site before a recording.
-Pre-roll measures absence after setup; it does not require a previously unvisited
-environment. Save the practice, waiting and post-roll-away GPS positions by tapping
-at those positions during setup, with capture time and reported accuracy. Reuse
-a saved position when unchanged. Derived distances are approximate horizontal
-distances, not measured boundaries of an influence. No sensor-placement or route
-survey is required.
+Record weather and site context for each run. The practitioner may visit, set up, and test at the site beforehand and choose a suitable starting time. Once randomized instructions begin, follow the saved sequence and retain the run's outcomes, including interruptions.
+
+Save GPS positions for practice, waiting, and post-roll absence during setup, with capture time and reported accuracy. A position can be reused when unchanged. Derived distances describe approximate horizontal separation between recorded positions.
 
 ## Saved settings
 
-Settings are fixed before the first assignment in a run. A later preparation
-run may change them. The settings themselves, including defaults accepted
-unchanged, are retained with the run ID and optional tag.
+Settings are fixed before the first assignment in a run and retained with its permanent ID and optional tag. Preparation can change these settings between runs.
 
 | Setting | Definition |
 | --- | --- |
@@ -103,346 +54,120 @@ unchanged, are retained with the run ID and optional tag.
 | Release announcement | With positive recovery, either Release or Response complete; no separate announcement when recovery is zero. |
 | Absent post-roll | Positive duration beginning at Away. |
 
-The exact numerical values are specified in the configuration retained with the
-series. Scored recordings use the same fixed configuration. Preparation may vary
-these values between runs to establish a suitable procedure. Response durations
-are not randomized and the assignment sequence does not force alternation.
-Tracking settings and acceptance rules are retained in a versioned analysis
-profile. Scored collection uses the qualified, frozen profile. There is no
-additional pre-cue baseline waiting period.
+The series configuration supplies the exact numerical values, including accepted defaults. Scored recordings use that fixed configuration and the qualified, frozen analysis profile. Response durations are fixed settings. Each target label is drawn independently, permitting both switches and repetitions.
 
 ## Camera and regions
 
-Use H.265 8-bit MOV, 3840 x 2160, 25p. Enable recorded timecode, Free run and
-Current time after checking camera date/time. Keep framing, zoom, exposure,
-focus and stabilization settings fixed within the recording and retain their
-values. Available timecode helps check the original; the filmed clock supplies
-the camera-to-event-time mapping. Do not change format merely because a
-preparation original has another supported format.
+Use H.265 8-bit MOV, 3840 x 2160, 25p. Enable recorded timecode, Free run, and Current time after checking the camera's date and time. Keep framing, zoom, exposure, focus, and stabilization settings fixed within the recording and retain their values. Camera timecode provides a check on the original; filmed clock references establish the mapping from video to event time. Preparation originals in other supported formats retain their recorded format.
 
-For scored setup, record a short clip from the final framing, transfer it to the
-Mac, select a readable frame using a frame-number input or Previous/Next, and
-export the full-size PNG. Name it from its source video, for example
-`tree-setup-DSC_0056.png`, without overwriting an earlier export. Define A, B and
-one stationary background polygon in that image. Save before targeting.
+Before scored targeting, record a short setup clip from the final camera position. Export a full-resolution frame on the Mac and define polygons for A, B, and one stationary background region. Save this setup before the first target.
 
-Retain source-video identity/hash, selected frame number and presentation time,
-PNG identity/hash/dimensions, polygons and profile on the Mac. The run carries
-the setup identifiers, dimensions and polygon coordinates. Resolve its exact
-PNG from the Mac's retained setup records when importing it. The imported run shows its saved image, regions and source frame.
-Frame numbering starts at 0 in both setup and clock-reference selection; the
-last frame number is the decoded frame count minus one.
+Retain the source video's identity and hash, selected frame number and presentation time, PNG identity, hash and dimensions, polygon coordinates, and profile. The run retains the setup identifiers, image dimensions, and coordinates; the Mac retains the matching image and its source-frame record. Frame numbering starts at zero. The selected setup image and regions must remain identifiable when the run is imported for analysis.
 
-Preparation also permits defining regions after recording from a frame of the
-main video. Label that choice retrospective, retain revisions, and distinguish
-main-video from setup-video provenance. It does not qualify as prospective
-scored setup. Missing setup is visible and must be completed before analysis;
-do not infer or substitute regions that were not recorded.
-
-A changed camera view requires new setup before a scored target. Do not select
-new scored regions because another region gave a better targeting result.
+Preparation permits retrospective region selection from a frame of the main recording. Record that choice and its revisions, distinguishing the main recording from a separate setup clip. Scored setup is prospective. A changed camera view requires a new setup before scored targeting resumes. Region selection is completed without using the targeting result to favor particular regions. Analysis requires the saved setup and its matching image.
 
 ## Field sequence
 
-1. Save the run, settings, tag if useful, site positions and setup. Designate the
-   instruction phone and test audible playback. Keep the page in the foreground
-   with its screen awake. Automatic reconnection resumes the authoritative state;
-   it must not repeat an already delivered target.
-2. Start the camera. On the instruction phone measure, display and save an
-   opening clock reference while it is visible to the camera. The display
-   includes the run ID, separate date/time and measured clock uncertainty.
-3. Walk to the waiting position with the phone. Press Start while away. For a
-   scored run, wait for the public start registration to confirm. The configured
-   pre-roll then begins, excluding registration time, camera setup and the walk
-   away. Preparation runs begin pre-roll directly.
-4. On Approach, walk to the practice position. Tap Arrived. Only then may the
-   first concealed target be requested and announced.
-5. Target the announced region for its configured response period. Display and
-   speak the same target at playback onset. Continue through automatically
-   delivered instructions until the planned count is reached. With zero
-   recovery, the next request follows the previous response end; actual service
-   and playback gaps are retained, never treated as instantaneous.
-6. With positive recovery, follow Release or Response complete, as configured.
-   The next target follows the recovery interval and completed announcement.
-   The final target instead ends with Depart.
-7. Leave the tree position. Tap Away only after reaching the away position.
-   Post-roll begins then. Wait for Run finished.
-8. Return to the camera, measure/show/save the closing clock reference, then
-   stop recording. The return and closing-clock display are outside post-roll.
-9. Export the completed or interrupted run record, retain the camera original,
-   import them on the Mac, confirm setup, enter opening/closing clock frames,
-   review obstruction, and analyze. Inspect the resulting motion checks and
-   report. Preparation may lead to another run with revised saved settings.
+1. Save the run, settings, optional tag, site positions, and setup. Designate the instruction phone and test audible playback. Keep the page in the foreground with its screen awake. Automatic reconnection resumes the recorded state while preserving delivery of each target only once.
+2. Start the camera. On the instruction phone, measure, display, and save an opening clock reference while it is visible to the camera. The display includes the run ID, separate date and time, and measured clock uncertainty.
+3. Walk to the waiting position with the phone. Press Start while away. For a scored run, wait for public start registration to confirm; the configured pre-roll begins after confirmation. Preparation runs begin pre-roll directly. Pre-roll excludes registration time, camera setup, and the walk away.
+4. On Approach, walk to the practice position and tap Arrived. The first concealed target is requested and announced after arrival.
+5. Target the announced region for its configured response period. The phone displays and speaks the same target at playback onset. Continue through automatically delivered instructions until the planned count is reached. With zero recovery, the next request follows the previous response end. Retain any service or playback gap at its actual duration.
+6. With positive recovery, follow Release or Response complete, as configured. The next target follows the recovery interval and completed announcement. The final target ends with Depart.
+7. Leave the practice position. Tap Away after reaching the away position. Post-roll begins then. Wait for Run finished.
+8. Return to the camera, measure, display, and save the closing clock reference, then stop recording. The return and closing-clock display occur outside post-roll.
+9. Export the completed or interrupted run record, retain the camera original, and import them on the Mac. Confirm the saved setup, record the opening and closing clock frames, review obstruction, and analyze. Inspect the motion checks and report.
 
-There is no requirement for an assistant to announce cues, operate a timer, or
-measure every cue manually. If a run is interrupted, retain its state and every
-assignment already generated. Unused tickets without generated assignments are not observations. A generated
-assignment without successful delivery or sufficient footage remains an unknown
-outcome; failed speech cannot selectively remove a label.
+An interrupted run retains its state and every generated assignment. A generated assignment without successful delivery or sufficient footage remains an unknown outcome. Unused tickets with no generated assignment contribute no observation.
 
 ## Public start record
 
-Before a scored run's timed sequence begins, its start is registered on Base.
-The start registration is a non-revocable record in Ethereum Attestation Service.
-It identifies this study, the series, the run, the hash of its fixed configuration
-and the identified software version. The transaction, attestation identifier,
-block number and block time provide independently inspectable evidence of the
-registration. That registration remains visible even if the sequence never
-begins, the run is interrupted, or its recording or analysis is unavailable.
-Test uses Base Sepolia; scored research uses Base. The public registry identifies
-the network, signer, schema and first block from which its inventory is read.
+Before a scored run's timed sequence begins, its start is registered on Base through a non-revocable Ethereum Attestation Service record. The record identifies the study, series, run, fixed-configuration hash, and software version. Its transaction, attestation identifier, block number, and block time make the registration independently inspectable. The public registry specifies its network, signer, schema, and first inventory block.
 
-The Z8 must be recording before Start. The timed sequence begins after a
-successful transaction receipt in a sealed Base block. If confirmation is
-uncertain, keep the camera recording and retry the retained Start action. The
-application recovers the same transaction and run. An unresolved registration
-is not evidence that no start was posted. If the sequence is stopped while
-registration is pending, later confirmation preserves the run's start registration without restarting timing
-or issuing targets.
+The camera records before Start. The timed sequence begins after a successful transaction receipt in a sealed Base block. If confirmation is uncertain, keep recording and retry the retained Start action; the application recovers the same transaction and run. A pending registration remains unresolved until its actual outcome is established. If the sequence is stopped while registration is pending, later confirmation preserves the start record while the run remains stopped.
 
-The public Study data page lists registered runs independently of result
-publication. It distinguishes execution state, recording availability and
-published analysis. Its block and synchronization information shows how current
-the external inventory is. Preserve the start when a recording, analysis or
-upload fails, and publish a dated explanation with the available records.
-A livestream link is optional; neither streaming nor an analysis is required
-for the start to be registered. Preparation runs do not use this registry.
+The public Study data page lists registered runs independently of result publication, with separate execution, recording-availability, and analysis states. Its block and synchronization information identifies how current the inventory is. Preserve the start record when a sequence, recording, analysis, or upload fails, and publish a dated explanation with the available records. A livestream is optional. Preparation runs use the preparation workflow without public start registration.
 
-Registration makes an omitted run discoverable. It does not establish that
-a camera recorded successfully, authenticate an observed effect or supply a
-missing measurement. The scientific rules below determine how generated
-assignments and unavailable outcomes contribute.
+Registration establishes that a scored start was recorded. Recording availability and generated assignments are accounted for separately; unavailable outcomes follow the statistical rules below.
 
 ## Concealed assignment and audit
 
-When each target is due, request a fresh independent fair A/B assignment from
-the RANDOM.ORG Signed API. The server uses one reserved ticket for each
-assignment, with n=1, min=0,
-max=1, replacement=true, fresh generation, 0 maps to A and 1 maps to B.
-The saved ticket rules are authoritative for decoding imported instructions.
-The analysis separately recodes the resolved label as Z=1 for A and Z=0 for B;
-that statistical indicator is not the provider bit. Ticket
-identifiers are reserved before use, but the future assignments are not generated
-in advance. With showResult=false, public ticket lookup does not disclose the
-generated value. The phone displays and announces the returned target at cue
-playback; the signed generation record and actual playback time are retained.
-Save the ordered ticket manifest, generation rules and run configuration before
-use. Retain provider request/result signatures, ticket IDs, revealed labels,
-unused tickets and errors. Do not expose future assignments. Retries for one
-opportunity return the same instruction, never a reroll. No random fallback is
-silently substituted when the service fails.
+When each target is due, the server requests a fresh independent fair A/B assignment from the RANDOM.ORG Signed API. It uses one reserved ticket per assignment with n=1, min=0, max=1, replacement=true, and fresh generation; provider value 0 maps to A and 1 to B. Ticket identifiers are reserved before use. Target values are generated only when due, immediately before delivery of the instruction. With showResult=false, public ticket lookup conceals the generated value. The phone displays and announces the returned target at playback onset.
 
-Repeated targets, long streaks and single-label runs remain in the record.
-Neither balance nor a minimum number of switches is enforced. Those restrictions
-would change the assignment distribution and require a different method. A run
-with few switches may be uninformative about switching while still contributing
-to the main randomized comparison.
+Save the ordered ticket manifest, generation rules, and run configuration before use. Retain the provider request, signed result, ticket ID, revealed label, actual playback time, unused tickets, and errors. The saved ticket rules determine the label in an imported run. The analysis recodes that label as Z=1 for A and Z=0 for B, a separate statistical convention.
 
-No assignments are chosen because the wind or movement appears ready for one
-particular label. The practitioner may choose a suitable starting time; thereafter
-targets
-follow the fixed run flow. A new run's preparation settings may use earlier
-results, but not its concealed assignments. Stop for a practical problem without
-discarding what has already been assigned.
+Retries for one target opportunity retain the same generated instruction. A service failure stops delivery and is recorded. Repeated targets, long streaks, and single-label runs remain in the record. Independent fair assignments impose no balance or minimum-switch requirement. A run with few switches contributes to the main randomized comparison while supplying limited information about switching.
+
+After the practitioner selects the start time, targets follow the saved flow regardless of apparent movement or weather. Preparation settings for a later run can use earlier results. All future assignments remain concealed. Practical interruptions retain every assignment already generated.
 
 ## Timing and recorded boundaries
 
-Retain button, server, provider, cue-availability, audio-playing and audio-end
-events separately. Cue time is the recorded-audio `playing` event mapped from
-the designated phone to server UTC. It is not provider response or server receipt
-time. Keep actual playback and any failure visible.
+Retain button, server, provider, cue-availability, audio-playing, and audio-end events separately. Cue time is the recorded-audio playing event on the designated phone, mapped to server UTC. This event defines the response window.
 
-The phone automatically compares its clock with the server before designation,
-before starting and after reconnection. One comparison uses five exchanges.
-For phone send/receive c1/c4 and server receive/send s2/s3, offset is
-`((s2-c1)+(s3-c4))/2`; uncertainty is
-`((c4-c1)-(s3-s2))/2`. Retain all exchanges and use the valid lowest-round-trip
-one. Detect wall-clock jumps and separate mapping segments. A cue must identify
-a measured clock exchange for that same phone and segment.
+The phone compares its clock with the server before designation, before starting, and after reconnection. Each comparison uses five exchanges. For phone send and receive times c1 and c4, and server receive and send times s2 and s3, the offset is ((s2-c1)+(s3-c4))/2 and uncertainty is ((c4-c1)-(s3-s2))/2. Retain all exchanges and use the valid exchange with the lowest round-trip time. Detect wall-clock jumps and keep distinct mapping segments. Each cue identifies a measured exchange from the same phone and segment.
 
-Opening and closing filmed references map video presentation times to server
-UTC by linear interpolation. On the Mac select one sharp readable frame at each
-end, enter the server time visible in it, and select its retained clock reference.
-Save both frame numbers, times, previews and reference IDs. Reopen with these
-values prefilled. A not-yet-selected closing frame input initially contains the
-last frame number. No automatic OCR or frame slider is required.
+Opening and closing filmed clock references map video presentation times to server UTC by linear interpolation. At each end, identify a sharp readable frame and retain its frame number, presentation time, displayed server time, clock-reference ID, and image preview.
 
-The clock display advances on browser redraws; fractions displayed are not
-claims of equivalent accuracy. The working frame-selection allowance is one
-actual frame interval, normally 40 ms at 25p. Add the relevant measured clock
-uncertainties to the frame allowance and cue mapping allowance; require combined
-alignment allowance at most 0.5 seconds for scored windows. An existing preparation
-recording with audible cues checks for a gross playback/mapping discrepancy. This is
-an implementation/apparatus check, not a new per-cue field ritual. Future footage
-can use any readable normally advancing clock frame. Old one-second-clock
-footage requires a readable frame at the visible second transition.
-
-The camera-based outcome requires no wind-sensor record. A timing failure
-makes the affected motion outcome unavailable for formal analysis; it does not
-turn the motion into zero.
+The clock display advances on browser redraws. Timing precision is determined by the measured alignment allowance: one actual frame interval for frame selection, normally 40 ms at 25p, plus the relevant measured clock uncertainties and cue mapping allowance. Scored windows require a combined allowance of at most 0.5 seconds. A preparation recording with audible cues checks for gross disagreement between calculated cue positions and recorded playback. A failed timing check makes the affected motion outcomes unavailable.
 
 ## Motion measurement and qualification
 
-Retain original frames and presentation times. Detect Shi-Tomasi image features
-and track them between successive frames using pyramidal Lucas-Kanade optical
-flow. Point counts, tracking-window dimensions and acceptance rules are retained
-in the selected profile. Keep frame-pair speeds and technical diagnostics, not
-only the final score. The [analysis methods](analysis-methods.md#2-versioned-preparation-motion-measurements)
-define two versioned measurement methods that may be compared during preparation.
+Detect Shi-Tomasi image features and track them between successive original frames using pyramidal Lucas-Kanade optical flow. Motion is measured as displacement in the two-dimensional camera image, expressed in pixels per second using the actual frame presentation times. Its interpretation depends on camera geometry, visible texture, and tracking coverage. Retain frame-pair speeds, technical diagnostics, and the exact profile settings.
 
-The point-average method uses the arithmetic mean magnitude of accepted feature
-speeds within each region and frame pair. Every accepted moving track contributes,
-divided by the number of accepted tracks. Region point count alone therefore does
-not increase the score. This is a feature-weighted image-motion index, not the
-movement of every leaf or an area-weighted physical velocity. Rejecting poor
-tracks remains necessary because the mean is sensitive to bad matches.
+The [analysis methods](analysis-methods.md#2-motion-measurement-methods) define two measurements:
 
-The area-based method measures local movement across a fixed grid and weights
-measured cells by their polygon area. Retain the grid, sampling and coverage
-settings. Unknown cells are not stationary foliage. Report the actual measured
-area and retain unavailable outcomes when coverage fails. This estimates image
-movement across the selected visible canopy, subject to the stated foliage
-coverage and perspective limitations.
+- **Point-average motion:** the arithmetic mean speed of accepted tracks within a region. Each accepted track has equal weight, so the result depends on how visible features sample the region.
+- **Area-weighted motion:** local mean speeds on a fixed grid, weighted by each measured cell's area within the polygon. The result retains actual spatial coverage. Cells with insufficient reliable matches are unmeasured, and inadequate coverage makes the regional outcome unavailable.
 
-For a preparation comparison, analyze identical originals, regions, clock
-mapping, footage review and cue intervals with each candidate method. Retain both
-exact revisions and compare the same recordings in the same chronological order.
-The two analyses are alternative measurements of the same observations and do
-not provide twice the experimental data. Compare motion fidelity as well as the
-effect on individual and accumulated results. Select the scored measurement
-method through measurement qualification, not by choosing the most favorable
-evidence value. Freeze that method and its complete profile before scored
-collection.
+During preparation, compare methods on identical recordings, regions, clock mappings, obstruction reviews, and response intervals. Each is an alternative measurement of the same observations. Select the scored method through measurement qualification, retaining the comparisons and freezing the chosen method and complete profile before scored collection.
 
-Before scored collection, qualify this profile using the existing preparation
-material and developer fixtures:
+Qualification uses preparation footage and controlled image tests:
 
-- known stationary and translated images verify units and numerical extraction;
-- a localized moving patch verifies a response when most of the region stays still;
+- stationary images and known translations check units and displacement extraction;
+- localized moving patches test sensitivity when most of a region is still;
 - brightness-only variation tests spurious tracking;
-- annotated weak, strong and localized real foliage motion lets the investigator inspect
-  whether accepted tracks follow what is visible, with counts and regional curves;
-- fixed-background shake and the saved obstruction review identify unusable spans.
+- annotated weak, strong, and localized foliage motion supports inspection of accepted tracks, counts, and regional curves;
+- stationary-background shake and saved obstruction reviews identify unusable spans.
 
-Do these checks without viewing which target produced a favorable score. They
-verify measurement, not the claimed field effect. If the profile fails the localized/quiet checks,
-resolve it in preparation and version the replacement before scored use.
-Reference arithmetic tests alone do not establish optical tracking accuracy.
-Developer fixtures use shifts of 0, 0.25, 1 and 3 pixels per frame pair, including
-horizontal, vertical and diagonal motion. For textured fixtures require mean
-speed error <=max(0.1 pixel/frame, 10% of supplied speed). For stationary and
-uniform brightness-only fixtures require <=0.05 pixel/frame residual. For a
-localized patch compare to known displacement at the accepted feature positions,
-not a claimed area fraction; apply the same tolerance. These are software-test
-tolerances, not certified bounds on real foliage measurement. Inspect real clips
-for track loss, wrong matches and missed moving portions before freezing the
-profile. Save the annotations and outcomes, including failures.
+Conduct measurement qualification without displaying assignment-linked results, and record any prior knowledge of assignments. Controlled translations use shifts of 0, 0.25, 1, and 3 pixels per frame pair, including horizontal, vertical, and diagonal motion. For textured images, require mean speed error <=max(0.1 pixel/frame, 10% of supplied speed). For stationary and uniform brightness-only images, require <=0.05 pixel/frame residual. For a localized moving patch, compare known displacement at the accepted feature positions using the same tolerance. These tolerances assess controlled images; representative footage also requires inspection for track loss, wrong matches, and missed moving portions. Retain annotations and outcomes, including failures. Resolve qualification failures and version the revised profile before scored use.
 
 ## Analysis and decision
 
-Use one-second bins anchored to actual cue onsets and the run's actual duration,
-with the final partial bin retained. Each instruction is one randomized unit.
-Do not multiply evidence as though its frames, tracks or seconds were independent
-random assignments. Do not stretch short responses or invent their absent tails.
+Use one-second bins anchored to actual cue onset, retaining the final partial bin at its actual duration. Each instruction is one randomized observation. Frames, tracks, and elapsed-second bins are measurements within that observation.
 
-The relative index expresses A's share of the two measured regional movement
-indices. Comparing that share under A versus B gives a dimensionless effect in
-percentage points. For example 45% under B and 50% under A is a 5-point relative
-shift, not a 5% increase in leaf speed. Keep each region's actual movement and
-within-run targeted-versus-other-target differences alongside it. A relative
-shift can arise through acceleration in one region or slowing in the other.
+A's share of the two regional movement indices supplies the relative outcome. Comparing this share under A and B targeting gives an effect in relative-share percentage points. For example, a share of 45% under B and 50% under A corresponds to a 5-point shift. The separate A and B motion curves show whether that shift involves increased motion in one region, decreased motion in the other, or both.
 
-The prespecified evidence combines a whole-response comparison with the
-elapsed-second comparisons. It retains sensitivity to short responses while
-supporting variable preparation durations. There is one primary E threshold,
-20, for a 5% anytime false-positive allowance under the stated no-current-target-
-effect hypothesis. It is not an effect-size threshold or probability that a
-mechanism is true. Exact equations, fixed weights, uncertainty and missing-data
-rules are in the analysis specification.
+The prespecified evidence calculation combines a full-response comparison and elapsed-second comparisons with fixed weights. The primary evidence threshold is E=20. Under the stated no-current-target-effect hypothesis, the probability of crossing this threshold at any accepted run update is at most 5%. The [analysis methods](analysis-methods.md#4-one-primary-accumulating-evidence-process) define the hypothesis, weights, calculations, and assumptions.
 
-Report cumulative estimates and simultaneous confidence ranges. Small positive
-E does not prove an effect; small or declining E does not prove randomness.
-A confidence range can rule out specified sizes of the measured outcome under
-these conditions. It cannot rule out every possible effect. A whole-period range
-does not rule out a brief response that cancels later. No minimum worthwhile
-effect or mandatory visually noticeable change is imposed.
+Report effect estimates and simultaneous confidence ranges alongside evidence. Evidence measures agreement with the randomized target pattern; the estimate and range describe its magnitude and precision. Confidence ranges can exclude specified sizes of the measured effect under the tested conditions. Full-response and elapsed-second ranges address their respective windows. The study imposes no minimum worthwhile effect size or requirement for a visibly noticeable change.
 
-Raw A/B differences and switch curves remain visible with counts. They do not
-create additional unadjusted success routes. Pre/post-roll is separate descriptive
-context. Do not pool raw pixel speeds across different camera geometries as
-physical measurements.
+Raw A/B differences, switch curves, and pre/post-roll comparisons are descriptive results with their contributing counts. Raw pixel speeds are interpreted within their camera view. The primary randomized decision uses the single prespecified evidence threshold.
 
 ## Failed outcomes, order and corrections
 
-Retain all started runs, including interruptions and invalid footage. Process
-generated assignments in collection order. Pending earlier data prevents a later
-result from being presented as a complete prefix until its status is resolved.
-A registered run with no generated target remains publicly accounted for;
-it contributes no invented target or measured outcome. Report interruptions,
-partial or unavailable camera files, and analysis or publication failures with
-their times and reasons. Correct a report with a dated addition that preserves
-the earlier statement. Completion and issue reports are Lab records linked to
-the start; they are not additional blockchain transactions.
+Retain all started runs, including interruptions and invalid footage. Process generated assignments in collection order. An accumulation covers a resolved chronological prefix: all earlier runs have an analysis or an explicit disposition for unavailable outcomes. Later results wait until earlier statuses are resolved. A registered start with no generated target remains publicly listed and contributes no target observation.
 
-A technically missing bin receives an unknown relative-outcome range, not zero
-and not deletion. The method uses its worst case for evidence and widens the
-effect range. A partially missing full response retains its known portions and
-bounds the remainder. This can reduce evidence substantially, but allows a series
-to continue without outcome-selected complete-case analysis or a new data-loss
-exception procedure. If the assignment itself cannot be authenticated, mark the
-series unqualified until the randomization record is resolved; do not assume a
-fair random label for an unauthenticated event.
+Record interruptions, partial or unavailable camera files, and analysis or publication failures with their times and reasons. Corrections are dated additions that preserve the earlier statement. Completion and issue reports are Lab records linked to the start registration.
 
-Never score a recording twice, hide a disagreeing run, or restart scored evidence
-after an unfavorable result. Preserve original analyses when correcting inputs.
-Recompute the affected chronological prefix under one identified revision and
-show the reason and change. Preparation corrections remain exploratory. Scored
-method changes need an explicit protocol/version amendment before new collection.
+Every generated assignment remains in the analysis record. Unavailable outcomes contribute the specified uncertainty bounds. A missing bin receives an unknown relative-outcome range; the evidence calculation uses its conservative bound and the effect range widens accordingly. A partially missing full response retains the known portions and bounds the remainder. An unauthenticated assignment leaves the series unqualified until the randomization record is resolved.
+
+Each recording contributes once per analysis revision. Preserve original analyses when correcting inputs, then recompute the affected chronological prefix under an identified revision and explain the correction. Scored evidence continues across the series. A scored-method change requires a protocol and version amendment before further collection.
 
 ## Reporting, preservation and publication
 
-Every result identifies mode, run ID/tag, local human-readable dates, original
-hashes, setup, software/configuration/profile versions, event records, timing
-references, quality decisions and analysis revision. Preserve raw frame-pair
-measurements, one-second summaries, assignments and outputs sufficient to
-recompute the result. Show a plain-language conclusion, counts, effect range,
-regional traces, target transitions, evidence history and descriptive absent
-comparisons. JSON is retained as downloadable detail, not the only report.
+Every result identifies preparation or scored status, run ID and tag, human-readable local dates, original hashes, setup, software and configuration versions, profile, event records, timing references, quality decisions, and analysis revision. Retain raw frame-pair measurements, one-second summaries, assignments, and outputs sufficient to reproduce the calculation.
 
-Public results cover the scored series. Each published result identifies its
-included recordings and analysis revisions, pending and failed recording
-statuses, cumulative history, current evidence and any earlier threshold
-crossing. Preparation results do not contribute to scored evidence. The
-chronological inclusion and missing-outcome rules above continue to apply.
+The readable report includes the conclusion supported by the analysis, counts, effect estimate and range, regional traces, target transitions, evidence history, and descriptive absence comparisons. Machine-readable results are available alongside it.
 
-Publish original camera recordings, setup and region records, timing and
-assignment inputs, complete results and the materials needed to reproduce each
-calculation. Identify exact input hashes and software versions. Retain the
-protocol, analysis methods and complete nonsecret configuration used for the
-series. The website renders that same retained protocol as a readable article;
-the downloadable source and public code repository contain the same scientific
-content. A later document revision does not replace the protocol associated
-with an earlier result.
+Public results cover the scored series. Each publication identifies its recordings and analysis revisions, pending and failed statuses, cumulative history, current evidence, and any earlier threshold crossing. Preparation analyses are retained separately.
 
-Before scored collection, document the applicable institutional or journal
-human-participant determination, participant consent, consent to publish
-identifiable recordings, site permission where required, funding, conflicts of
-interest, and authorship. This protocol itself supplies no ethics approval,
-exemption, or journal acceptance. Timestamp the prospective protocol and
-registration before fresh scored data and report deviations. PLOS One submission
-guidance is referenced below for reporting requirements; this environmental
-measurement is not described as a clinical trial.
+Publish original recordings, setup and region records, timing and assignment inputs, results, and the software and configuration needed to reproduce each calculation. Identify exact input hashes and versions. The website article, downloadable protocol and methods, and public repository contain the same scientific content for the selected version. Earlier results retain their associated documents when current documents are revised.
+
+Before scored collection, document applicable research oversight, participant consent, consent to publish identifiable recordings, required site permissions, funding, conflicts of interest, and authorship. Timestamp the prospective protocol and registration before fresh scored data and report deviations.
 
 ## Sources
 
-- [Nikon Z8 video file types](https://onlinemanual.nikonimglib.com/z8/en/video_file_types_40.html)
-  and [timecode settings](https://onlinemanual.nikonimglib.com/z8/en/vrm_timecode_194.html).
-- [OpenCV optical flow](https://docs.opencv.org/4.x/d4/dee/tutorial_optical_flow.html).
-  The [published tree-motion study](https://doi.org/10.1016/j.agrformet.2013.10.003)
-  is methodological precedent; this profile is not an exact reproduction of its toolbox.
-- [RANDOM.ORG Signed API](https://api.random.org/json-rpc/4/signed).
-- [PLOS One submission requirements](https://journals.plos.org/plosone/s/submission-guidelines),
-  [publication criteria](https://journals.plos.org/plosone/s/criteria-for-publication),
-  and [human-subjects policy](https://journals.plos.org/plosone/s/human-subjects-research).
-- Mathematical sources and their exact use are retained in
-  [analysis methods](analysis-methods.md#scientific-foundations).
+- [Nikon Z8 video file types](https://onlinemanual.nikonimglib.com/z8/en/video_file_types_40.html) and [timecode settings](https://onlinemanual.nikonimglib.com/z8/en/vrm_timecode_194.html): camera configuration.
+- [OpenCV optical flow](https://docs.opencv.org/4.x/d4/dee/tutorial_optical_flow.html): feature tracking. The [published tree-motion study](https://doi.org/10.1016/j.agrformet.2013.10.003) provides methodological precedent; the analysis methods identify the specific spatial-grid adaptation used here.
+- [RANDOM.ORG Signed API](https://api.random.org/json-rpc/4/signed): signed assignment generation.
+- [Analysis methods: scientific foundations](analysis-methods.md#scientific-foundations): mathematical sources and their use.

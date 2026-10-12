@@ -21,12 +21,7 @@ results.
 
 ## What the software measures
 
-OpenCV tracks image features between successive video frames. Two measurement
-methods are available: the mean speed of accepted features within each region,
-and a grid method that weights local measurements by the area they represent.
-Their settings and quality checks are saved with each analysis. The reported
-speeds are apparent image movement in pixels per second, not wind speed or
-physical leaf velocity.
+OpenCV tracks image features between successive video frames. Two measurement methods are available: the mean speed of accepted features within each region, and a grid method that weights local measurements by the area they represent. Their settings and quality checks are saved with each analysis. The reported speeds describe image displacement per unit time, in pixels per second; their interpretation depends on camera geometry and tracking coverage.
 
 The primary analysis asks whether the relative balance of movement follows the
 randomized target. It reports the size of that change, its uncertainty, and how
