@@ -58,6 +58,19 @@ def test_source_copy_is_deterministic_complete_and_excludes_operator_data(tmp_pa
         assert 'private.txt' not in archive.namelist()
 
 
+def test_direct_source_read_retains_the_same_bytes_and_inventory_as_standalone_releases(tmp_path):
+    from tree_source_release import read_source_release
+
+    package = tmp_path / 'package'
+    expected = source_fixture(package)
+    files, inventory = read_source_release(package=package)
+    assert files == expected
+    assert inventory['files'] == {name: hashlib.sha256(data).hexdigest() for name, data in expected.items()}
+    assert prepare_source_release(tmp_path / 'extracted', package=package) == inventory
+    assert archive_source_release(tmp_path / 'source.zip', package=package) == inventory
+    assert read_source_release(package=package) == (files, inventory)
+
+
 def test_source_copy_refuses_nonempty_targets_symlinks_and_unavailable_history(tmp_path):
     package = tmp_path / 'package'
     source_fixture(package)

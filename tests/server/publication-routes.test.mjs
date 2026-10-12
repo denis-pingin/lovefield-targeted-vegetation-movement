@@ -63,7 +63,7 @@ test('approved nested public delivery assets reach their exact package path and 
     'visual-identity/archivo.woff2', 'visual-identity/OFL.txt', 'visual-identity/identity-mark.svg',
     'visual-identity/energy-branches-magenta.webp', 'visual-identity/energy-branches-cyan.webp',
     'study-media/tree-tracking.webp', 'study-media/tree-tracking-1600.webp',
-    'current-study/study.json', 'current-study/protocol.md', 'current-study/analysis-methods.md', 'current-study/source.zip'];
+    'current-study/study.json', 'current-study/protocol.md', 'current-study/analysis-methods.md'];
   const files = new Map(names.map((name, index) => [`/${name}`, Uint8Array.of(0, index, 255, 64)]));
   const f = fixture('test', false, files);
   for (const name of names) {
@@ -79,6 +79,22 @@ test('approved nested public delivery assets reach their exact package path and 
     assert.equal((await f.fetch(`/studies/targeted-vegetation-movement/public/${path}`, 'operator')).status, 404, path);
   }
   assert.equal(f.assets.length, before);
+});
+
+test('obsolete current source archive URLs are unavailable while retained publication archives remain readable', async () => {
+  const f = fixture('production', true);
+  for (const base of ['/studies/targeted-vegetation-movement/', '/studies/tree-targeting/']) {
+    const response = await f.fetch(base + 'public/current-study/source.zip');
+    assert.equal(response.status, 404);
+    assert.equal(response.headers.has('location'), false);
+  }
+  assert.equal(f.assets.length, 0);
+  assert.equal(f.forwarded.length, 0);
+  const archive = '/studies/targeted-vegetation-movement/public/api/publications/11111111-1111-4111-8111-111111111111/files/'
+    + 'a'.repeat(64) + '/source.zip';
+  assert.equal((await f.fetch(archive)).status, 200);
+  assert.equal(new URL(f.forwarded[0].url).pathname, archive);
+  assert.equal(f.assets.length, 0);
 });
 
 test('shared Lab pages use the reader shell with protected Test and explicitly enabled read-only Production access', async () => {

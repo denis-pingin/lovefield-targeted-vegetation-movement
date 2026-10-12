@@ -8,6 +8,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 import {PUBLIC_BASE, PUBLIC_API_BASE} from '../../web/study-paths.mjs';
 
 const publicationId = '12345678-1234-4234-8234-123456789012';
+const repositoryUrl = 'https://github.com/denis-pingin/lovefield-targeted-vegetation-movement';
 const protocolHash = '1'.repeat(64), methodsHash = '2'.repeat(64), referenceHash = '3'.repeat(64), sourceHash = '4'.repeat(64);
 const publication = {publicationId, reportPresentation: {protocolSha256: protocolHash, methodsSha256: methodsHash},
   files: {[protocolHash]: {filename: 'protocol.md'}, [methodsHash]: {filename: 'analysis-methods.md'},
@@ -15,32 +16,51 @@ const publication = {publicationId, reportPresentation: {protocolSha256: protoco
   sourceReleases: {packages: {collection: {sha256: sourceHash}}}};
 const documentRenderer = () => import('../../web/public-study-document.mjs');
 
-test('developing documents resolve only their current articles, fragments, and source package', async () => {
+test('developing documents resolve only their current articles, fragments, and source repository access', async () => {
   const {renderScientificDocument} = await documentRenderer();
-  const study = {source: {files: {'src/tree_report.py': '1'.repeat(64)}}, files: {protocol: {filename: 'protocol.md'}, methods: {filename: 'analysis-methods.md'}, source: {filename: 'source.zip'}}};
+  const study = {repositoryUrl, source: {files: {'src/tree_report.py': '1'.repeat(64)}},
+    files: {protocol: {filename: 'protocol.md'}, methods: {filename: 'analysis-methods.md'}}};
   const before = structuredClone(study);
   const result = renderScientificDocument('# Current methods\n\n[Protocol](protocol.md#field-sequence)\n\n[Software](src/tree_report.py)\n\n[Unsafe](javascript:alert(1))\n\n[Private](../private.md)', {study, kind: 'analysis'});
   assert.ok(result.html.includes(`href="${PUBLIC_BASE}protocol#field-sequence"`));
   assert.ok(result.html.includes(`href="${PUBLIC_BASE}reproducibility#source-packages"`));
   assert.match(result.html, /src\/tree_report.py/);
-  assert.doesNotMatch(result.html, /publication=|href="[^\"]*private|href="javascript:/);
+  assert.match(result.html, /Inspect current source repository/);
+  assert.doesNotMatch(result.html, /source-package reference|source package|source\.zip|publication=|href="[^\"]*private|href="javascript:/);
   assert.deepEqual(study, before);
 });
 
 test('current document references only suggest source files actually retained in its inventory', async () => {
   const {renderScientificDocument} = await documentRenderer();
-  const study = {source: {files: {'validation.md': '1'.repeat(64), 'validation/reference.py': '2'.repeat(64)}},
-    files: {source: {filename: 'source.zip'}}};
+  const study = {repositoryUrl, source: {files: {'validation.md': '1'.repeat(64), 'validation/reference.py': '2'.repeat(64)}},
+    files: {protocol: {filename: 'protocol.md'}, methods: {filename: 'analysis-methods.md'}}};
   for (const filename of ['validation.md', 'validation/reference.py']) {
     const result = renderScientificDocument(`# Analysis\n\n[Validation](${filename})`, {study, kind: 'analysis'});
-    assert.match(result.html, /source-package reference/);
+    assert.match(result.html, /source reference/);
     assert.ok(result.html.includes(`href="${PUBLIC_BASE}reproducibility#source-packages"`));
-    assert.match(result.html, /Package contents are listed in its source inventory/);
+    assert.match(result.html, /listed in the current source inventory/);
+    assert.doesNotMatch(result.html, /source-package reference|source package|source\.zip/);
   }
   const missing = renderScientificDocument('# Analysis\n\n[Internal verification](implementation-verification.md)', {study, kind: 'analysis'});
   assert.match(missing.html, /link unavailable/);
   assert.match(missing.html, /implementation-verification.md/);
-  assert.doesNotMatch(missing.html, /source-package reference|Inspect current source package|<a\b/);
+  assert.doesNotMatch(missing.html, /source reference|Inspect current source repository|<a\b/);
+});
+
+test('current source references without a repository URL identify the inventoried file and state unavailable access', async () => {
+  const {renderScientificDocument} = await documentRenderer();
+  for (const legacyArchive of [false, true]) {
+    const study = {source: {files: {'src/tree_report.py': '1'.repeat(64)}},
+      files: {protocol: {filename: 'protocol.md'}, methods: {filename: 'analysis-methods.md'}}};
+    if (legacyArchive) study.files.source = {filename: 'source.zip'};
+    const before = structuredClone(study);
+    const result = renderScientificDocument('# Analysis\n\n[Software](src/tree_report.py)', {study, kind: 'analysis'});
+    assert.match(result.html, /source reference: <code>src\/tree_report.py<\/code>/);
+    assert.match(result.html, /listed in the current source inventory/);
+    assert.match(result.html, /No source repository is linked for this study/);
+    assert.doesNotMatch(result.html, /<a\b|github\.com|source-package reference|source package|source\.zip/);
+    assert.deepEqual(study, before);
+  }
 });
 
 test('scientific Markdown formats its title, lists, table, code, emphasis and linked contents', async () => {

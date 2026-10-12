@@ -44,10 +44,14 @@ export function renderScientificDocument(markdown, {publication, study, kind}) {
       if (!publication && !Object.hasOwn(study?.source?.files ?? {}, resolved.filename)) {
         return `${label} <span class="site-supporting-copy">(link unavailable: <code>${escapeHtml(resolved.filename)}</code>)</span>`;
       }
-      const packagesAvailable = publication ? Object.values(publication.sourceReleases?.packages ?? {}).some(item => publicFileUrl(publication, item.sha256))
-        : !!currentStudyFileUrl(study, 'source');
+      if (!publication) {
+        return `${label} <span class="site-supporting-copy">(source reference: <code>${escapeHtml(resolved.filename)}</code>; listed in the current source inventory. `
+          + (study.repositoryUrl ? `<a href="${escapeHtml(publicStudyUrl('reproducibility'))}#source-packages">Inspect current source repository</a>`
+            : 'No source repository is linked for this study.') + ')</span>';
+      }
+      const packagesAvailable = Object.values(publication.sourceReleases?.packages ?? {}).some(item => publicFileUrl(publication, item.sha256));
       return `${label} <span class="site-supporting-copy">(source-package reference: <code>${escapeHtml(resolved.filename)}</code>; unavailable as a separate retained file. `
-        + (packagesAvailable ? `${publication ? 'Package contents are not listed in this publication.' : 'Package contents are listed in its source inventory.'} <a href="${escapeHtml(publicStudyUrl('reproducibility', publication?.publicationId))}#source-packages">${publication ? 'Inspect retained source packages' : 'Inspect current source package'}</a>` : 'The source package is unavailable in this publication.') + ')</span>';
+        + (packagesAvailable ? `Package contents are not listed in this publication. <a href="${escapeHtml(publicStudyUrl('reproducibility', publication.publicationId))}#source-packages">Inspect retained source packages</a>` : 'The source package is unavailable in this publication.') + ')</span>';
     },
     image({text}) { return escapeHtml(text); },
     table(token) { return `<div class="table-scroll">${Renderer.prototype.table.call(this, token)}</div>\n`; },

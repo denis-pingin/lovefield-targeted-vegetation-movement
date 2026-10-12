@@ -1,4 +1,4 @@
-"""Prepare the current study's static reading and source assets using stdlib only."""
+"""Prepare the current study's reading documents and source descriptor using stdlib only."""
 import argparse
 from pathlib import Path
 import sys

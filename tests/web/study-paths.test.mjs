@@ -46,9 +46,10 @@ test('shared Lab page resolution recognizes only the index and four named articl
 test('current materials and publication downloads use the canonical name without changing file identities', async () => {
   const {currentStudyFileUrl, publicFileUrl} = await import('../../web/study-paths.mjs');
   const study = {files: {protocol: {filename: 'protocol.md'}, methods: {filename: 'analysis-methods.md'}, source: {filename: 'source.zip'}}};
-  for (const [kind, filename] of [['protocol', 'protocol.md'], ['methods', 'analysis-methods.md'], ['source', 'source.zip']]) {
+  for (const [kind, filename] of [['protocol', 'protocol.md'], ['methods', 'analysis-methods.md']]) {
     assert.equal(currentStudyFileUrl(study, kind), '/studies/targeted-vegetation-movement/public/current-study/' + filename);
   }
+  assert.equal(currentStudyFileUrl(study, 'source'), null);
   assert.equal(currentStudyFileUrl(study, 'private'), null);
   const digest = 'a'.repeat(64), publicationId = '12345678-1234-4234-8234-123456789012';
   assert.equal(publicFileUrl({publicationId, files: {[digest]: {filename: 'camera original.mp4'}}}, digest),

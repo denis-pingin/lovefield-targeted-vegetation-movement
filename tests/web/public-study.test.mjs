@@ -123,6 +123,7 @@ test('About separates the study objective, procedure, interpretation and verific
 });
 
 const currentBase = `${PUBLIC_BASE}current-study/`;
+const repositoryUrl = 'https://github.com/denis-pingin/lovefield-targeted-vegetation-movement';
 function currentFixture() {
   const documents = new Map([['protocol.md', '# Current study protocol\n\n## Field sequence\n\nDeveloping procedure.\n\n[Analysis](analysis-methods.md#scientific-foundations)'],
     ['analysis-methods.md', '# Current analysis methods\n\n## Scientific foundations\n\nDeveloping methods.\n\n[Protocol](protocol.md#field-sequence)']]);
@@ -131,7 +132,7 @@ function currentFixture() {
   const study = {schemaVersion: 1, experimentSlug: 'tree-targeting', stage: 'before-scored-collection',
     source: {contentSha256: '9'.repeat(64), origin: {kind: 'working-source', checkpoint: 'a'.repeat(40)},
       files: Object.fromEntries([...documents.keys()].map(filename => [filename, descriptor(filename).sha256]))},
-    files: {protocol: descriptor('protocol.md'), methods: descriptor('analysis-methods.md'), source: descriptor('source.zip')}};
+    repositoryUrl, files: {protocol: descriptor('protocol.md'), methods: descriptor('analysis-methods.md')}};
   return {study, documents};
 }
 
@@ -151,13 +152,34 @@ test('current study opens every section with substantive material and only Resul
     }
     if (page === 'reproducibility') {
       assert.match(html, /Current study software/);
-      assert.ok(html.includes(`${currentBase}source.zip`));
+      assert.ok(html.includes(`href="${repositoryUrl}">Inspect source repository</a>`));
+      assert.match(html, /The study repository contains the collection software, analysis code, tests and declared dependencies\./);
+      assert.match(html, /Follow its README and publication-release-guide\.md for installation and calculation instructions\./);
+      assert.doesNotMatch(html, /source\.zip|Download source package|Extract the source package/);
       assert.match(html, /Current study version/);
       assert.ok(html.includes(study.source.contentSha256));
-      assert.doesNotMatch(html, /About this result version|reproduce-publication.py|Download publication manifest|github.com/);
+      assert.doesNotMatch(html, /About this result version|reproduce-publication.py|Download publication manifest/);
     }
   }
   assert.deepEqual(study, before);
+});
+
+test('older current descriptors disclose only protocol and methods downloads without a source archive', async () => {
+  const current = currentFixture();
+  current.study.files.source = {filename: 'source.zip', sha256: digest('8'), size: 1234};
+  const before = structuredClone(current.study);
+  const h = harness({page: 'reproducibility', missing: true, pinned: false, current});
+  const app = await mountPublicStudy(h);
+  assert.equal(h.nodes.get('public-study-error').hidden, true);
+  const html = h.nodes.get('public-study-content').innerHTML;
+  assert.ok(html.includes(`href="${repositoryUrl}">Inspect source repository</a>`));
+  assert.doesNotMatch(html, /source\.zip|Download source package|Extract the source package/);
+  const files = html.match(/<ul class="publication-files">([\s\S]*?)<\/ul>/)?.[1];
+  assert.ok(files);
+  assert.equal((files.match(/<a\b[^>]*\bdownload\b/g) ?? []).length, 2);
+  for (const name of ['protocol.md', 'analysis-methods.md']) assert.ok(files.includes(`${currentBase}${name}`));
+  assert.deepEqual(current.study, before);
+  app.dispose();
 });
 
 test('results reuse saved report values, keep pending and failed inventory, and link exact recording revision', () => {
@@ -197,6 +219,7 @@ test('Reproducibility provides complete source/input identities, settings and co
   const html = renderPublicStudy({page: 'reproducibility', publication});
   assert.match(html, /<h1>Reproducibility<\/h1>/);
   for (const name of ['protocol', 'methods', 'source']) assert.ok(html.includes(`/files/${hashes[name]}/`));
+  assert.ok(html.includes(`href="${PUBLIC_API_BASE}publications/${publicationId}/files/${hashes.source}/source.zip" download>Download source package</a>`));
   assert.ok(html.includes(publicStudyUrl('methods', publicationId)));
   assert.match(html, /frozen-checkpoint/);
   assert.match(html, /The study record includes the collection software, motion-analysis settings and statistical analysis used for each result\./);
@@ -582,6 +605,28 @@ test('ordinary study and Lab links ignore latest software fixtures while their e
   selectedApp.dispose();
 });
 
+test('current document-only descriptors mount Methods, protocol, analysis and Reproducibility with optional repository access', async () => {
+  for (const selectedRepository of [undefined, repositoryUrl]) {
+    for (const [page, content] of [['methods', 'Study protocol'], ['protocol', 'Developing procedure'],
+      ['methods/analysis', 'Developing methods'], ['reproducibility', 'Current study software']]) {
+      const current = currentFixture();
+      if (selectedRepository === undefined) delete current.study.repositoryUrl;
+      const h = harness({page, missing: true, pinned: false, current}), app = await mountPublicStudy(h);
+      assert.equal(h.nodes.get('public-study-error').hidden, true, page);
+      assert.deepEqual(h.warnings, [], page);
+      const html = h.nodes.get('public-study-content').innerHTML;
+      assert.ok(html.includes(content), page);
+      assert.doesNotMatch(html, /source\.zip|Download source package|Extract the source package/);
+      assert.ok(h.requests.every(url => !url.endsWith('source.zip')));
+      if (page === 'reproducibility') {
+        if (selectedRepository) assert.ok(html.includes(`href="${repositoryUrl}">Inspect source repository</a>`));
+        else assert.doesNotMatch(html, /Inspect source repository/);
+      }
+      app.dispose();
+    }
+  }
+});
+
 test('failed or mismatched current documents and unsafe descriptors show Retry without presenting substituted text', async () => {
   for (const defect of ['descriptor', 'document', 'digest', 'size']) {
     const current = currentFixture();
@@ -615,7 +660,7 @@ test('failed or mismatched current documents and unsafe descriptors show Retry w
     study => {study.stage = 'scored';}, study => {study.repositoryUrl = 'javascript:alert(1)';},
     study => {delete study.source.files;}, study => {study.source.files['../private.md'] = '1'.repeat(64);},
     study => {study.source.files['protocol.md'] = '1'.repeat(64);},
-    study => {study.files.source.sha256 = 'not-a-hash';}]) {
+    study => {study.files.methods.sha256 = 'not-a-hash';}]) {
     const current = currentFixture(); corrupt(current.study);
     const h = harness({page: 'methods', missing: true, pinned: false, current}); await mountPublicStudy(h);
     assert.equal(h.nodes.get('public-study-error').hidden, false);

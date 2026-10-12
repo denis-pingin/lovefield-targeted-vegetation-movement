@@ -19,7 +19,7 @@ export const PUBLIC_BASE = `${STUDY_BASE}public/`;
 export const PUBLIC_API_BASE = `${PUBLIC_BASE}api/`;
 export const CURRENT_STUDY_BASE = `${PUBLIC_BASE}current-study/`;
 export function currentStudyFileUrl(study, kind) {
-  const filename = {protocol: 'protocol.md', methods: 'analysis-methods.md', source: 'source.zip'}[kind];
+  const filename = {protocol: 'protocol.md', methods: 'analysis-methods.md'}[kind];
   return filename && study?.files?.[kind]?.filename === filename ? CURRENT_STUDY_BASE + filename : null;
 }
 export const HOSTED_APP_BASE = `${STUDY_BASE}app/`;
@@ -44,5 +44,5 @@ export const PUBLIC_ASSETS = Object.freeze([
   'visual-identity/archivo.woff2', 'visual-identity/OFL.txt', 'visual-identity/identity-mark.svg',
   'visual-identity/energy-branches-magenta.webp', 'visual-identity/energy-branches-cyan.webp',
   'study-media/tree-tracking.webp', 'study-media/tree-tracking-1600.webp',
-  'current-study/study.json', 'current-study/protocol.md', 'current-study/analysis-methods.md', 'current-study/source.zip',
+  'current-study/study.json', 'current-study/protocol.md', 'current-study/analysis-methods.md',
 ]);

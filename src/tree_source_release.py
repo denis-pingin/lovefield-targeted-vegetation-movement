@@ -91,12 +91,16 @@ def _inventory(files, origin):
             'dependencyFiles': {name: hashes[name] for name in ('requirements.txt', 'package.json', 'yarn.lock', 'wrangler.jsonc') if name in hashes}}
 
 
+def read_source_release(*, package=PACKAGE, checkpoint=None):
+    files, origin = _source(package, checkpoint)
+    return files, _inventory(files, origin)
+
+
 def prepare_source_release(destination, *, package=PACKAGE, checkpoint=None):
     destination = Path(destination).resolve()
     if destination.exists() and (not destination.is_dir() or any(destination.iterdir())):
         raise ValueError('The source release destination must be a new or empty directory.')
-    files, origin = _source(package, checkpoint)
-    inventory = _inventory(files, origin)
+    files, inventory = read_source_release(package=package, checkpoint=checkpoint)
     destination.mkdir(parents=True, exist_ok=True)
     for name, content in files.items():
         target = destination / name
@@ -136,8 +140,7 @@ def runtime_identity():
 
 
 def archive_source_release(destination, *, package=PACKAGE, checkpoint=None):
-    files, origin = _source(package, checkpoint)
-    inventory = _inventory(files, origin)
+    files, inventory = read_source_release(package=package, checkpoint=checkpoint)
     Path(destination).parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(destination, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for name, content in sorted({**files, 'source-inventory.json': _json(inventory)}.items()):

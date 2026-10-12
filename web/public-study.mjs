@@ -129,10 +129,9 @@ function methodsPage(publication, content, study) {
 }
 function currentReproducibility(study, content) {
   return `<section class="panel public-prose"><h2 id="source-packages">Current study software</h2><p>${escapeHtml(content.currentMaterials)}</p>${currentVersion(study)}`
-    + `<p>${currentDownload(study, 'source', 'Download source package')}</p>`
     + (study?.repositoryUrl ? `<p><a href="${escapeHtml(study.repositoryUrl)}">Inspect source repository</a></p>` : '')
-    + `<p>Extract the source package to inspect the collection software, analysis code, tests and declared dependencies. Follow its README and publication-release-guide.md for installation and calculation instructions.</p><p><a href="${escapeHtml(publicStudyUrl('methods'))}">Read study methods</a></p></section>`
-    + (study ? `<section class="panel"><details class="retained-details"><summary>Files and checksums</summary><p>A checksum is a file fingerprint that verifies the exact downloaded bytes.</p><ul class="publication-files">${Object.entries(study.files).map(([kind, file]) => `<li>${currentDownload(study, kind, file.filename)}<span>${escapeHtml(file.size)} bytes</span><span class="publication-identity">${escapeHtml(file.sha256)}</span></li>`).join('')}</ul></details></section>` : '');
+    + `<p>The study repository contains the collection software, analysis code, tests and declared dependencies. Follow its README and publication-release-guide.md for installation and calculation instructions.</p><p><a href="${escapeHtml(publicStudyUrl('methods'))}">Read study methods</a></p></section>`
+    + (study ? `<section class="panel"><details class="retained-details"><summary>Files and checksums</summary><p>A checksum is a file fingerprint that verifies the exact downloaded bytes.</p><ul class="publication-files">${['protocol', 'methods'].map(kind => {const file = study.files[kind]; return `<li>${currentDownload(study, kind, file.filename)}<span>${escapeHtml(file.size)} bytes</span><span class="publication-identity">${escapeHtml(file.sha256)}</span></li>`;}).join('')}</ul></details></section>` : '');
 }
 function reproducibilityPage(publication, content, settings) {
   const presentation = publication.reportPresentation ?? {}, releases = publication.sourceReleases ?? {};
@@ -255,7 +254,7 @@ export async function mountPublicStudy({document, window, fetch = window.fetch.b
       || !study.source?.files || typeof study.source.files !== 'object' || Array.isArray(study.source.files)
       || Object.entries(study.source.files).some(([filename, hash]) =>
         !/^[A-Za-z0-9_.-]+(?:\/[A-Za-z0-9_.-]+)*$/.test(filename) || filename.split('/').some(part => ['.', '..'].includes(part)) || !/^[a-f0-9]{64}$/.test(hash))
-      || ['protocol', 'methods', 'source'].some(kind => !currentStudyFileUrl(study, kind)
+      || ['protocol', 'methods'].some(kind => !currentStudyFileUrl(study, kind)
         || !/^[a-f0-9]{64}$/.test(study.files[kind].sha256 ?? '') || !Number.isSafeInteger(study.files[kind].size) || study.files[kind].size < 0)
       || ['protocol', 'methods'].some(kind => study.source.files[study.files[kind].filename] !== study.files[kind].sha256)
       || study.repositoryUrl !== undefined && !/^https:\/\/github\.com\/[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\/[A-Za-z0-9_.-]+$/.test(study.repositoryUrl)) {
