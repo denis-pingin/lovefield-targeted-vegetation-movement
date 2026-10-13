@@ -13,6 +13,7 @@ from urllib.error import HTTPError, URLError
 import zipfile
 
 from tree_source_release import allowed_source_path, runtime_identity
+from study_profiles import validate_profile
 
 PACKAGE = Path(__file__).resolve().parents[1]
 HASH = re.compile(r'[a-f0-9]{64}\Z')
@@ -139,7 +140,6 @@ def run_worker(kind, configuration, output):
         value = build_tree_report(_json(configuration['result']))
     elif kind == 'series':
         from tree_series import SeriesStore
-        from study_profiles import development_profile
         from tree_report import build_tree_report
         store = SeriesStore(output.parent / 'series-state')
         series = _json(configuration['seriesBundle'])
@@ -148,7 +148,7 @@ def run_worker(kind, configuration, output):
             result = _json(path)['result']
             store.accept(result)
             store.select_revision(result['runId'], result['revisionId'])
-        value = store.evaluate(development_profile(), series_id=series['seriesId'])
+        value = store.evaluate(series['profile'], series_id=series['seriesId'])
         value['report'] = build_tree_report(value)
     else: raise ValueError('Unknown reproduction engine operation.')
     _write(output, value)
@@ -166,6 +166,9 @@ def reproduce_publication(publication, downloads, output, *, verify_only=False):
     if verify_only:
         _write(output / 'reproduction.json', summary)
         return summary
+    validate_profile(_json(files[manifest['seriesBundle']['sha256']]).get('profile'))
+    for selected in manifest['includedAnalyses']:
+        validate_profile(_json(files[selected['profileSha256']]))
     releases = manifest.get('sourceReleases', {})
     presentation = _source(releases.get('accumulation', {}), files, output / 'source' / 'accumulation')
     results = []

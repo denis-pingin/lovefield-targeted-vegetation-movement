@@ -15,6 +15,7 @@ import uuid
 import zipfile
 
 from study_http import AppError
+from study_profiles import validate_profile
 
 PACKAGE = Path(__file__).resolve().parents[1]
 ENVIRONMENT_ORIGINS = {'test': 'https://test.lab.sourceof.love', 'production': 'https://lab.sourceof.love'}
@@ -88,6 +89,8 @@ def _prepare(application, series_id, environment, inventory, job_id, correction_
     retained = application.series_store.state['manifests'].get(series_id)
     if not retained or retained['manifest']['config']['purpose'] != 'scored':
         raise _error('Only a retained scored series is eligible for publication.')
+    try: validate_profile(retained['manifest']['profile'])
+    except ValueError as error: raise _error(str(error)) from error
     accumulated = application._accumulating_series(series_id)
     accumulated = {key: value for key, value in accumulated.items() if key not in ('series', 'softwareTest')}
     cloud = inventory.get('inventory') if isinstance(inventory, dict) else inventory
@@ -189,6 +192,8 @@ def _prepare(application, series_id, environment, inventory, job_id, correction_
             state.update(analysisState=artifact['status'], analysisReason=artifact.get('qualityReasons') or artifact.get('error'))
             cloud_snapshot.append(state)
             continue
+        try: validate_profile(artifact['result']['profile'])
+        except ValueError as error: raise _error(str(error)) from error
         associations = artifact.get('inputRecordings')
         if not isinstance(associations, dict) or set(associations) != set(artifact['inputHashes']):
             raise AppError('The selected analysis input associations were not retained.', operation='publication',
@@ -401,6 +406,8 @@ class PublicationJobs:
             raise _error('Choose the Test or Production publication environment; software tests require Test.')
         retained = self.application.series_store.state['manifests'].get(series_id)
         if not retained or retained['manifest']['config']['purpose'] != 'scored': raise _error('Choose a retained named scored series for publication.')
+        try: validate_profile(retained['manifest']['profile'])
+        except ValueError as error: raise _error(str(error)) from error
         reason = payload.get('correctionReason') or None
         if reason is not None and (not isinstance(reason, str) or len(reason) > 2000): raise _error('A correction reason must be bounded text.')
         identifier = str(uuid.uuid4())

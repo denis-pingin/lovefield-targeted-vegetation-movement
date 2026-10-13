@@ -11,9 +11,9 @@ import pytest
 
 from study_app import StudyApplication, HOSTED_API
 from study_http import AppError, APPLICATION_HEADER, APPLICATION_VALUE, start_http
-from study_profiles import area_profile, development_profile
+from study_profiles import area_profile
 from study_analysis import analyze_extracted_run
-from tree_fixtures import tree_bundle, write_bundle
+from tree_fixtures import tree_bundle, scored_tree_bundle, write_bundle
 from test_tree_analysis import measured_pairs, recording
 
 
@@ -61,7 +61,7 @@ def test_profile_save_and_selection_survive_service_restart(tmp_path):
     app = StudyApplication(data, picker=Picker(bundle))
     try:
         app.dispatch('POST', HOSTED_API + 'import-bundle', {'requestId': 'import'})
-        profile = copy.deepcopy(development_profile())
+        profile = copy.deepcopy(area_profile())
         profile['profileId'] = 'tree-1200-31'
         profile['label'] = 'Tree 1200/31 - my settings'
         profile['video']['featureDetection']['maxCorners'] = 1200
@@ -79,6 +79,96 @@ def test_profile_save_and_selection_survive_service_restart(tmp_path):
     finally: restarted.close()
 
 
+def test_profiles_api_offers_only_area_profiles_and_omits_unsupported_saved_files_unchanged(tmp_path, caplog):
+    path = write_bundle(tmp_path / 'run.json', tree_bundle())
+    app = StudyApplication(tmp_path / 'data')
+    try:
+        app.import_run_bundle(path)
+        assert app.get_run('tree-1')['selectedProfileId'] == 'tree-development-area-1'
+        profiles = app.dispatch('GET', HOSTED_API + 'profiles')['profiles']
+        assert [item['profileId'] for item in profiles] == ['tree-development-area-1']
+        assert profiles[0]['measurementMethod'] == 'area-grid-mean-v1'
+        assert 'status' not in profiles[0]
+        custom = area_profile()
+        custom.update(profileId='my-canopy', label='My canopy settings')
+        app.dispatch('POST', HOSTED_API + 'save-profile', {'requestId': 'save-area',
+            'runId': 'tree-1', 'profile': custom})
+        app.import_run_bundle(path)
+        assert app.get_run('tree-1')['selectedProfileId'] == 'my-canopy'
+        unsupported = area_profile()
+        unsupported.update(profileId='unsupported-settings', version='tree-profile-development-1')
+        del unsupported['video']['measurement']
+        saved_path = app.directory / 'profiles' / 'unsupported-settings.json'
+        saved_path.write_text(json.dumps(unsupported))
+        saved_bytes = saved_path.read_bytes()
+        offered = app.dispatch('GET', HOSTED_API + 'profiles')['profiles']
+        assert [item['profileId'] for item in offered] == ['tree-development-area-1', 'my-canopy']
+        assert offered[1]['label'] == 'My canopy settings'
+        assert saved_path.read_bytes() == saved_bytes
+        assert 'unsupported-settings.json' in caplog.text
+        assert 'not offered' in caplog.text
+    finally:
+        app.close()
+
+
+@pytest.mark.parametrize('custom', [False, True])
+def test_scored_api_schedules_exact_frozen_grid_profile_without_repository_lookup(tmp_path, custom):
+    profile = area_profile()
+    if custom:
+        profile.update(profileId='my-frozen-grid', label='My canopy')
+        profile['video']['measurement']['cellSizePixels'] = 96
+    path = write_bundle(tmp_path / 'scored.json', scored_tree_bundle(profile))
+    extracted = []
+    def analyzer(bundle, originals, selected):
+        extracted.append(copy.deepcopy(selected))
+        return analyze_extracted_run(bundle, measured_pairs(), selected, recording())
+    def no_lookup(_):
+        raise AssertionError('Scored analysis must use its frozen bytes')
+    app = StudyApplication(tmp_path / 'data', hosted_analyzer=analyzer, profile_resolver=no_lookup)
+    try:
+        app.import_run_bundle(path)
+        imported = app.import_recording('tree-1', movie(tmp_path / 'camera.avi'), 'video')
+        app.save_obstruction_review('tree-1', imported['recordingId'], 'clear', [])
+        job = app.dispatch('POST', HOSTED_API + 'start-analysis', {'requestId': 'scored-grid',
+            'runId': 'tree-1', 'profileId': profile['profileId']})
+        artifact = wait_result(app, 'tree-1', job['analysisId'])
+        assert artifact['status'] == 'completed', artifact
+        assert extracted == [profile]
+        assert artifact['result']['measurementMethod'] == 'area-grid-mean-v1'
+        bundle = json.loads(path.read_text())
+        assert artifact['profileSha256'] == bundle['profileHash']
+        assert artifact['sealedProfileJson'] == bundle['sealedProfileJson']
+        before = copy.deepcopy(app.get_run('tree-1')['analyses'])
+        with pytest.raises(AppError, match='frozen'):
+            app.start_analysis('tree-1', 'another-grid')
+        assert app.get_run('tree-1')['analyses'] == before
+    finally:
+        app.close()
+
+
+@pytest.mark.parametrize('endpoint', ['start-analysis', 'finalize-missing-measurements'])
+@pytest.mark.parametrize('purpose', ['preparation', 'scored'])
+def test_unsupported_api_profile_rejects_before_analysis_scheduling_or_disposition(tmp_path, endpoint, purpose):
+    profile = area_profile()
+    profile.update(profileId='unsupported-settings', version='tree-profile-development-1')
+    del profile['video']['measurement']
+    extracted = []
+    app = StudyApplication(tmp_path / 'data', hosted_analyzer=lambda *args: extracted.append(args),
+                           profile_resolver=lambda _: profile)
+    try:
+        bundle = scored_tree_bundle(profile) if purpose == 'scored' else tree_bundle()
+        app.import_run_bundle(write_bundle(tmp_path / 'unsupported.json', bundle))
+        payload = {'requestId': 'reject-unsupported', 'runId': 'tree-1', 'profileId': profile['profileId']}
+        if endpoint == 'finalize-missing-measurements': payload['reason'] = 'Camera file was lost.'
+        with pytest.raises(AppError, match='Unsupported'):
+            app.dispatch('POST', HOSTED_API + endpoint, payload)
+        assert app.get_run('tree-1')['analyses'] == {}
+        assert extracted == []
+        assert not (app._hosted_directory('tree-1') / 'dispositions').exists()
+    finally:
+        app.close()
+
+
 def test_real_comparison_api_pins_both_revisions_and_reopens_after_restart(tmp_path):
     bundle = write_bundle(tmp_path / 'run.json', tree_bundle())
     def analyzer(retained, originals, profile):
@@ -93,12 +183,16 @@ def test_real_comparison_api_pins_both_revisions_and_reopens_after_restart(tmp_p
         candidate = comparison_http_request(server, 'comparison-candidates')
         assert candidate['runs'][0]['runId'] == 'tree-1'
         assert candidate['runs'][0]['analyses'] == []
-        left = app.start_analysis('tree-1', 'tree-development-1')
+        custom = area_profile()
+        custom.update(profileId='my-grid', label='Continuous canopy')
+        custom['video']['measurement']['refreshPolicy'] = 'continuous'
+        app.dispatch('POST', HOSTED_API + 'save-profile', {'requestId': 'tuned-profile', 'runId': 'tree-1', 'profile': custom})
+        left = app.start_analysis('tree-1', 'my-grid')
         wait_result(app, 'tree-1', left['analysisId'])
         right = app.start_analysis('tree-1', 'tree-development-area-1')
         wait_result(app, 'tree-1', right['analysisId'])
         request = {'requestId': 'save-comparison', 'label': 'Matched footage',
-                   'leftProfileId': 'tree-development-1', 'rightProfileId': 'tree-development-area-1',
+                   'leftProfileId': 'my-grid', 'rightProfileId': 'tree-development-area-1',
                    'rows': [{'runId': 'tree-1', 'leftAnalysisId': left['analysisId'],
                              'rightAnalysisId': right['analysisId']}]}
         saved = comparison_http_request(server, 'save-comparison', request)
@@ -137,7 +231,7 @@ def test_stopped_export_import_analysis_retains_unknown_and_reanalysis_once(tmp_
         app.dispatch('POST', HOSTED_API + 'import-bundle', {'requestId': 'import'})
         imported = app.import_recording('tree-1', movie(tmp_path / 'camera.avi'), 'video')
         app.save_obstruction_review('tree-1', imported['recordingId'], 'clear', [])
-        first = app.dispatch('POST', HOSTED_API + 'start-analysis', {'requestId': 'analysis-one', 'runId': 'tree-1', 'profileId': 'tree-development-1'})
+        first = app.dispatch('POST', HOSTED_API + 'start-analysis', {'requestId': 'analysis-one', 'runId': 'tree-1', 'profileId': 'tree-development-area-1'})
         artifact = wait_result(app, 'tree-1', first['analysisId'])
         assert artifact['status'] == 'completed'
         assert artifact['result']['report']['counts']['targets'] == 2
@@ -154,7 +248,7 @@ def test_stopped_export_import_analysis_retains_unknown_and_reanalysis_once(tmp_
         assert report['runCount'] == 1
         assert report['targetCount'] == 2
         assert report['report']['full']['bounded_missing_targets'] == 1
-        second = app.start_analysis('tree-1', 'tree-development-1')
+        second = app.start_analysis('tree-1', 'tree-development-area-1')
         wait_result(app, 'tree-1', second['analysisId'])
         updated = app.dispatch('GET', HOSTED_API + 'series')
         assert updated['runCount'] == 1 and updated['targetCount'] == 2
@@ -178,12 +272,12 @@ def test_annotation_job_exposes_progress_and_verified_saved_artifact(tmp_path):
         assert app.get_run('tree-1')['recordings'][imported['recordingId']]['videoEndSeconds'] == .6
         with pytest.raises(AppError, match='magnification'):
             app.dispatch('POST', HOSTED_API + 'export-annotated-clip', {'requestId': 'invalid-display', 'runId': 'tree-1',
-                'recordingId': imported['recordingId'], 'profileId': 'tree-development-1',
+                'recordingId': imported['recordingId'], 'profileId': 'tree-development-area-1',
                 'startSeconds': .2, 'durationSeconds': .2, 'displayMagnification': 0})
         assert app.dispatch('GET', HOSTED_API + 'annotations')['jobs'] == []
         assert app.dispatch('GET', HOSTED_API + 'progress')['status'] == 'idle'
         job = app.dispatch('POST', HOSTED_API + 'export-annotated-clip', {'requestId': 'annotation', 'runId': 'tree-1',
-            'recordingId': imported['recordingId'], 'profileId': 'tree-development-1', 'startSeconds': .2, 'durationSeconds': .2})
+            'recordingId': imported['recordingId'], 'profileId': 'tree-development-area-1', 'startSeconds': .2, 'durationSeconds': .2})
         for _ in range(100):
             current = app.dispatch('GET', HOSTED_API + 'annotations/' + job['jobId'])
             if current['status'] != 'running': break
@@ -193,7 +287,7 @@ def test_annotation_job_exposes_progress_and_verified_saved_artifact(tmp_path):
         assert current['artifactUrl'].endswith('/clip.avi')
         artifact = app.get_annotation_artifact(job['jobId'])
         assert artifact.is_file()
-        assert current['profileHash'] == app._resolve_hosted_profile('tree-development-1')['sha256']
+        assert current['profileHash'] == app._resolve_hosted_profile('tree-development-area-1')['sha256']
     finally: app.close()
 
 
@@ -212,7 +306,7 @@ def test_full_video_annotation_uses_retained_endpoint_and_rejects_range_past_it(
         retained = app.dispatch('GET', HOSTED_API + 'runs/tree-1')['recordings'][imported['recordingId']]
         assert retained['videoEndSeconds'] == 61
         job = app.dispatch('POST', HOSTED_API + 'export-annotated-clip', {'requestId': 'full-annotation',
-            'runId': 'tree-1', 'recordingId': imported['recordingId'], 'profileId': 'tree-development-1',
+            'runId': 'tree-1', 'recordingId': imported['recordingId'], 'profileId': 'tree-development-area-1',
             'startSeconds': 0, 'durationSeconds': retained['videoEndSeconds']})
         initial_progress = app.dispatch('GET', HOSTED_API + 'progress')
         assert initial_progress['status'] == 'running' and initial_progress['jobId'] == job['jobId']
@@ -225,13 +319,13 @@ def test_full_video_annotation_uses_retained_endpoint_and_rejects_range_past_it(
         assert current['frames'] == 122
         assert (current['startPtsSeconds'], current['lastPtsSeconds']) == (0, 60.5)
         assert current['sourceSha256'] == retained['sha256'] == source_hash
-        assert current['profileHash'] == app._resolve_hosted_profile('tree-development-1')['sha256']
+        assert current['profileHash'] == app._resolve_hosted_profile('tree-development-area-1')['sha256']
         assert app.get_annotation_artifact(job['jobId']).is_file()
         assert hashlib.sha256(original.read_bytes()).hexdigest() == source_hash
         before = set(app._annotation_jobs)
         with pytest.raises(AppError, match='range|video|duration'):
             app.dispatch('POST', HOSTED_API + 'export-annotated-clip', {'requestId': 'past-end',
-                'runId': 'tree-1', 'recordingId': imported['recordingId'], 'profileId': 'tree-development-1',
+                'runId': 'tree-1', 'recordingId': imported['recordingId'], 'profileId': 'tree-development-area-1',
                 'startSeconds': 0, 'durationSeconds': retained['videoEndSeconds'] + .5})
         assert set(app._annotation_jobs) == before
     finally:

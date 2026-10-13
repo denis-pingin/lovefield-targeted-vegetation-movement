@@ -15,9 +15,9 @@ import pytest
 from publication_fixtures import scored_application
 from study_app import HOSTED_API, StudyApplication
 from study_http import AppError, start_http
-from study_profiles import development_profile
+from study_profiles import area_profile
 from study_analysis import analyze_extracted_run
-from tree_fixtures import tree_bundle, write_bundle
+from tree_fixtures import tree_bundle, scored_tree_bundle, write_bundle
 from test_tree_analysis import measured_pairs, recording
 from test_tree_api import comparison_http_request, movie, wait_result
 from test_tree_end_to_end import request as http_request
@@ -25,7 +25,10 @@ from test_tree_publication_api import wait_publication
 from test_publication_reproduction import publication_rehearsal
 
 
-def finalize(application, run_id, *, request_id='finalize-loss', reason='Camera file was lost.', profile_id='tree-development-1'):
+def finalize(application, run_id, *, request_id='finalize-loss', reason='Camera file was lost.', profile_id=None):
+    if profile_id is None:
+        frozen = application.get_run(run_id).get('frozenProfile')
+        profile_id = frozen['profileId'] if frozen else 'tree-development-area-1'
     request = {'requestId': request_id, 'runId': run_id, 'profileId': profile_id, 'reason': reason}
     started = application.dispatch('POST', HOSTED_API + 'finalize-missing-measurements', request)
     return wait_result(application, run_id, started['analysisId']), request
@@ -44,6 +47,47 @@ def remove_camera(application, run_id):
     return recording_id, record
 
 
+def test_missing_only_scored_grid_retains_frozen_method_profile_and_unknown_bounds(tmp_path):
+    profile = area_profile()
+    profile['profileId'] = 'frozen-custom-grid'
+    profile['video']['measurement']['cellSizePixels'] = 96
+    application, series_id, _ = scored_application(tmp_path, profile=profile, analyze=False)
+    try:
+        before = application.dispatch('GET', HOSTED_API + 'series/' + series_id)
+        assert before['profile'] == profile
+        artifacts = []
+        for run_id in ['completed-one', 'later-pending']:
+            artifact, _ = finalize(application, run_id, request_id='lost-' + run_id, profile_id=profile['profileId'])
+            assert artifact['status'] == 'completed', artifact
+            result = artifact['result']
+            assert result['measurementMethod'] == 'area-grid-mean-v1'
+            assert result['profile'] == profile
+            assert result['profileHash'] == before['profileHash'] == artifact['profileSha256']
+            assert result['calculation']['streams']['-1']['effect_estimate_bounds'] == [-1., 1.]
+            artifacts.append(artifact)
+        series = application.dispatch('GET', HOSTED_API + 'series/' + series_id)
+        assert series['profile'] == profile and series['profileHash'] == before['profileHash']
+        assert series['measurementMethod'] == 'area-grid-mean-v1'
+        assert series['targetCount'] == 4 and series['missingBinCount'] == 8
+        assert series['full']['estimateBounds'] == [-100., 100.]
+    finally:
+        application.close()
+
+
+def test_direct_missing_finalization_rejects_unsupported_profile():
+    from study_missing import analyze_missing_measurements
+    profile = area_profile()
+    profile['video']['measurement']['method'] = 'unsupported-method'
+    bundle = scored_tree_bundle(profile)
+    disposition = {'schemaVersion': 1, 'kind': 'video_recording_missing', 'runId': bundle['runId'],
+        'reason': 'Camera file was lost.', 'recordedAtMs': 12000, 'bundleSha256': 'a' * 64,
+        'profileSha256': bundle['profileHash'], 'collectionStartedAtMs': 2000,
+        'missingRecordings': [], 'retainedAnalysis': None, 'videoExtractionRepeatable': False}
+    with pytest.raises(ValueError, match='Unsupported'):
+        analyze_missing_measurements(bundle, profile, disposition,
+            bundle_sha256='a' * 64, profile_sha256=bundle['profileHash'])
+
+
 def test_finalization_unblocks_collection_order_with_immutable_revision_and_no_network_write(tmp_path):
     application, series_id, _ = scored_application(tmp_path, pending_first=True)
     server = start_http(application)
@@ -52,10 +96,10 @@ def test_finalization_unblocks_collection_order_with_immutable_revision_and_no_n
     try:
         before = application.dispatch('GET', HOSTED_API + 'series/' + series_id)
         assert before['runIds'] == [] and before['pendingRuns'] == ['earlier-pending', 'completed-one']
-        pending = application.start_analysis('earlier-pending', 'tree-development-1')
+        pending = application.start_analysis('earlier-pending', 'tree-development-area-1')
         assert pending['status'] == 'pending'
         request = {'requestId': 'finalize-earlier-loss', 'runId': 'earlier-pending',
-                   'profileId': 'tree-development-1', 'reason': 'Camera file was lost.'}
+                   'profileId': 'tree-development-area-1', 'reason': 'Camera file was lost.'}
         start_time = int(time.time() * 1000)
         started = http_request(server, 'finalize-missing-measurements', request, expected_status=(202,))
         assert started['status'] == 'running'
@@ -115,7 +159,7 @@ def test_finalization_rejects_extra_provenance_supplied_by_the_client(tmp_path):
     try:
         with pytest.raises(AppError, match='request|field'):
             application.dispatch('POST', HOSTED_API + 'finalize-missing-measurements', {
-                'requestId': 'invented-provenance', 'runId': 'tree-1', 'profileId': 'tree-development-1',
+                'requestId': 'invented-provenance', 'runId': 'tree-1', 'profileId': 'tree-development-area-1',
                 'reason': 'Lost.', 'recordedAtMs': 1, 'bundleSha256': 'a' * 64})
         assert application.get_run('tree-1')['analyses'] == {}
     finally:
@@ -200,7 +244,7 @@ def test_registered_start_without_generated_assignments_stays_outside_collected_
         application.import_run_bundle(tmp_path / 'completed-one.json')
         camera = application.import_recording('completed-one', tmp_path / 'camera.avi', 'video')
         application.save_obstruction_review('completed-one', camera['recordingId'], 'clear', [])
-        started = application.start_analysis('completed-one', 'tree-development-1')
+        started = application.start_analysis('completed-one', 'tree-development-area-1')
         assert wait_result(application, 'completed-one', started['analysisId'])['status'] == 'completed'
         artifact, _ = finalize(application, 'earlier-pending')
         assert artifact['result']['targets'] == []
@@ -225,7 +269,7 @@ def test_lost_imported_original_keeps_partial_measurements_raw_predictors_and_pr
     try:
         camera = application.import_recording('tree-1', movie(tmp_path / 'original.avi'), 'video')
         application.save_obstruction_review('tree-1', camera['recordingId'], 'clear', [])
-        started = application.start_analysis('tree-1', 'tree-development-1')
+        started = application.start_analysis('tree-1', 'tree-development-area-1')
         prior = wait_result(application, 'tree-1', started['analysisId'])
         assert prior['status'] == 'completed'
         original_entry = application.get_run('tree-1')['analyses'][started['analysisId']]
@@ -270,7 +314,7 @@ def test_retained_measurements_must_match_unchanged_bundle_profile_and_artifact(
         remove_camera(application, run_id)
         before = len(application.get_run(run_id)['analyses'])
         with pytest.raises(AppError, match='changed|match|profile|artifact|bundle'):
-            finalize(application, run_id, profile_id='tree-development-area-1' if change == 'profile' else 'tree-development-1')
+            finalize(application, run_id, profile_id='another-grid' if change == 'profile' else 'tree-development-area-1')
         assert len(application.get_run(run_id)['analyses']) == before
     finally:
         application.close()
@@ -285,7 +329,7 @@ def test_recovered_original_creates_and_selects_a_new_revision_without_erasing_m
         retained = path.read_bytes()
         camera = application.import_recording('earlier-pending', movie(tmp_path / 'recovered.avi'), 'video')
         application.save_obstruction_review('earlier-pending', camera['recordingId'], 'clear', [])
-        recovered = application.start_analysis('earlier-pending', 'tree-development-1')
+        recovered = application.start_analysis('earlier-pending', 'tree-development-area-1')
         assert wait_result(application, 'earlier-pending', recovered['analysisId'])['status'] == 'completed'
         before = application.dispatch('GET', HOSTED_API + 'series/' + series_id)
         assert before['selectedRevisions'][0] == missing['analysisId']
@@ -314,7 +358,7 @@ def test_reimporting_a_lost_previously_imported_original_restores_normal_analysi
         for field in ('clockMap', 'obstructionReviewId', 'timelineSha256'):
             assert recovered[field] == record[field]
         application.save_obstruction_review('completed-one', recovered['recordingId'], 'clear', [])
-        started = application.start_analysis('completed-one', 'tree-development-1')
+        started = application.start_analysis('completed-one', 'tree-development-area-1')
         artifact = wait_result(application, 'completed-one', started['analysisId'])
         assert artifact['status'] == 'completed', artifact
         assert artifact['inputHashes'][recovered['recordingId']] == record['sha256']
@@ -339,7 +383,7 @@ def test_later_unselected_original_analysis_survives_repeated_loss_and_restart(t
         first, _ = finalize(application, 'earlier-pending', request_id='first-loss')
         camera = application.import_recording('earlier-pending', movie(tmp_path / 'recovered.avi'), 'video')
         application.save_obstruction_review('earlier-pending', camera['recordingId'], 'clear', [])
-        started = application.start_analysis('earlier-pending', 'tree-development-1')
+        started = application.start_analysis('earlier-pending', 'tree-development-area-1')
         measured = wait_result(application, 'earlier-pending', started['analysisId'])
         assert measured['status'] == 'completed'
         assert any(item['usable'] for target in measured['result']['targets'] for item in target['bins'])

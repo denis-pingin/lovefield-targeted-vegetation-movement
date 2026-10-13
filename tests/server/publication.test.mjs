@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {hash, publicationFixture, partSize} from './publication-fixtures.mjs';
+const unsupportedProfile = {version: 'unsupported-version', video: {measurement: {method: 'unsupported-method'}}};
+import {objectKey} from '../../server/publication-files.mjs';
 
 test('multipart resume survives reconstruction and identical retries are idempotent', async () => {
   const f = publicationFixture({video: Buffer.alloc(partSize + 31, 7)}), fixture = f.manifest();
@@ -286,3 +288,28 @@ test('old and canonical publication APIs use the same immutable job, manifest an
   }
   assert.deepEqual(f.storage.values, before);
 });
+
+for (const boundary of ['series', 'run', 'analysis', 'accumulated', 'profile']) {
+  test(`new publication rejects an unsupported ${boundary} profile before promotion`, async () => {
+    const f = publicationFixture(), original = f.manifest();
+    assert.equal((await f.complete(original)).status, 200);
+    const fixture = f.manifest(original.manifest.publicationId), entry = fixture.manifest.includedAnalyses[0];
+    const oldHash = {series: fixture.manifest.seriesBundle.sha256, run: entry.runBundleSha256,
+      analysis: entry.analysisSha256, accumulated: fixture.manifest.accumulated.resultSha256,
+      profile: entry.profileSha256}[boundary];
+    const artifact = JSON.parse(fixture.bytes.get(oldHash));
+    if (boundary === 'analysis') artifact.result.profile = unsupportedProfile;
+    else if (boundary !== 'profile') artifact.profile = unsupportedProfile;
+    const changed = updateJsonFile(fixture, oldHash, boundary === 'profile' ? unsupportedProfile : artifact);
+    if (boundary === 'series') fixture.manifest.seriesBundle.sha256 = fixture.manifest.accumulated.seriesBundleSha256 = changed;
+    if (boundary === 'run') entry.runBundleSha256 = changed;
+    if (boundary === 'analysis') entry.analysisSha256 = changed;
+    if (boundary === 'accumulated') fixture.manifest.accumulated.resultSha256 = changed;
+    if (boundary === 'profile') entry.profileSha256 = changed;
+    const response = await f.complete(fixture);
+    assert.equal(response.status, 409);
+    assert.equal((await response.json()).code, 'invalid_profile');
+    assert.equal((await (await f.publicRequest('latest')).json()).publicationId, original.manifest.publicationId);
+    assert.equal((await f.publicRequest(`publications/${fixture.manifest.publicationId}`)).status, 404);
+  });
+}

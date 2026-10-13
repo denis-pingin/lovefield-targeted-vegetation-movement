@@ -49,6 +49,34 @@ def test_reproduction_recomputes_original_video_reports_and_series_without_local
     assert json.loads(app_data.read_text())[fixture['jobId']]['softwareTest'] is True
 
 
+def test_reproduction_rejects_unsupported_measurement_before_loading_retained_code(publication_rehearsal, tmp_path, monkeypatch):
+    import tree_publication_reproduction as reproduction
+    fixture = publication_rehearsal
+    downloads = tmp_path / 'downloads'
+    shutil.copytree(fixture['downloads'], downloads)
+    manifest = json.loads(Path(fixture['manifest']).read_bytes())
+    identity = manifest['seriesBundle']['sha256']
+    bundle = json.loads((downloads / identity).read_bytes())
+    bundle['profile']['video']['measurement']['method'] = 'unsupported-method'
+    raw = json.dumps(bundle).encode()
+    changed = hashlib.sha256(raw).hexdigest()
+    retained = manifest['files'].pop(identity)
+    manifest['files'][changed] = {**retained, 'sha256': changed, 'size': len(raw)}
+    manifest['seriesBundle']['sha256'] = changed
+    manifest['accumulated']['seriesBundleSha256'] = changed
+    (downloads / changed).write_bytes(raw)
+    path = tmp_path / 'unsupported-publication.json'
+    path.write_text(json.dumps(manifest))
+    loaded = []
+    def no_source(*args):
+        loaded.append(args)
+        raise AssertionError('Unsupported measurements must not execute retained code')
+    monkeypatch.setattr(reproduction, '_source', no_source)
+    with pytest.raises(ValueError, match='Unsupported'):
+        reproduction.reproduce_publication(path, downloads, tmp_path / 'output')
+    assert loaded == []
+
+
 def test_reproduction_rejects_changed_missing_and_escaping_inputs(publication_rehearsal, tmp_path):
     from tree_publication_reproduction import reproduce_publication
     fixture = publication_rehearsal
@@ -124,7 +152,7 @@ def test_selected_analysis_reproduces_its_original_clock_and_review_after_later_
     finally: application.close()
 
 
-def test_legacy_analysis_remains_readable_but_publication_requires_retained_input_associations(publication_rehearsal, tmp_path):
+def test_publication_requires_actual_retained_input_associations(publication_rehearsal, tmp_path):
     from study_app import StudyApplication
     from study_http import AppError
     from tree_publication import prepare_publication
@@ -138,9 +166,9 @@ def test_legacy_analysis_remains_readable_but_publication_requires_retained_inpu
         analysis_id = application.series_store.state['runs'][run_id]['selectedRevision']
         directory = application._hosted_directory(run_id)
         artifact_path = directory / retained['analyses'][analysis_id]['outputPath']
-        legacy = json.loads(artifact_path.read_bytes())
-        legacy.pop('inputRecordings', None)
-        artifact_path.write_text(json.dumps(legacy, sort_keys=True, separators=(',', ':')))
+        artifact = json.loads(artifact_path.read_bytes())
+        artifact.pop('inputRecordings', None)
+        artifact_path.write_text(json.dumps(artifact, sort_keys=True, separators=(',', ':')))
         retained['analyses'][analysis_id]['outputSha256'] = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
         (directory / 'manifest.json').write_text(json.dumps(retained))
         assert application.get_analysis(run_id, analysis_id)['status'] == 'completed'
@@ -167,7 +195,7 @@ def test_no_camera_analysis_remains_visible_pending_and_fixture_marker_survives_
             application._call(application.publication_jobs.create, {'seriesId': fixture['seriesId'], 'environment': 'production'})
         bundle = Path(fixture['manifest']).parent / 'pending-collected.json'
         application.import_run_bundle(bundle)
-        pending = application.start_analysis('pending-collected', 'tree-development-1')
+        pending = application.start_analysis('pending-collected', 'tree-development-area-1')
         assert pending['status'] == 'pending'
         assert pending['qualityReasons'] == ['video_recording_missing']
         job = prepare_publication(application, fixture['seriesId'], 'test', inventory=inventory, software_test=True)

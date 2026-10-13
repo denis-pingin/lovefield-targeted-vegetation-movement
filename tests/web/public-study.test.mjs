@@ -896,13 +896,13 @@ test('recording details explain actual profile, camera alignment and footage dec
   publication.files[hashes.profile].role = 'profile';
   runBundle.config = {tree: {responseSeconds: 2.5, count: 7}};
   const recording = {inventory: publication.inventory[0], runBundle,
-    profile: {profileId: 'frozen', video: {measurement: {method: 'feature-mean-v1'}, featureDetection: {maxCorners: 3000}, tracking: {windowSizePixels: [21, 21]}}},
+    profile: {profileId: 'frozen', video: {measurement: {method: 'area-grid-mean-v1', pointsPerCell: 32, cellSizePixels: 128}, featureDetection: {maxCorners: 3000}, tracking: {windowSizePixels: [21, 21]}}},
     reproductionInputs: {recordings: {camera: {kind: 'video', recordingId: 'camera', timeMappingQualified: true,
       clockMap: {offset_seconds: 1000, rate: 1, references: [{frameIndex: 0, ptsSeconds: 0, serverDisplayedAtMs: 1728000000000}]}}}},
     footageReviews: [{decision: 'obstructed', spans: [{startFrameIndex: 10, endFrameIndex: 15}]}]};
   const html = renderPublicStudy({page: 'recording', publication, report, recording});
   assert.match(html, /Recording and analysis settings/);
-  assert.match(html, /3000 maximum feature points/);
+  assert.match(html, /32 maximum feature points per full grid cell/);
   assert.match(html, /21 × 21/);
   assert.match(html, /Camera clock alignment/);
   assert.match(html, /Clock mapping qualified/);
@@ -929,16 +929,16 @@ test('area-grid settings use retained point allowances and square cell dimension
   }
 });
 
-test('legacy feature settings describe the retained maximum points per region and tracking window', () => {
+test('missing or unsupported measurement identity is not inferred from point settings', () => {
   const {publication} = fixture();
-  for (const measurement of [undefined, {method: 'feature-mean-v1'}]) {
+  for (const measurement of [undefined, {method: 'unsupported-method'}]) {
     const recording = {inventory: publication.inventory[0], profile: {video: {
       ...(measurement ? {measurement} : {}), featureDetection: {maxCorners: 1200}, tracking: {windowSizePixels: [21, 21]},
     }}};
     const before = structuredClone(recording);
     const html = renderPublicStudy({page: 'recording', publication, recording});
-    assert.equal(html.match(/<p>Measurement: [^<]*<\/p>/)?.[0],
-      '<p>Measurement: feature-mean-v1. 1200 maximum feature points per region. Tracking window: 21 × 21 pixels.</p>');
+    assert.match(html, /Analysis settings unavailable/);
+    assert.doesNotMatch(html, /Measurement:|maximum feature points per region/);
     assert.deepEqual(recording, before);
   }
 });

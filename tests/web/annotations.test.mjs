@@ -3,8 +3,8 @@ import test from 'node:test';
 import {renderMacAnalysisPage} from '../../web/views.mjs';
 import {restoreMacFormDrafts} from '../../web/app.mjs';
 
-const profile = {profileId: 'tree-development-1', label: 'Development profile',
-  sealedProfileJson: JSON.stringify({video: {featureDetection: {maxCorners: 3000},
+const profile = {profileId: 'tree-development-area-1', label: 'Development profile',
+  sealedProfileJson: JSON.stringify({video: {measurement: {method: 'area-grid-mean-v1', cellSizePixels: 128, pointsPerCell: 32, minimumTracksPerCell: 3, minimumSpatialCoverageFraction: .99, refreshPolicy: 'timed'}, featureDetection: {maxCorners: 3000},
     tracking: {windowSizePixels: [41, 41]}}})};
 
 function macPage(selectedVideoRecordingId, videos) {
@@ -44,7 +44,7 @@ test('selected camera duration defaults to its complete fractional endpoint and 
   assert.match(second, /name="duration_seconds" type="number" value="12\.25"[^>]*step="any"[^>]*max="12\.25"/);
   assert.match(secondPage, /12\.25 seconds available/);
   assert.match(second, /option value="second" selected>Second camera<\/option>/);
-  assert.match(secondPage, /name="profile_id"[^>]*>[\s\S]*?option value="tree-development-1" selected/);
+  assert.match(secondPage, /name="profile_id"[^>]*>[\s\S]*?option value="tree-development-area-1" selected/);
 });
 
 test('shorter export draft survives refresh but resets to new video duration on selection', () => {

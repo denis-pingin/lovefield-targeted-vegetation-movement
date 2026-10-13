@@ -1,7 +1,7 @@
 import {HOSTED_APP_BASE, LEGACY_HOSTED_BASE, HOSTED_API_BASE, LOCAL_ANALYSIS_BASE, LOCAL_ANALYSIS_API} from './study-paths.mjs';
 import {operatorModel, createActionRunner} from './operator-model.mjs';
 import {PAGES, renderPage, renderMacAnalysisPage, renderMacResultPage, renderMacComparisonResultPage, renderMacProgress, renderMacError, selectedClockVideo} from './views.mjs';
-import {EXPERIMENT, defaultConfig, validateConfig, copyForRepeat} from './run-config.mjs';
+import {EXPERIMENT, defaultConfig, validateConfig, copyForRepeat, requireAreaProfile} from './run-config.mjs';
 import {createCuePlayer, createRunConnection, createInstructionScreenLock} from './cues.mjs';
 import {measureClock, clockReferenceDisplay, startClockRedraw} from './clock.mjs';
 import {mountTreeCharts} from './tree-results.mjs';
@@ -1206,31 +1206,28 @@ export function startHostedApplication(document, window) {
 }
 
 export function profileFromFields(saved, fields, identifier) {
-  const grid = saved.video.measurement?.method === 'area-grid-mean-v1';
-  const maximumPoints = Number(fields.maximum_points), width = Number(fields.window_width);
-  if (!grid && (!Number.isSafeInteger(maximumPoints) || maximumPoints <= 0)) throw new Error('Maximum points must be a positive integer.');
+  requireAreaProfile(saved);
+  const width = Number(fields.window_width);
   if (!Number.isSafeInteger(width) || width <= 0 || width % 2 !== 1) throw new Error('Tracking window width must be a positive odd integer.');
   const distance = Number(fields.min_distance ?? saved.video.featureDetection.minDistancePixels);
   const strength = Number(fields.feature_strength ?? saved.video.featureDetection.qualityLevel);
   if (!Number.isFinite(distance) || distance <= 0) throw new Error('Minimum spacing must be positive pixels.');
   if (!Number.isFinite(strength) || strength <= 0 || strength > 1) throw new Error('Feature strength must be between zero and one.');
   const name = fields.profile_name?.trim();
-  if (!name) throw new Error('Enter a profile name, for example Tree 6000/21 - mean-track analysis.');
+  if (!name) throw new Error('Enter a profile name, for example My canopy settings.');
   const profile = structuredClone(saved);
   profile.profileId = identifier;
   profile.label = name;
-  if (grid) {
-    const cellSize = Number(fields.cell_size), points = Number(fields.points_per_cell);
-    const minimum = Number(fields.minimum_tracks_per_cell), coverage = Number(fields.spatial_coverage);
-    if (![cellSize, points, minimum].every(value => Number.isSafeInteger(value) && value > 0))
-      throw new Error('Cell size, points per cell and minimum tracks must be positive integers.');
-    if (minimum > points) throw new Error('Minimum tracks per cell cannot exceed points per cell.');
-    if (!Number.isFinite(coverage) || coverage <= 0 || coverage > 1)
-      throw new Error('Required measured area coverage must be between zero and one.');
-    if (!['timed', 'continuous'].includes(fields.refresh_policy)) throw new Error('Choose a valid refresh policy.');
-    Object.assign(profile.video.measurement, {cellSizePixels: cellSize, pointsPerCell: points,
-      minimumTracksPerCell: minimum, minimumSpatialCoverageFraction: coverage, refreshPolicy: fields.refresh_policy});
-  } else profile.video.featureDetection.maxCorners = maximumPoints;
+  const cellSize = Number(fields.cell_size), points = Number(fields.points_per_cell);
+  const minimum = Number(fields.minimum_tracks_per_cell), coverage = Number(fields.spatial_coverage);
+  if (![cellSize, points, minimum].every(value => Number.isSafeInteger(value) && value > 0))
+    throw new Error('Cell size, points per cell and minimum tracks must be positive integers.');
+  if (minimum > points) throw new Error('Minimum tracks per cell cannot exceed points per cell.');
+  if (!Number.isFinite(coverage) || coverage <= 0 || coverage > 1)
+    throw new Error('Required measured area coverage must be between zero and one.');
+  if (!['timed', 'continuous'].includes(fields.refresh_policy)) throw new Error('Choose a valid refresh policy.');
+  Object.assign(profile.video.measurement, {cellSizePixels: cellSize, pointsPerCell: points,
+    minimumTracksPerCell: minimum, minimumSpatialCoverageFraction: coverage, refreshPolicy: fields.refresh_policy});
   profile.video.featureDetection.minDistancePixels = distance;
   profile.video.featureDetection.qualityLevel = strength;
   profile.video.tracking.windowSizePixels = [width, width];
@@ -1461,7 +1458,11 @@ export function startMacAnalysisApplication(document, window) {
     setupClip = currentSetupClip;
     if (selectedRunId) {
       detail = await request(`/api/runs/${encodeURIComponent(selectedRunId)}`);
-      selectedProfileId = detail.selectedProfileId ?? selectedProfileId;
+      if (profiles.some(item => item.profileId === detail.selectedProfileId)) selectedProfileId = detail.selectedProfileId;
+      else if (detail.selectedProfileId && detail.purpose === 'preparation') {
+        console.warn('Run %s saved profile %s is not offered; preparation controls use profile %s without changing the retained run',
+          selectedRunId, detail.selectedProfileId, selectedProfileId);
+      }
       await loadSavedFramePreviews();
       if (selectedAnalysis?.status === 'running') {
         selectedAnalysis = await request(`/api/runs/${encodeURIComponent(selectedRunId)}/analyses/${encodeURIComponent(selectedAnalysis.analysisId)}`);
@@ -1617,7 +1618,7 @@ export function startMacAnalysisApplication(document, window) {
     if (operation === 'open-comparison') return void perform(async () => {
       selectedComparison = await request(`/api/comparisons/${encodeURIComponent(button.dataset.comparisonId)}`);
       notice(`Saved comparison ${selectedComparison.label} opened below.`);
-    }, 'Opening the saved method comparison');
+    }, 'Opening the saved profile comparison');
     if (operation === 'import-retained-setup') return void perform(async () => {
       const imported = await mutation(operation, {});
       notice(imported.cancelled ? 'No setup folder selected.' : `${imported.importedImages} setup images copied into the Tree store.`);

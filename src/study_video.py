@@ -124,7 +124,7 @@ def _mask(mask, shape, name):
     return result
 
 
-MOTION_VERSION = "tree-mean-track-development-1"
+MOTION_VERSION = "tree-area-grid-development-1"
 
 
 MOTION_DEFAULTS = {
@@ -377,11 +377,11 @@ def aggregate_tree_pairs(pairs, interval, minimum_coverage_fraction=0.95, *, par
 
 def _extract_tree_motion(frames, intervals, regions, profile, frame_observer=None, inclusive_endpoint=False,
                          retain_tracks=False):
-    from study_profiles import AREA_GRID_MEAN, measurement_method
+    from study_profiles import AREA_GRID_MEAN, validate_profile
     from tree_spatial import grid_cells, track_grid
+    profile = validate_profile(profile)
     settings = _motion_settings(profile)
-    method = measurement_method(profile) if isinstance(profile, dict) and 'version' in profile else 'feature-mean-v1'
-    grid_measurement = profile['video']['measurement'] if method == AREA_GRID_MEAN else None
+    grid_measurement = profile['video']['measurement']
     neutral_intervals = _neutral_intervals(intervals)
     pairs = []
     previous = None
@@ -398,9 +398,8 @@ def _extract_tree_motion(frames, intervals, regions, profile, frame_observer=Non
         gray = _tracking_grayscale(frame["image"])
         if checked_regions is None:
             checked_regions = _tracking_regions(regions, gray.shape)
-            if grid_measurement:
-                grids = {name: grid_cells(checked_regions[name], grid_measurement['cellSizePixels'],
-                         grid_measurement['pointsPerCell'], grid_measurement['minimumTracksPerCell']) for name in ('A', 'B')}
+            grids = {name: grid_cells(checked_regions[name], grid_measurement['cellSizePixels'],
+                     grid_measurement['pointsPerCell'], grid_measurement['minimumTracksPerCell']) for name in ('A', 'B')}
         elif gray.shape != next(iter(checked_regions.values())).shape:
             raise VideoQualityError("Tree recording frame dimensions changed")
         identity = {"timestamp": timestamp, "source_id": frame.get("source_id"),
@@ -423,17 +422,16 @@ def _extract_tree_motion(frames, intervals, regions, profile, frame_observer=Non
                     identity["video_seconds"] / settings["reseed_seconds"])
                 if reseed:
                     carried['background'] = None
-                    if not grid_measurement or grid_measurement['refreshPolicy'] == 'timed':
+                    if grid_measurement['refreshPolicy'] == 'timed':
                         carried['A'] = carried['B'] = None
                 for name in ("A", "B", "background"):
-                    minimum = settings["minimum_background_tracks"] if name == "background" else settings["minimum_target_tracks"]
                     try:
-                        if grid_measurement and name != 'background':
+                        if name != 'background':
                             measured[name] = track_grid(previous['image'], gray, checked_regions[name],
                                 grids[name], carried[name] or {}, settings, grid_measurement, elapsed)
                         else:
                             measured[name] = _track_region(previous["image"], gray, checked_regions[name],
-                                                           carried[name], settings, minimum, elapsed)
+                                                           carried[name], settings, settings["minimum_background_tracks"], elapsed)
                     except cv2.error as error:
                         LOGGER.warning(
                             "Tree optical flow failed for region %s at %.6f in recording %s (%s); "
@@ -462,20 +460,19 @@ def _extract_tree_motion(frames, intervals, regions, profile, frame_observer=Non
                               "detected_counts": {name: result.get('detected_count', result['count']) for name, result in measured.items()},
                               "rejected_counts": {name: result.get('rejected_count', 0) for name, result in measured.items()},
                               "quality_reasons": reasons})
-                if grid_measurement:
-                    for name in ('A', 'B'):
-                        spatial = measured[name].get('spatial')
-                        if spatial:
-                            pairs[-1][f'{name}_spatial'] = {
-                                key: spatial[key] for key in ('observed_area_speed', 'coverage_fraction',
-                                                                'covered_area', 'total_area', 'reason')}
-                            pairs[-1][f'{name}_spatial'].update(
-                                requested_count=sum(cell['budget'] for cell in spatial['cells']),
-                                detected_count=measured[name]['detected_count'],
-                                carried_count=measured[name]['carried_count'],
-                                accepted_count=measured[name]['count'],
-                                valid_cell_count=sum(cell['reason'] is None for cell in spatial['cells']),
-                                total_cell_count=len(spatial['cells']))
+                for name in ('A', 'B'):
+                    spatial = measured[name].get('spatial')
+                    if spatial:
+                        pairs[-1][f'{name}_spatial'] = {
+                            key: spatial[key] for key in ('observed_area_speed', 'coverage_fraction',
+                                                            'covered_area', 'total_area', 'reason')}
+                        pairs[-1][f'{name}_spatial'].update(
+                            requested_count=sum(cell['budget'] for cell in spatial['cells']),
+                            detected_count=measured[name]['detected_count'],
+                            carried_count=measured[name]['carried_count'],
+                            accepted_count=measured[name]['count'],
+                            valid_cell_count=sum(cell['reason'] is None for cell in spatial['cells']),
+                            total_cell_count=len(spatial['cells']))
                 if retain_tracks:
                     pairs[-1]['tracks'] = {name: {'accepted': result['tracks'],
                         'rejected': result.get('rejected_tracks', [])} for name, result in measured.items()}
@@ -545,8 +542,8 @@ def _extract_tree_motion(frames, intervals, regions, profile, frame_observer=Non
                           "pair_count": len(touching), "eligible_pair_count": len(eligible),
                           "covered_seconds": coverage, "coverage_fraction": coverage_fraction,
                           "quality_reasons": sorted(reasons)})
-    return {"version": MOTION_VERSION if not grid_measurement else 'tree-area-grid-development-1',
-            "measurementMethod": method, "module": "tree", "units": "pixels/second",
+    return {"version": MOTION_VERSION,
+            "measurementMethod": AREA_GRID_MEAN, "module": "tree", "units": "pixels/second",
             "profile": settings, "spatialGrid": grids,
             "pairs": pairs, "shake_spans": shake_spans, "intervals": summaries}
 
@@ -617,7 +614,9 @@ def _tracking_preview_image(frame, regions, measured, display_magnification=10):
 
 def extract_tree(frames, intervals, regions_or_setup, profile, *, preview_path=None, preview_fps=30,
                  inclusive_endpoint=True, retain_tracks=False):
-    """Measure original-resolution features under the retained Tree profile."""
+    """Measure area-weighted motion under the retained Tree profile."""
+    from study_profiles import validate_profile
+    profile = validate_profile(profile)
     if preview_path is None:
         return _extract_tree_motion(frames, intervals, regions_or_setup, profile,
                                     inclusive_endpoint=inclusive_endpoint, retain_tracks=retain_tracks)

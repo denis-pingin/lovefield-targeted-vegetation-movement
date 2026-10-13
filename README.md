@@ -12,7 +12,7 @@ calculates individual and accumulating results.
 · [Analysis methods](analysis-methods.md)
 · [Reproducing results](publication-release-guide.md#reproduce-a-published-result)
 
-The study is in preparation. The supplied measurement profiles are development
+The study is in preparation. The supplied measurement profile contains development
 settings; scored collection and external start registration are disabled in the
 shipped configuration. A scored series requires a prospectively fixed protocol,
 configuration, measurement profile, and software version. Preparation recordings
@@ -21,7 +21,7 @@ results.
 
 ## What the software measures
 
-OpenCV tracks image features between successive video frames. Two measurement methods are available: the mean speed of accepted features within each region, and a grid method that weights local measurements by the area they represent. Their settings and quality checks are saved with each analysis. The reported speeds describe image displacement per unit time, in pixels per second; their interpretation depends on camera geometry and tracking coverage.
+OpenCV tracks image features between successive video frames within a fixed grid over each selected region. The analysis averages local movement using the area represented by each measured cell. This area-weighted measurement gives equal image areas equal weight despite differences in their tracked point counts. Each analysis saves the exact settings, coverage, and quality checks. Speeds are expressed in pixels per second within the recorded camera view.
 
 The primary analysis asks whether the relative balance of movement follows the
 randomized target. It reports the size of that change, its uncertainty, and how

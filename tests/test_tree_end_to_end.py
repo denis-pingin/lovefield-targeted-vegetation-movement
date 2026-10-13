@@ -44,7 +44,9 @@ def request(server, endpoint, payload=None, expected_status=(200, 202)):
 
 
 def completed_analysis(server, run_id, request_id):
-    job = request(server, 'start-analysis', {'requestId': request_id, 'runId': run_id, 'profileId': 'tree-development-1'})
+    run = request(server, 'runs/' + run_id)
+    profile_id = (run.get('frozenProfile') or {}).get('profileId') or run.get('selectedProfileId') or 'tree-development-area-1'
+    job = request(server, 'start-analysis', {'requestId': request_id, 'runId': run_id, 'profileId': profile_id})
     for _ in range(400):
         value = request(server, f"runs/{run_id}/analyses/{job['analysisId']}")
         if value['status'] != 'running':
@@ -183,3 +185,40 @@ def test_handler_export_to_mac_original_analysis_pending_prefix_revisions_and_re
         server.shutdown()
         server.server_close()
         restarted.close()
+
+
+def test_scored_hosted_export_uses_real_grid_extraction_and_reproduces_publication(tmp_path):
+    from publication_rehearsal import prepare_rehearsal
+    from tree_publication_reproduction import reproduce_publication
+    fixture = prepare_rehearsal(tmp_path / 'scored-grid')
+    manifest = json.loads(Path(fixture['manifest']).read_text())
+    series = json.loads((Path(fixture['manifest']).parent / 'series.json').read_text())
+    downloads = Path(fixture['downloads'])
+    assert series['profile']['video']['measurement']['method'] == 'area-grid-mean-v1'
+    entry = manifest['includedAnalyses'][0]
+    bundle = json.loads((downloads / entry['runBundleSha256']).read_text())
+    artifact = json.loads((downloads / entry['analysisSha256']).read_text())
+    retained_profile = (downloads / entry['profileSha256']).read_text()
+    assert artifact['sealedProfileJson'] == bundle['sealedProfileJson'] == series['sealedProfileJson'] == retained_profile
+    assert artifact['profileSha256'] == bundle['profileHash'] == series['profileHash']
+    assert artifact['result']['measurementMethod'] == 'area-grid-mean-v1'
+    measured = artifact['result']['measurements']
+    assert measured['version'] == 'tree-area-grid-development-1'
+    assert measured['pairs'] and any(pair['A_spatial']['coverage_fraction'] > 0 for pair in measured['pairs'])
+    response_bins = [item for target in artifact['result']['targets'] for item in target['bins']]
+    assert len(response_bins) == 2
+    assert all(item['usable'] and np.isfinite(item['a']) and np.isfinite(item['b']) and
+               item['a'] > 0 and item['b'] > 0 for item in response_bins), response_bins
+    assert artifact['result']['report']['counts']['usableBins'] == 2
+    accumulated = json.loads((downloads / manifest['accumulated']['resultSha256']).read_text())
+    assert accumulated['profile'] == series['profile']
+    assert accumulated['profileHash'] == series['profileHash']
+    assert accumulated['measurementMethod'] == 'area-grid-mean-v1'
+    reference = Series()
+    for target in artifact['result']['targets']:
+        reference.add_target(artifact['runId'], target['targetIndex'], int(target['assignedRegion'] == 'A'),
+            [MotionBin(item['duration'], item['a'], item['b'], item['usable'],
+                       raw_motion=(item['rawA'], item['rawB'])) for item in target['bins']])
+    assert accumulated['logEvidence'] == reference.log_e()
+    reproduced = reproduce_publication(fixture['manifest'], downloads, tmp_path / 'reproduced')
+    assert reproduced['comparison']['matched'] is True

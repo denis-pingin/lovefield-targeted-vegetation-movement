@@ -8,8 +8,8 @@ import logging
 import cv2
 import numpy as np
 
-from study_profiles import validate_profile, measurement_method, METHOD
-from study_video import extract_tree, read_frames, aggregate_tree_pairs
+from study_profiles import validate_run_profile, measurement_method, METHOD, AREA_GRID_MEAN
+from study_video import extract_tree, read_frames, aggregate_tree_pairs, MOTION_VERSION
 from tree_calculator import Series
 from tree_series import calculation_targets, profile_hash
 from study_tree_time import regional_summary, transition_summary
@@ -75,7 +75,9 @@ def _mask(bin_value, reasons):
 
 def analyze_extracted_run(bundle, measurements, profile, record, *, quality_reasons=(), cue_quality=None):
     """Public adapter over label-blind extracted pairs, also used by original-video analysis."""
-    profile = validate_profile(profile)
+    profile = validate_run_profile(profile, bundle)
+    if measurements.get('measurementMethod') != AREA_GRID_MEAN or measurements.get('version') != MOTION_VERSION:
+        raise ValueError('Unsupported motion measurements. Use area-weighted extraction.')
     if bundle['config']['mode'] != 'tree':
         raise ValueError('Only Tree recordings belong to this study')
     response = bundle['config']['tree']['responseSeconds']
@@ -208,7 +210,7 @@ def _regions(setup, record):
 
 def analyze_tree_run(bundle, originals, profile, progress=None):
     """Decode retained originals, then apply review masks without retraining raw prediction."""
-    profile = validate_profile(profile)
+    profile = validate_run_profile(profile, bundle)
     videos = [record for record in originals.values() if record.get('kind') == 'video']
     setup = bundle.get('state', {}).get('setupSnapshot')
     if len(videos) != 1 or not setup or not setup.get('regions') or not videos[0].get('clockMap'):

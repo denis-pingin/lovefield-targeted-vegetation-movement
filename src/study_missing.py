@@ -6,7 +6,8 @@ import math
 import re
 
 from study_analysis import analyze_extracted_run, generated_assignments
-from study_profiles import METHOD, validate_profile
+from study_profiles import METHOD, validate_run_profile, AREA_GRID_MEAN
+from study_video import MOTION_VERSION
 from tree_calculator import Series
 from tree_series import calculation_targets
 
@@ -62,14 +63,15 @@ def validate_measurement_disposition(disposition, bundle, bundle_sha256, profile
 def analyze_missing_measurements(bundle, profile, disposition, *, bundle_sha256, profile_sha256,
                                  input_hashes=None, retained_artifact=None, retained_sha256=None):
     """Repeat bounded calculation from no measurements or verified surviving derived inputs."""
-    profile = validate_profile(profile)
+    profile = validate_run_profile(profile, bundle)
     validate_measurement_disposition(disposition, bundle, bundle_sha256, profile_sha256)
     generated = generated_assignments(bundle)
     reference = disposition['retainedAnalysis']
     if reference is None:
         if retained_artifact is not None or retained_sha256 is not None:
             raise ValueError('Undeclared retained measurement inputs cannot enter the analysis.')
-        result = analyze_extracted_run(bundle, {'pairs': [], 'shake_spans': []}, profile, {},
+        result = analyze_extracted_run(bundle, {'version': MOTION_VERSION, 'measurementMethod': AREA_GRID_MEAN,
+            'pairs': [], 'shake_spans': []}, profile, {},
                                        quality_reasons=['video_recording_missing'])
     else:
         retained = retained_artifact

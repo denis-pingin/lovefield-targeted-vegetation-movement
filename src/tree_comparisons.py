@@ -77,7 +77,7 @@ class ComparisonStore:
                     raise ValueError('A selected analysis revision is duplicate or invalid')
                 seen_analyses.add(analysis_id)
                 if artifact.get('result', {}).get('purpose') not in (None, 'preparation'):
-                    raise ValueError('Method comparisons are preparation-only; scored analyses cannot be included')
+                    raise ValueError('Profile comparisons are preparation-only; scored analyses cannot be included')
             left, right = sides['left'], sides['right']
             if left is None:
                 status = 'missing_left'

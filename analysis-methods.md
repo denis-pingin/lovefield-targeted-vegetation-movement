@@ -6,7 +6,7 @@ This document specifies the measurements, statistical calculations, and interpre
 
 ## Plain-language model
 
-Track image detail in both regions between successive frames and summarize its movement per second. Compare each region under the two randomized instructions and retain both regional time courses.
+Track image detail within a fixed grid over each region. Calculate local movement between successive frames, combine the cell measurements according to the area they represent, and summarize the regional movement per second. Compare each region under the two randomized instructions and retain both regional time courses.
 
 For accumulation across camera views, express the two movement indices as a relative balance. If A contributes 45% of their sum under B targeting and 50% under A targeting, the relative targeting difference is 5 percentage points. This unit describes a change in movement share. The separate raw curves show whether A sped up, B slowed down, or both changed.
 
@@ -22,58 +22,52 @@ An accepted accumulation covers a resolved chronological prefix: every preceding
 
 During preparation, earlier observations can inform settings saved before the next run. The scored profile fixes settings across runs. Each elapsed-second comparison identifies the durations and settings that contributed to it; longer lags can include fewer targets.
 
-## 2. Motion measurement methods
+## 2. Motion measurement
 
-### 2.1 Point-average motion measurement
+### 2.1 Image sampling and tracking
 
-The following table specifies the supplied point-average development profile. Preparation can revise its settings. Every result retains the exact profile and hash; scored collection uses a qualified profile fixed before collection.
+The study measures area-weighted image motion, identified as `area-grid-mean-v1`. The supplied profile `tree-development-area-1` uses profile format `tree-profile-development-2`. Every analysis retains its exact profile, hash, and code identity. The following values are development settings that can be adjusted during preparation. A scored series uses the qualified profile fixed before collection.
 
-| Operation | Rule |
+| Operation | Supplied setting or rule |
 | --- | --- |
 | Decoding | Original resolution, grayscale, actual presentation timestamps; retain original bytes. |
-| Features per polygon | Shi-Tomasi maxCorners=3000, qualityLevel=0.01, minDistance=7 pixels, blockSize=7. |
+| Grid | 128 x 128-pixel cells anchored at image coordinate (0,0), using the same cell size for A and B. |
+| Target sampling | At most 32 Shi-Tomasi features per full cell; qualityLevel=0.01, minDistance=7 pixels, blockSize=7. |
+| Accepted target samples | At least 3 reliable tracks per full cell. Scale the maximum and minimum counts by the cell's area inside the region, rounding upward to at least one. |
+| Background sampling | At most 3,000 features in the stationary reference region, with at least 10 accepted tracks. |
 | Flow | Pyramidal Lucas-Kanade, winSize=(41,41), maxLevel=3, at most 30 iterations or displacement convergence 0.01. |
-| Accepted track | Finite coordinates; forward and backward status valid; endpoints inside original image and same polygon; forward/backward discrepancy <=1 pixel. |
-| Minimum accepted tracks | A and B each 20; stationary background 10. |
-| Refresh | Reseed on the fixed one-second video timeline and when tracks are insufficient; independent of target labels. |
-| Frame-pair regional motion | Arithmetic mean of accepted displacement magnitudes divided by frame-pair elapsed seconds. |
-| Shake | Background median displacement-vector magnitude >0.5 pixel for 3 consecutive frame pairs. Reject affected outcomes without compensating frame motion. |
-| Obstruction | Manual Clear review or exact obstructed spans; inspect without assignment-linked results when practicable. |
-| Coverage | At least 95% valid frame-pair time in every measured bin; failures remain explicit. |
+| Accepted track | Finite coordinates; forward and backward status valid; endpoints inside the original image and same polygon; forward/backward discrepancy <=1 pixel. |
+| Target refresh | Timed refresh on the fixed one-second video timeline; replenish available cell sample capacity between refreshes. The saved profile can select continuous refresh, which retains valid tracks and replenishes capacity without the timed reset. |
+| Spatial coverage | At least 99% of the polygon area must belong to measured cells for a frame-pair regional value. |
+| Temporal coverage | At least 95% valid frame-pair time in every measured response bin. |
+| Shake | Background median displacement-vector magnitude >0.5 pixel for 3 consecutive frame pairs invalidates affected outcomes. |
+| Obstruction | Retain a clear-footage review or exact obstructed spans, assessed without assignment-linked results when practicable. |
 
-Ninety stationary tracks and ten tracks each moving 1 pixel in 40 ms produce a mean speed of 2.5 px/s. Each accepted track has equal weight, allowing motion in a minority of tracks to contribute. The sampling favors visible image texture. Qualification checks track acceptance, coverage, and annotated real motion. The feature count is an upper limit on detected points, and the tracking window specifies the image neighborhood used to match each point between frames.
+Detect suitable image features separately within each cell. Track them forward and backward against full-resolution frames using the saved window and acceptance settings. The tracking window is the image neighborhood used to match a point between frames; it may extend across an internal cell boundary. Assign each accepted displacement to the cell containing its previous-frame position. Both moving and stationary accepted features contribute. Sampling and quality decisions are independent of target labels.
 
-### 2.2 Area-weighted motion measurement
+### 2.2 Area-weighted regional motion
 
-The area-weighted method weights local measurements by the image area they represent within the selected canopy region. Preparation comparisons use identical inputs for both methods. Optical checks and annotated footage assess tracking accuracy; statistical evidence quantifies target-following patterns.
+For each measured cell, calculate the arithmetic mean of accepted displacement magnitudes divided by elapsed frame-pair time, giving speed in pixels per second. Weight that local speed by the number of pixels where the cell intersects the selected polygon.
 
-The point-average measurement is identified as `feature-mean-v1`; the area-weighted measurement is `area-grid-mean-v1`. The supplied area-weighted profile is `tree-profile-development-2`. Both use the statistical equations below. Every analysis retains its measurement method, exact profile, and code identity. Development profiles require qualification and prospective selection before scored use.
+For cell area `w_j` and valid mean speed `m_j`, regional motion is `sum(w_j*m_j)/sum(w_j)` over measured cells. Two equal-area cells with mean speeds of 0 and 2 px/s contribute a regional value of 1 px/s, regardless of their different accepted point counts. Normalizing by measured area permits comparison of differently sized regions.
 
-The area-weighted outcome estimates visible image activity across the selected canopy: comparable proportions moving at comparable image speeds should give comparable values despite different polygon sizes. Its interpretation depends on foliage coverage, apparent leaf size, depth, and spatial sampling. Sky gaps and trunks can affect how well a polygon represents foliage. Polygons remain fixed; sampling locations and weights are independent of target labels.
+Spatial coverage is measured area divided by complete polygon area. Below the saved cutoff, the regional measurement is unavailable and its observed-area diagnostic is retained separately. At or above the cutoff, report the measured-area mean and actual coverage.
 
-Use a fixed native-image grid anchored at image coordinate (0,0), with the same cell size for A and B. Weight each cell by the number of pixels where it intersects the polygon. Supplied development settings are cell width 128 pixels, maximum 32 samples per complete cell, minimum 3 accepted samples per complete cell, and required measured area 99%. Scale both sample counts by clipped cell area divided by full-cell area, round upward, and retain at least one. These settings are adjustable during preparation. A/B sampling is limited per cell; the per-polygon feature cap applies to background tracking.
+A cell is unmeasured when it has too few reliable matches for that frame pair. Blur, limited texture, or failed matching can cause this. A stationary textured cell can have a valid zero or near-zero speed. Retain these distinct states in the data and annotation. A and B share valid timing intervals, and unusable response bins receive the bounded-unknown treatment below.
 
-Detect suitable features separately within each cell under the saved strength and spacing settings. Match forward and backward against full-resolution frames using the selected tracking-window and acceptance settings. A window can extend across an internal cell boundary. Assign each accepted displacement to the cell containing its previous-frame position and average displacement magnitudes within the cell. Accepted moving and stationary features both contribute. Cell area determines spatial weight, independently of its accepted point count.
+This outcome describes visible image activity across the selected canopy. Its interpretation depends on camera geometry, foliage coverage, apparent leaf size, depth, and spatial sampling. Sky gaps and trunks affect how well a polygon represents foliage. Inspect spatial coverage and representative annotations during qualification, including whether unmeasured portions have different motion. Keep polygons fixed throughout the recording.
 
-For cell area `w_j` and valid mean speed `m_j`, the measured-area mean is `sum(w_j*m_j)/sum(w_j)` over valid cells. Spatial coverage is measured area divided by complete polygon area. Below the saved cutoff, the regional measurement is unavailable and the observed-area diagnostic is retained separately. At or above the cutoff, report the measured-area mean and actual coverage. Unmeasured cells remain unknown. Qualification examines changes in coverage and representative annotations because a small unmeasured area can still have different motion from the measured area.
+Barbacci and colleagues converted tracked image features into local spatial-grid velocities in their [tree-motion method, section 2.5.2](https://yakari.polytechnique.fr/Django-pub/documents/barbacci2014rp-1pp.pdf#page=6). This study uses that spatial-aggregation principle with the magnitude averaging, coverage rules, and randomized targeting comparison specified here.
 
-A cell is unmeasured when it contains too few reliable matches for that frame pair. Blur, limited texture, or failed matching can cause this. A stationary textured cell can have a valid zero or near-zero speed. Retain these distinct states in the data and annotation. A and B share valid timing intervals, and unusable response bins receive the bounded-unknown treatment below.
+### 2.3 Measurement qualification
 
-The supplied area profile uses timed refresh, which reseeds on the fixed one-second video timeline. An optional continuous-refresh profile retains valid tracks and replenishes cells with too few samples. Each analysis and annotation retains the actual refresh policy. Comparisons intended to isolate spatial weighting keep the refresh policy and other tracking settings identical.
+Assess motion extraction through stationary and known-motion images, localized moving patches, brightness changes, duplicated-content area invariance, sampling-density sensitivity, and annotated real footage. Apply the [protocol's qualification tolerances](protocol.md#motion-measurement-and-qualification). Retain settings, technical checks, and outcomes for each tested profile.
 
-Barbacci and colleagues converted tracked image features into local spatial-grid velocities in their [tree-motion method, section 2.5.2](https://yakari.polytechnique.fr/Django-pub/documents/barbacci2014rp-1pp.pdf#page=6). This study uses that spatial-aggregation principle with its specified magnitude averaging, coverage rules, and randomized targeting comparison.
+Choose profile settings using tracking accuracy and coverage before scored collection. Preparation comparisons retain identical source recordings, regions, clock mappings, footage reviews, and response intervals. Each analysis remains a revision of those observations. The chosen scored profile and statistical version are frozen for the series.
 
-### 2.3 Measurement qualification and comparison
+### 2.4 Timing and diagnostics
 
-Compare the two methods on the same original recordings, setup polygons, clock mappings, footage reviews, assignments, and response intervals. Each comparison retains exact analysis revisions in one common chronological inventory. Its accumulated results include the resolved paired prefix, ending before a recording with an unfinished analysis or mismatched source inputs. A completed analysis containing unavailable bins contributes their uncertainty bounds.
-
-Use one exact measurement profile and one statistical version within each side of a comparison. Retain intentional differences in profiles and code hashes. A recording remains one observation set when measured by alternative methods.
-
-Present individual and accumulating effect estimates, confidence ranges, evidence, and usable and missing measurements. Assess measurement quality through known-motion images, duplicated-content area invariance, sampling-density sensitivity, and annotated real footage. Retain all comparison outcomes. Profile selection is based on measurement qualification before scored collection; target-following evidence from the preparation comparison remains exploratory.
-
-### 2.4 Shared timing and diagnostics
-
-Retain accepted and rejected counts, frame-pair time, mean speed, background motion, refreshes, and quality flags. An optional median diagnostic remains a separate technical output. The measurement selected for scoring is fixed before scored collection. Extraction uses the images and saved settings independently of target labels.
+Retain accepted and rejected counts, frame-pair time, mean speed, measured cell areas and spatial coverage, background motion, refreshes, and quality flags. Extraction uses the images and saved settings independently of target labels.
 
 For each target create bins [t+k,min(t+k+1,t+T)), k=0,...,ceil(T)-1. Retain the final partial second at its actual duration. A frame pair must lie wholly inside the parent response. At internal bin edges, apportion its measured speed by overlap duration. Divide accumulated speed-times-duration by covered seconds and report temporal coverage separately. Missing frames remain unavailable. A cue delivered before the preceding response ends makes the overlapping bin unavailable.
 

@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import pytest
 
-from study_profiles import area_profile, development_profile
+from study_profiles import area_profile
 from study_video import extract_tree
 from tree_spatial import aggregate_cells, grid_cells, track_grid
 from study_video import _motion_settings
@@ -35,16 +35,14 @@ def test_clipped_grid_uses_polygon_pixel_area_and_scaled_counts():
     assert result['speed'] == pytest.approx(2 * 256 / (4096 + 256))
 
 
-def test_grid_extraction_retains_legacy_control_and_reports_spatial_coverage():
+def test_grid_extraction_reports_actual_spatial_coverage():
     frames, regions = frames_for_shift(1, 0)
-    legacy = extract_tree(copy.deepcopy(frames), [], regions, development_profile())['pairs'][0]
     profile = area_profile()
     profile['video']['measurement'].update(cellSizePixels=80, pointsPerCell=16,
                                             minimumTracksPerCell=1,
                                             minimumSpatialCoverageFraction=.5)
     result = extract_tree(frames, [], regions, profile, retain_tracks=True)
     pair = result['pairs'][0]
-    assert legacy['A_speed'] is not None
     assert pair['A_speed'] is not None
     assert pair['A_spatial']['coverage_fraction'] >= .5
     assert pair['B_spatial']['coverage_fraction'] >= .5

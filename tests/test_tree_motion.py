@@ -2,8 +2,31 @@ import cv2
 import numpy as np
 import pytest
 
-from study_profiles import development_profile
+from study_profiles import area_profile
 from study_video import extract_tree, mean_feature_speed
+
+
+@pytest.mark.parametrize('change', ['missing', 'unsupported', 'version', 'profileless'])
+@pytest.mark.parametrize('preview', [False, True])
+def test_extraction_rejects_unsupported_profiles_before_consuming_frames_or_writing(tmp_path, change, preview):
+    profile = area_profile()
+    if change == 'missing':
+        del profile['video']['measurement']
+    elif change == 'unsupported':
+        profile['video']['measurement']['method'] = 'unsupported-method'
+    elif change == 'version':
+        del profile['version']
+    else:
+        profile = {}
+    consumed = []
+    def frames():
+        consumed.append(True)
+        yield {}
+    destination = tmp_path / 'preview' / 'invalid.avi'
+    with pytest.raises(ValueError, match='Unsupported|profile|settings'):
+        extract_tree(frames(), [], {}, profile, preview_path=destination if preview else None)
+    assert consumed == []
+    assert not destination.parent.exists()
 
 
 def frames_for_shift(dx, dy, *, brightness=0, minority=False):
@@ -40,7 +63,7 @@ def test_minority_motion_arithmetic():
 @pytest.mark.parametrize('dx,dy', [(0, 0), (.25, 0), (1, 0), (3, 0), (0, .25), (0, 1), (0, 3), (.25, .25), (1, 1), (3, 3)])
 def test_actual_tracker_measures_known_displacements(dx, dy):
     frames, regions = frames_for_shift(dx, dy)
-    result = extract_tree(frames, [], regions, development_profile())
+    result = extract_tree(frames, [], regions, area_profile())
     pair = result['pairs'][0]
     supplied = float(np.hypot(dx, dy))
     assert pair['A_speed'] * .04 == pytest.approx(supplied, abs=max(.1, supplied * .1))
@@ -52,19 +75,15 @@ def test_actual_tracker_measures_known_displacements(dx, dy):
 
 def test_uniform_brightness_does_not_invent_motion():
     frames, regions = frames_for_shift(0, 0, brightness=12)
-    pair = extract_tree(frames, [], regions, development_profile())['pairs'][0]
+    pair = extract_tree(frames, [], regions, area_profile())['pairs'][0]
     assert pair['A_speed'] * .04 <= .05
     assert pair['B_speed'] * .04 <= .05
 
 
-def test_localized_motion_is_mean_at_accepted_feature_positions():
+def test_localized_motion_matches_known_moving_area_fraction():
     frames, regions = frames_for_shift(1, 0, minority=True)
-    result = extract_tree(frames, [], regions, development_profile(), retain_tracks=True)
-    pair = result['pairs'][0]
-    tracks = pair['tracks']['A']['accepted']
-    expected = sum(x < 110 and y < 110 for x, y, _, _ in tracks) / len(tracks)
-    assert 0 < expected < .5
-    assert pair['A_speed'] * .04 == pytest.approx(expected, abs=.1)
+    pair = extract_tree(frames, [], regions, area_profile(), retain_tracks=True)['pairs'][0]
+    assert pair['A_speed'] * .04 == pytest.approx(1600 / (1600 + 70 * 180), abs=.1)
     assert pair['A_speed'] * .04 > .02
 
 
@@ -73,11 +92,11 @@ def test_untrackable_region_is_unavailable_with_coverage():
     for frame in frames:
         frame['image'][regions['A']] = 0
     result = extract_tree(frames, [{'interval_id': 'response', 'recording_id': 'recording',
-                                  'start': 0, 'end': .04}], regions, development_profile())
+                                  'start': 0, 'end': .04}], regions, area_profile())
     pair = result['pairs'][0]
     assert pair['A_speed'] is None
     assert pair['A_track_count'] < 20
-    assert 'insufficient_tracks_A' in pair['quality_reasons']
+    assert 'insufficient_spatial_coverage_A' in pair['quality_reasons']
     assert result['intervals'][0]['coverage_fraction'] == 0
     assert result['intervals'][0]['A_motion'] is None
 
@@ -94,7 +113,7 @@ def test_tracker_retains_forward_rejections_for_annotation_diagnostics(monkeypat
             status[:3] = 0
         return tracked, status, error
     monkeypatch.setattr(cv2, 'calcOpticalFlowPyrLK', flow)
-    pair = extract_tree(frames, [], regions, development_profile(), retain_tracks=True)['pairs'][0]
+    pair = extract_tree(frames, [], regions, area_profile(), retain_tracks=True)['pairs'][0]
     rejected = pair['tracks']['A']['rejected']
     assert len(rejected) >= 3
     assert all(np.isfinite(track).all() for track in rejected)

@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 import uuid
 
-from study_profiles import METHOD, measurement_method, validate_profile
+from study_profiles import METHOD, AREA_GRID_MEAN, validate_profile
 from tree_calculator import MotionBin, Series
 
 
@@ -54,7 +54,7 @@ def accumulate_series(runs, profile):
     """Resolve the supplied collection order; an unresolved earlier run holds its tail."""
     validate_profile(profile)
     series, accepted, pending, history, seen = Series(), [], [], [], set()
-    maximum, crossing, stopped, scored_settings, measurement_family = 0., None, False, None, None
+    maximum, crossing, stopped, scored_settings = 0., None, False, None
     qualification_reasons = set()
     purposes = {run.get('purpose', 'preparation') for run in runs}
     if len(purposes) > 1:
@@ -73,14 +73,9 @@ def accumulate_series(runs, profile):
             pending.append(run_id)
             stopped = True
             continue
-        family = run.get('measurementMethod') or measurement_method(run.get('profile', profile))
-        if measurement_family is None:
-            measurement_family = family
-        elif family != measurement_family:
-            qualification_reasons.add('mixed_measurement_methods')
-            pending.append(run_id)
-            stopped = True
-            continue
+        validate_profile(run['profile'])
+        if run.get('measurementMethod') != AREA_GRID_MEAN:
+            raise ValueError('Unsupported motion measurement. Use area-weighted motion.')
         if run.get('analysisVersion') != METHOD:
             raise ValueError('Do not pool different statistical method versions')
         if run.get('purpose') == 'scored':
@@ -116,9 +111,9 @@ def accumulate_series(runs, profile):
     log_e = series.log_e()
     report = {'experimentSlug': 'tree-targeting', 'analysisVersion': METHOD,
               'profileHash': profile_hash(profile), 'profile': copy.deepcopy(profile),
-              'status': 'incompatible_measurement' if 'mixed_measurement_methods' in qualification_reasons else 'incomplete_prefix' if pending else 'completed',
-              'measurementMethod': measurement_family or measurement_method(profile),
-              'action': 'Select compatible revisions or save a method comparison' if 'mixed_measurement_methods' in qualification_reasons else None,
+              'status': 'incomplete_prefix' if pending else 'completed',
+              'measurementMethod': AREA_GRID_MEAN,
+              'action': None,
               'purpose': next(iter(purposes), 'preparation'), 'runCount': len(accepted),
               'targetCount': sum(len(run['targets']) for run in accepted),
               'deliveredTargetCount': sum(target['playbackAtMs'] is not None for run in accepted for target in run['targets']),
@@ -283,8 +278,10 @@ class SeriesStore:
         if missing_manifest or outdated:
             selected = [{'runId': run['runId'], 'status': 'pending', 'purpose': purpose} for run in runs]
         evaluated_profile = next((run['profile'] for run in selected if run.get('status') == 'completed' and
-                                  isinstance(run.get('profile'), dict)), profile)
+                                  isinstance(run.get('profile'), dict)), manifest['profile'] if manifest else profile)
         value = accumulate_series(selected, evaluated_profile)
+        if manifest and evaluated_profile == manifest['profile']:
+            value['profileHash'] = manifest['profileHash']
         if missing_manifest or outdated:
             value['qualificationReasons'].append('series_manifest_missing' if missing_manifest else 'series_manifest_outdated')
         value.update(seriesId=series_id, seriesLabel=manifest['label'] if manifest else series_id or 'Independent preparation recordings',

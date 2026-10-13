@@ -1,12 +1,12 @@
 import {STUDY_NAME, STUDY_BASE, canonicalHostedStudyPath, PUBLIC_BASE, PUBLIC_API_BASE, HOSTED_APP_BASE, HOSTED_API_BASE, PUBLICATION_API_BASE, LOCAL_ANALYSIS_BASE, PUBLIC_ASSETS, labPageForPath} from '../web/study-paths.mjs';
 import {createPublicationService} from './publication.mjs';
-import {EXPERIMENT, validateConfig} from '../web/run-config.mjs';
+import {EXPERIMENT, validateConfig, requireAreaProfile} from '../web/run-config.mjs';
 import {applyEvent, createRunState, localEligibility, nextDeadline, publicRunState} from './run-engine.mjs';
 import {createAccessAuthenticator} from './access.mjs';
 import {SessionStore, terminalEventTime} from './session-store.mjs';
 import {RandomService} from './random-service.mjs';
 import {canonicalJson} from './random-service.mjs';
-import analysisProfile from '../analysis-profile.json' with {type: 'json'};
+import analysisProfile from '../analysis-profile-area.json' with {type: 'json'};
 import {createStartChain, configurationForEnvironment} from './start-chain.mjs';
 import {createStartRegistry} from './start-registry.mjs';
 
@@ -206,20 +206,73 @@ function metadataKey(experiment, type, id) {
 }
 
 function selectedProfile(config, supplied, savedSource = false) {
-  const builtin = analysisProfile;
+  const builtin = config.analysisProfileId === analysisProfile.profileId ? analysisProfile : null;
   const profile = supplied ?? builtin;
-  if (!profile || profile.profileId !== config.analysisProfileId ||
-      profile.version !== analysisProfile.version ||
-      !savedSource && canonicalJson(profile) !== canonicalJson(builtin)) {
-    throw new HttpError(400, 'invalid_profile', 'Use the complete current technical profile matching the run settings.');
+  try { requireAreaProfile(profile); }
+  catch (error) { throw new HttpError(400, 'invalid_profile', error.message); }
+  const template = analysisProfile;
+  const invalid = () => { throw new HttpError(400, 'invalid_profile', 'Use a complete valid Tree profile matching the run settings.'); };
+  if (!template || profile.profileId !== config.analysisProfileId ||
+      !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(profile.profileId) ||
+      profile.label !== undefined && (typeof profile.label !== 'string' || !profile.label.trim()) ||
+      !savedSource && builtin && canonicalJson(profile) !== canonicalJson(builtin)) {
+    invalid();
+  }
+  function structure(value, expected) {
+    if (Array.isArray(expected)) {
+      if (!Array.isArray(value) || value.length !== expected.length) invalid();
+      value.forEach((item, index) => structure(item, expected[index]));
+    } else if (expected && typeof expected === 'object') {
+      if (!value || typeof value !== 'object' || Array.isArray(value) ||
+          Object.keys(value).length !== Object.keys(expected).length ||
+          Object.keys(expected).some(key => !Object.hasOwn(value, key))) invalid();
+      for (const key of Object.keys(expected)) structure(value[key], expected[key]);
+    } else if (typeof value !== typeof expected || typeof expected === 'number' && !Number.isFinite(value)) invalid();
+  }
+  const {label, ...settings} = profile;
+  structure(settings, template);
+  if (canonicalJson(profile.treeAnalysis) !== canonicalJson(template.treeAnalysis)) invalid();
+  const video = profile.video, features = video.featureDetection, tracking = video.tracking;
+  const positive = value => Number.isFinite(value) && value > 0;
+  const integer = value => Number.isSafeInteger(value) && value > 0;
+  const fraction = value => positive(value) && value <= 1;
+  if (![features.maxCorners, features.blockSize, tracking.maxIterations, video.minimumTracks.target,
+    video.minimumTracks.background, video.shake.consecutiveFramePairs, profile.timing.clockExchangeCount].every(integer) ||
+    ![features.minDistancePixels, tracking.epsilon, tracking.maximumForwardBackwardErrorPixels,
+      video.reseedSeconds, video.shake.minimumBackgroundDisplacementPixels,
+      profile.timing.maximumPairwiseAlignmentSeconds, profile.timing.maxCueWaitSeconds].every(positive) ||
+    ![features.qualityLevel, video.minimumCoverageFraction].every(fraction) ||
+    !Number.isSafeInteger(tracking.maxLevel) || tracking.maxLevel < 0 ||
+    tracking.windowSizePixels.some(value => !integer(value) || value % 2 !== 1) ||
+    Math.max(video.minimumTracks.target, video.minimumTracks.background) > features.maxCorners) invalid();
+  if (video.measurement) {
+    const measurement = video.measurement;
+    if (measurement.method !== 'area-grid-mean-v1' ||
+        ![measurement.cellSizePixels, measurement.pointsPerCell, measurement.minimumTracksPerCell].every(integer) ||
+        measurement.minimumTracksPerCell > measurement.pointsPerCell ||
+        !fraction(measurement.minimumSpatialCoverageFraction) ||
+        !['timed', 'continuous'].includes(measurement.refreshPolicy)) invalid();
   }
   return structuredClone(profile);
 }
 
-async function hashJson(value) {
-  const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(value)));
+async function frozenScoredProfile(record) {
+  selectedProfile(record.config, record.profile, true);
+  let sealed;
+  try { sealed = JSON.parse(record.sealedProfileJson); } catch { sealed = null; }
+  if (typeof record.sealedProfileJson !== 'string' ||
+      await hashText(record.sealedProfileJson) !== record.profileHash ||
+      canonicalJson(sealed) !== canonicalJson(record.profile)) {
+    throw new HttpError(409, 'frozen_profile_changed', 'The scored profile differs from its frozen bytes or hash.');
+  }
+}
+
+async function hashText(value) {
+  const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
   return Array.from(new Uint8Array(bytes), byte => byte.toString(16).padStart(2, '0')).join('');
 }
+
+const hashJson = value => hashText(JSON.stringify(value));
 
 function publicSeries(series) {
   return {...structuredClone(series), qualificationStatus:
@@ -452,6 +505,7 @@ export function createService({experiment = EXPERIMENT, store, storage, randomSe
     if (record.events.some(event => event.kind === 'start')) return null;
     const canceled = ['stopped', 'failed', 'completed'].includes(record.state.lifecycle);
     if (!canceled && !scoredCollectionEnabled) throw new HttpError(409, 'scored_locked', 'This Test release is preparation only.');
+    if (!canceled) await frozenScoredProfile(record);
     if (!canceled && record.codeCheckpoint !== sourceCheckpoint) throw new HttpError(409, 'scored_source_unavailable', 'Scored Start requires the selected active source checkpoint.');
     if (!canceled && (record.state.lifecycle !== 'prepared' || !record.state.recordingReady || !record.state.testAudioPlayed || !record.state.playbackDeviceId || !record.state.setupSnapshot || record.state.setupSnapshot.retrospective)) {
       throw new HttpError(409, 'start_not_ready', 'Prepare the run, save prospective setup, test instruction audio and confirm recording before Start.');
@@ -494,6 +548,7 @@ export function createService({experiment = EXPERIMENT, store, storage, randomSe
       if (record.events.some(event => event.kind === 'start')) return {actionId: action.actionId, accepted: true, alreadyStarted: true, state: publicRecord(record, nowMs)};
       const canceled = ['stopped', 'failed', 'completed'].includes(record.state.lifecycle);
       if (!canceled && !scoredCollectionEnabled) throw new HttpError(409, 'scored_locked', 'This Test release is preparation only.');
+      if (!canceled) await frozenScoredProfile(record);
       if (!canceled && record.codeCheckpoint !== sourceCheckpoint) throw new HttpError(409, 'scored_source_unavailable', 'Scored Start requires the selected active source checkpoint.');
       if (!canceled && (record.state.lifecycle !== 'prepared' || !record.state.recordingReady || !record.state.testAudioPlayed || !record.state.playbackDeviceId || !record.state.setupSnapshot || record.state.setupSnapshot.retrospective)) {
         throw new HttpError(409, 'start_not_ready', 'Prepare the run, save prospective setup, test instruction audio and confirm recording before Start.');
@@ -562,10 +617,14 @@ export function createService({experiment = EXPERIMENT, store, storage, randomSe
     } else if (action.kind === 'prepare') {
       if (state.lifecycle !== 'draft') throw new HttpError(409, 'already_prepared', 'Run has already been prepared.');
       const config = record.config;
+      if (config.purpose === 'preparation') selectedProfile(config, record.profile, true);
       if (config.purpose === 'scored') {
         if (!scoredCollectionEnabled) throw new HttpError(409, 'scored_locked', 'This Test release is preparation only.');
+        await frozenScoredProfile(record);
         const series = await storage.get(metadataKey(experiment, 'series', config.seriesId));
         if (record.codeCheckpoint !== sourceCheckpoint || series?.status !== 'frozen' || canonicalJson(series.config) !== canonicalJson(config)) throw new HttpError(409, 'series_manifest_mismatch', 'Scored settings differ from the frozen manifest.');
+        await frozenScoredProfile(series);
+        if (series.profileHash !== record.profileHash) throw new HttpError(409, 'frozen_profile_changed', 'The run profile differs from its frozen series.');
       }
       if (config.siteId) {
         const site = await storage.get(metadataKey(experiment, 'site', config.siteId));
@@ -862,6 +921,7 @@ export function createService({experiment = EXPERIMENT, store, storage, randomSe
       const series = await storage.get(key);
       if (!series) throw new HttpError(404, 'series_not_found', 'Series was not found.');
       if (series.config.purpose !== 'scored' || series.status !== 'draft') throw new HttpError(409, 'series_not_draft', 'Only a scored draft manifest can be frozen.');
+      await frozenScoredProfile(series);
       if (series.codeCheckpoint !== sourceCheckpoint || !/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(sourceCheckpoint)) throw new HttpError(409, 'code_checkpoint_unqualified', 'Freeze requires the current immutable source checkpoint.');
       if (!qualified(series)) throw new HttpError(409, 'qualification_incomplete', 'Software, footage, phone and clock checks must pass for this exact profile and source.');
       series.status = 'frozen';
@@ -960,6 +1020,7 @@ export function createService({experiment = EXPERIMENT, store, storage, randomSe
           catch (error) { throw new HttpError(400, 'invalid_config', error.message); }
           if (config.purpose === 'scored' && !scoredCollectionEnabled) throw new HttpError(409, 'scored_locked', 'This Test release is unlocked preparation only.');
           if (config.purpose === 'scored' && (!seriesRecord || seriesRecord.status !== 'frozen' || canonicalJson(config) !== canonicalJson(seriesRecord.config))) throw new HttpError(409, 'series_manifest_mismatch', 'Scored settings must match the frozen manifest.');
+          if (config.purpose === 'scored') await frozenScoredProfile(seriesRecord);
           if (seriesRecord) {
             if (config.purpose !== seriesRecord.config.purpose) throw new HttpError(409, 'series_purpose_mismatch', 'Preparation and scored histories remain separate.');
             config.seriesId = seriesRecord.seriesId;

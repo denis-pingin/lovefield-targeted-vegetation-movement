@@ -71,11 +71,11 @@ The apparatus timing check uses a preparation recording with audible cues to com
 
 ## Compare preparation profiles
 
-Analyze identical run records, original videos, setup regions, clock mappings, footage reviews, and response boundaries under each candidate profile. Retain the original analyses when saving further revisions. Each side of a saved comparison uses one exact profile and statistical version, with the profile and analysis revision identified for every recording.
+Preparation compares settings of the area-weighted measurement. Analyze identical run records, original videos, setup regions, clock mappings, footage reviews, and response boundaries under each candidate profile. Retain the original analyses when saving further revisions. Each side of a saved comparison uses one exact profile and statistical version, with the profile and analysis revision identified for every recording.
 
 The comparison retains a common chronological inventory and accumulates its resolved paired prefix. An unfinished analysis or different source inputs stops both sides at that recording until resolved. Completed analyses with unavailable bins retain their uncertainty bounds. Save a new comparison snapshot to include a revised analysis or additional recordings; an existing snapshot keeps its selected revisions.
 
-Inspect annotated tracking and coverage alongside individual and accumulating estimates, confidence ranges, and evidence. Comparisons of measurement methods use the same recordings, so they supply alternative analyses of one observation set. The [methods](analysis-methods.md#23-measurement-qualification-and-comparison) specify the qualification criteria.
+Inspect annotated tracking and coverage alongside individual and accumulating estimates, confidence ranges, and evidence. The comparisons share the same observations. The [methods](analysis-methods.md#23-measurement-qualification) specify the qualification criteria.
 
 ## Source identity
 
@@ -134,16 +134,17 @@ analysis or exporting a local report does not upload it.
 1. Open the scored series in the local application. Complete the analyses and
    choose one retained revision per recording. Check unresolved and missing
    recordings before preparing the publication.
-2. In **Publish results**, check the destination, series, included revisions,
-   and pending statuses. Supply a correction reason when replacing a previously
-   selected analysis.
-3. Press **Publish results**. The application prepares the saved reports and
+2. In **Publish results**, select the destination. Supply a correction reason
+   when replacing a previously selected analysis.
+3. Press **Prepare publication**. The application prepares the saved reports and
    supporting files and checks the hosted run inventory for unresolved records.
    This check accounts for collected recordings; it does not recalculate local
    statistics.
-4. Follow upload progress. Files are verified by hash, and an interrupted upload
+4. Review the prepared summary, including the destination, included revisions,
+   pending recordings, and retained files. Then press **Publish results**.
+5. Follow upload progress. Files are verified by hash, and an interrupted upload
    can resume without another analysis or duplicate contribution.
-5. Open the returned links after completion. The reader changes only after the
+6. Open the returned links after completion. The reader changes only after the
    complete publication is committed.
 
 The publication contains the original videos, separately identified viewing

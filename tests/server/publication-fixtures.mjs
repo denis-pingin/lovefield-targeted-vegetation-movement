@@ -2,6 +2,7 @@ import {createHash, randomUUID} from 'node:crypto';
 import {createPublicationService} from '../../server/publication.mjs';
 import {MemoryStorage} from './service-fixtures.mjs';
 import {PUBLICATION_API_BASE, PUBLIC_API_BASE} from '../../web/study-paths.mjs';
+import canonicalProfile from '../../analysis-profile-area.json' with {type: 'json'};
 
 export const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 export const partSize = 8 * 1024 * 1024;
@@ -38,11 +39,11 @@ export async function verifyObjectHash(bucket, key) {
   const digest = createHash('sha256'); for await (const part of object.body) digest.update(part);
   return digest.digest('hex');
 }
-export function publicationFixture({video = Buffer.from('camera-original'), environment = 'test', storage = new MemoryStorage()} = {}) {
+export function publicationFixture({video = Buffer.from('camera-original'), environment = 'test', storage = new MemoryStorage(), profile: selectedProfile = canonicalProfile} = {}) {
   const bucket = new MemoryBucket();
   const inventory = [{runId: 'recording-one', tag: 'software-test', createdAtMs: 1000, collectionStartedAtMs: 2000,
     recordingStartedAtMs: 1500, finishedAtMs: 9000, lifecycle: 'completed', configHash: 'c'.repeat(64),
-    profileHash: 'd'.repeat(64), codeCheckpoint: 'e'.repeat(40)}];
+    profileHash: hash(JSON.stringify(selectedProfile)), codeCheckpoint: 'e'.repeat(40)}];
   let service;
   const construct = () => service = createPublicationService({storage, bucket, getInventory: async () => inventory,
     environment, clock: () => 10000, verifyObjectHash}); construct();
@@ -59,14 +60,15 @@ export function publicationFixture({video = Buffer.from('camera-original'), envi
     }
     const original = add(video, 'camera-original', 'camera.mp4');
     const report = add({kind: 'series', full: {estimate: null}, evidenceLabel: '1.00', publicationId}, 'report', 'report.json');
-    const runBundle = add({runId: inventory[0].runId, config: {purpose: 'scored'}}, 'run-bundle', 'run.json');
-    const profile = add({profileId: 'frozen'}, 'profile', 'profile.json');
+    const runBundle = add({runId: inventory[0].runId, config: {purpose: 'scored'}, profile: selectedProfile}, 'run-bundle', 'run.json');
+    const profile = add(selectedProfile, 'profile', 'profile.json');
     const inputs = add({recordings: {}}, 'reproduction-inputs', 'inputs.json');
     const analysisId = 'analysis-one';
     const analysis = add({runId: inventory[0].runId, analysisId, inputHashes: {video: original}, derivedInputHashes: {},
-      result: {runId: inventory[0].runId, revisionId: analysisId, purpose: 'scored'}}, 'analysis', 'analysis.json');
-    const seriesBundle = add({seriesId: 'scored-series', config: {purpose: 'scored'}, collectionRunIds: inventory.map(item => item.runId)}, 'series-bundle', 'series.json');
-    const result = add({purpose: 'scored', runIds: [inventory[0].runId], selectedRevisions: [analysisId]}, 'analysis', 'accumulated.json');
+      result: {runId: inventory[0].runId, revisionId: analysisId, purpose: 'scored', profile: selectedProfile}}, 'analysis', 'analysis.json');
+    const seriesBundle = add({seriesId: 'scored-series', config: {purpose: 'scored'}, profile: selectedProfile,
+      collectionRunIds: inventory.map(item => item.runId)}, 'series-bundle', 'series.json');
+    const result = add({purpose: 'scored', profile: selectedProfile, runIds: [inventory[0].runId], selectedRevisions: [analysisId]}, 'analysis', 'accumulated.json');
     const included = {runId: inventory[0].runId, analysisId, analysisSha256: analysis, reportSha256: report,
       runBundleSha256: runBundle, profileSha256: profile, reproductionInputsSha256: inputs, inputSha256s: [original],
       status: 'completed', missingReasons: [], qualificationReasons: []};

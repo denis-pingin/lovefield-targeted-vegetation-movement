@@ -5,10 +5,28 @@ import cv2
 import numpy as np
 import pytest
 
-from study_profiles import area_profile, development_profile
+from study_profiles import area_profile
 from study_timing import inspect_video_timeline, video_end_seconds
 from study_video import read_frames, extract_tree, _tracking_preview_image
 from tree_annotations import export_annotated_clip
+
+
+def test_annotation_rejects_unsupported_profile_before_opening_video_or_writing(tmp_path, monkeypatch):
+    profile = area_profile()
+    profile['version'] = 'tree-profile-development-1'
+    del profile['video']['measurement']
+    opened = []
+    def no_capture(*args):
+        opened.append(args)
+        raise AssertionError('An unsupported profile must not open a video')
+    monkeypatch.setattr(cv2, 'VideoCapture', no_capture)
+    video = {'path': str(tmp_path / 'camera.avi'), 'frameTimeline': {'frameRate': 25, 'frames': [
+        {'frameIndex': 0, 'ptsSeconds': 0}, {'frameIndex': 1, 'ptsSeconds': .04}]}}
+    destination = tmp_path / 'annotation' / 'clip.avi'
+    with pytest.raises(ValueError, match='Unsupported'):
+        export_annotated_clip(video, {}, profile, 0, .04, destination)
+    assert opened == []
+    assert not destination.parent.exists()
 
 
 def test_bounded_annotation_uses_same_tracks_and_source_cadence(tmp_path):
@@ -26,7 +44,7 @@ def test_bounded_annotation_uses_same_tracks_and_source_cadence(tmp_path):
              'frameTimeline': inspect_video_timeline(path)}
     regions = {name: np.zeros((120, 180), dtype=bool) for name in ('A', 'B', 'background')}
     for index, region in enumerate(regions.values()): region[15:105, index * 60 + 5:index * 60 + 55] = True
-    profile = development_profile()
+    profile = area_profile()
     profile['video']['shake']['minimumBackgroundDisplacementPixels'] = 100.
     expected = extract_tree(read_frames([{'source_id': 'movie', 'recording_id': 'movie', 'path': str(path), 'sha256': digest}], {'movie': video['clockMap']}), [], regions, profile, retain_tracks=True)
     output = export_annotated_clip(video, regions, profile, .8, .4, tmp_path / 'annotation.avi')
@@ -62,7 +80,7 @@ def test_full_length_annotation_includes_first_and_last_source_frames(tmp_path):
     regions = {name: np.zeros((80, 120), dtype=bool) for name in ('A', 'B', 'background')}
     for index, region in enumerate(regions.values()):
         region[5:75, index * 40 + 2:index * 40 + 38] = True
-    profile = development_profile()
+    profile = area_profile()
     output = export_annotated_clip(video, regions, profile, 0, 61, tmp_path / 'full.avi')
     rows = [json.loads(line) for line in (tmp_path / 'full.tracks.jsonl').read_text().splitlines()]
     capture = cv2.VideoCapture(str(tmp_path / 'full.avi'))
@@ -224,5 +242,5 @@ def test_annotation_rejects_unbounded_or_invalid_requests(tmp_path, start, durat
     video = {'frameTimeline': {'frameRate': 2, 'frames': [
         {'frameIndex': 120, 'ptsSeconds': 60}, {'frameIndex': 121, 'ptsSeconds': 60.5}]}}
     with pytest.raises(ValueError, match='duration|start|range|video'):
-        export_annotated_clip(video, {}, development_profile(), start, duration, tmp_path / 'clip.avi')
+        export_annotated_clip(video, {}, area_profile(), start, duration, tmp_path / 'clip.avi')
     assert not (tmp_path / 'clip.avi').exists()

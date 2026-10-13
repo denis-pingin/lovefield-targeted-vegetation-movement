@@ -3,34 +3,62 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {profileFromFields, persistChangedProfileSelection, startMacAnalysisApplication} from '../../web/app.mjs';
 import {renderMacAnalysisPage} from '../../web/views.mjs';
-const saved = JSON.parse(fs.readFileSync(new URL('../../analysis-profile.json', import.meta.url)));
+import {defaultConfig} from '../../web/run-config.mjs';
+const saved = JSON.parse(fs.readFileSync(new URL('../../analysis-profile-area.json', import.meta.url)));
+const gridFields = {cell_size: '128', points_per_cell: '32', minimum_tracks_per_cell: '3', spatial_coverage: '.99', refresh_policy: 'timed'};
 const area = JSON.parse(fs.readFileSync(new URL('../../analysis-profile-area.json', import.meta.url)));
 
+test('new preparation and scored configurations select the canonical grid profile', () => {
+  for (const purpose of ['preparation', 'scored']) {
+    assert.equal(defaultConfig('tree', purpose).analysisProfileId, area.profileId);
+  }
+});
+
+test('the preparation editor exposes only tunable area settings and preserves names', () => {
+  const custom = {...saved, profileId: 'my-canopy', label: 'My canopy settings'};
+  const profiles = [custom].map(profile => ({profileId: profile.profileId,
+    label: profile.label, sealedProfileJson: JSON.stringify(profile)}));
+  const run = {runId: 'tree-1', mode: 'tree', purpose: 'preparation', analyses: {}};
+  const html = renderMacAnalysisPage({runs: [run], detail: run, selectedRunId: run.runId,
+    profiles, selectedProfileId: custom.profileId});
+  assert.match(html, /Cell size \(pixels\)/);
+  assert.match(html, /Maximum points per full cell/);
+  assert.match(html, /My canopy settings/);
+  assert.doesNotMatch(html, /deprecated|point-average|feature-mean|Maximum points per region/i);
+  assert.ok(html.includes(`<option value="${custom.profileId}" selected>`));
+});
+
+test('unsupported profile form input is rejected before it can be saved', () => {
+  const invalid = structuredClone(saved);
+  delete invalid.video.measurement;
+  assert.throws(() => profileFromFields(invalid, {...gridFields, profile_name: 'Canopy', window_width: '41'}, 'new'), /Unsupported/);
+});
+
 test('Mac controls create a new full profile and retain advanced settings', () => {
-  const changed = profileFromFields(saved, {profile_name: 'Tree 2000/31', maximum_points: '2000', window_width: '31'}, 'tree-2000-31');
+  const changed = profileFromFields(saved, {...gridFields, profile_name: 'Tree 2000/31', points_per_cell: '2000', window_width: '31'}, 'tree-2000-31');
   assert.equal(changed.profileId, 'tree-2000-31');
-  assert.equal(changed.video.featureDetection.maxCorners, 2000);
+  assert.equal(changed.video.measurement.pointsPerCell, 2000);
   assert.deepEqual(changed.video.tracking.windowSizePixels, [31, 31]);
   assert.equal(changed.video.tracking.maximumForwardBackwardErrorPixels, saved.video.tracking.maximumForwardBackwardErrorPixels);
-  assert.equal(saved.video.featureDetection.maxCorners, 3000);
+  assert.equal(saved.video.measurement.pointsPerCell, 32);
 });
 for (const [points, width] of [['0','31'], ['2000','30'], ['2.5','31'], ['NaN','31']]) {
   test(`invalid profile settings ${points}/${width} are visible errors`, () => {
-    assert.throws(() => profileFromFields(saved, {profile_name: 'New settings', maximum_points: points, window_width: width}), /integer|odd|points/);
+    assert.throws(() => profileFromFields(saved, {...gridFields, profile_name: 'New settings', points_per_cell: points, window_width: width}), /integer|odd|points/);
   });
 }
 
 test('a friendly profile name is saved independently of its internal identifier', () => {
-  const profile = profileFromFields(saved, {
-    profile_name: 'Tree 6000/21 - mean-track analysis', maximum_points: '6000', window_width: '21',
+  const profile = profileFromFields(saved, {...gridFields,
+    profile_name: 'Canopy 6000/21 settings', points_per_cell: '6000', window_width: '21',
   }, 'tree-generated-id');
   assert.equal(profile.profileId, 'tree-generated-id');
-  assert.equal(profile.label, 'Tree 6000/21 - mean-track analysis');
+  assert.equal(profile.label, 'Canopy 6000/21 settings');
 });
 
 test('blank profile names have a useful error', () => {
-  assert.throws(() => profileFromFields(saved, {
-    profile_name: '   ', maximum_points: '6000', window_width: '21',
+  assert.throws(() => profileFromFields(saved, {...gridFields,
+    profile_name: '   ', points_per_cell: '6000', window_width: '21',
   }, 'tree-generated-id'), /Enter a profile name/);
 });
 
@@ -68,7 +96,7 @@ test('preparation controls show method-specific settings and fixed saved constan
 });
 
 const settle = () => new Promise(resolve => setImmediate(resolve));
-async function profileFormHarness(saveResponse) {
+async function profileFormHarness(saveResponse, selectedProfileId = saved.profileId) {
   const elements = new Map(), requests = [];
   const element = () => ({hidden: false, innerHTML: '', textContent: '', listeners: new Map(),
     addEventListener(kind, callback) { this.listeners.set(kind, callback); },
@@ -84,7 +112,7 @@ async function profileFormHarness(saveResponse) {
   const record = profile => ({profileId: profile.profileId, label: profile.label ?? profile.profileId, sealedProfileJson: JSON.stringify(profile)});
   const profiles = [record(saved)];
   const annotationJobs = [];
-  const run = {runId: 'retained-run', mode: 'tree', purpose: 'preparation', selectedProfileId: saved.profileId};
+  const run = {runId: 'retained-run', mode: 'tree', purpose: 'preparation', selectedProfileId};
   const window = {HTMLFormElement: Form,
     FormData: class extends Map { constructor(form) { super(Object.entries(form.fields)); } },
     crypto: globalThis.crypto, setInterval() { return 1; }, clearInterval() {},
@@ -127,10 +155,22 @@ async function profileFormHarness(saveResponse) {
     }};
 }
 
+test('an unavailable saved selection uses an offered area profile without changing the retained run', async () => {
+  const app = await profileFormHarness(body => new Response(JSON.stringify({profile: body.profile})), 'not-offered');
+  assert.equal(app.run.selectedProfileId, 'not-offered');
+  assert.ok(app.main.innerHTML.includes(`<option value="${saved.profileId}" selected>`));
+  assert.equal(app.requests.filter(request => request.url.endsWith('/select-profile')).length, 0);
+  app.submit('save-profile', {...gridFields, profile_name: 'My canopy', window_width: '41'});
+  await settle(); await settle();
+  const request = app.requests.find(request => request.url.endsWith('/save-profile'));
+  assert.ok(request, 'The visible area settings must be saveable');
+  assert.equal(request.body.profile.video.measurement.method, 'area-grid-mean-v1');
+});
+
 test('an invalid profile save keeps settings open and displays a dismissible alert', async () => {
   const app = await profileFormHarness(() => { throw new Error('Invalid settings must not reach the server'); });
   assert.match(app.settings().html, /Profile name/);
-  app.submit('save-profile', {profile_name: 'Tree 6000/21 - mean-track analysis', maximum_points: '6000', window_width: '20'});
+  app.submit('save-profile', {...gridFields, profile_name: 'Canopy 6000/21 settings', points_per_cell: '6000', window_width: '20'});
   await settle();
   assert.match(app.settings().attributes, /\bopen\b/);
   const error = app.elements.get('error');
@@ -149,25 +189,25 @@ test('profile saving shows pending status then confirms the selected friendly na
   const app = await profileFormHarness(body => new Promise(resolve => {
     finishSave = () => resolve(new Response(JSON.stringify({profile: body.profile})));
   }));
-  app.submit('save-profile', {profile_name: 'Tree 6000/21 - mean-track analysis', maximum_points: '6000', window_width: '21'});
+  app.submit('save-profile', {...gridFields, profile_name: 'Canopy 6000/21 settings', points_per_cell: '6000', window_width: '21'});
   assert.match(app.settings().attributes, /\bopen\b/);
   assert.match(app.settings().html, /<button[^>]*disabled[^>]*>Save as new profile/);
   assert.match(app.main.innerHTML, /Saving the new analysis profile/);
   await settle(); finishSave(); await settle(); await settle();
   assert.match(app.settings().attributes, /\bopen\b/);
-  assert.match(app.elements.get('notice').textContent, /Tree 6000\/21 - mean-track analysis.*saved and selected/);
+  assert.match(app.elements.get('notice').textContent, /Canopy 6000\/21 settings.*saved and selected/);
   const body = app.requests.find(request => request.url.endsWith('/save-profile')).body;
   assert.equal(body.runId, 'retained-run');
   assert.match(body.profile.profileId, /^tree-[a-f0-9-]{36}$/);
-  assert.equal(body.profile.label, 'Tree 6000/21 - mean-track analysis');
-  assert.equal(body.profile.video.featureDetection.maxCorners, 6000);
+  assert.equal(body.profile.label, 'Canopy 6000/21 settings');
+  assert.equal(body.profile.video.measurement.pointsPerCell, 6000);
   assert.deepEqual(body.profile.video.tracking.windowSizePixels, [21, 21]);
   assert.ok(app.main.innerHTML.includes(`<option value="${body.profile.profileId}" selected>`));
 });
 
 test('a rejected save shows the server error and enables retry without hiding the settings', async () => {
   const app = await profileFormHarness(() => new Response(JSON.stringify({error: {message: 'The profile could not be stored.'}}), {status: 400}));
-  app.submit('save-profile', {profile_name: 'My settings', maximum_points: '6000', window_width: '21'});
+  app.submit('save-profile', {...gridFields, profile_name: 'My settings', points_per_cell: '6000', window_width: '21'});
   await settle(); await settle();
   assert.match(app.settings().attributes, /\bopen\b/);
   assert.match(app.settings().html, /<button type="submit">Save as new profile<\/button>/);
@@ -206,10 +246,10 @@ test('draft restoration preserves the authoritative selected profile and refresh
   const {restoreMacFormDrafts}=await import('../../web/app.mjs');
   const selected={name:'profile_id',type:'select-one',value:'new-profile'};
   const identifier={name:'profile_id',type:'text',value:''};
-  const points={name:'maximum_points',type:'number',value:'1500'};
+  const points={name:'points_per_cell',type:'number',value:'1500'};
   const forms=[{elements:[selected]},{elements:[identifier,points]}];
-  const snapshot=[{formName:'start-analysis',fields:[{name:'profile_id',type:'select-one',value:'tree-development-1'}]},
-    {formName:'save-profile',fields:[{name:'profile_id',type:'text',value:'draft'},{name:'maximum_points',type:'number',value:'2000'}]}];
+  const snapshot=[{formName:'start-analysis',fields:[{name:'profile_id',type:'select-one',value:'tree-development-area-1'}]},
+    {formName:'save-profile',fields:[{name:'profile_id',type:'text',value:'draft'},{name:'points_per_cell',type:'number',value:'2000'}]}];
   restoreMacFormDrafts(forms,snapshot,{profileChanged:true});
   assert.equal(selected.value,'new-profile');assert.equal(points.value,'1500');assert.equal(identifier.value,'');
   restoreMacFormDrafts(forms,snapshot,{profileChanged:false});

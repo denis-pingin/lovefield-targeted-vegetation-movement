@@ -78,9 +78,9 @@ function scientificSettings(configuration, profile) {
   const measurementSettings = areaGrid ? [
     Number.isFinite(video.measurement.pointsPerCell) ? `${escapeHtml(video.measurement.pointsPerCell)} maximum feature points per full grid cell.` : '',
     Number.isFinite(video.measurement.cellSizePixels) ? `Grid cell size: ${escapeHtml(video.measurement.cellSizePixels)} × ${escapeHtml(video.measurement.cellSizePixels)} pixels.` : '',
-  ].filter(Boolean).join(' ') : Number.isFinite(video?.featureDetection?.maxCorners) ? `${escapeHtml(video.featureDetection.maxCorners)} maximum feature points per region.` : '';
+  ].filter(Boolean).join(' ') : '';
   return `<h3>Recording and analysis settings</h3><p>${tree ? `${escapeHtml(tree.responseSeconds)} seconds per target · ${escapeHtml(tree.count)} planned targets · ${escapeHtml(tree.preRollSeconds ?? 'unavailable')} seconds absent before · ${escapeHtml(tree.postRollSeconds ?? 'unavailable')} seconds absent after` : 'Recording settings unavailable.'}</p>`
-    + (video ? `<p>Measurement: ${escapeHtml(video.measurement?.method ?? 'feature-mean-v1')}. ${measurementSettings} ${video.tracking?.windowSizePixels ? `Tracking window: ${escapeHtml(video.tracking.windowSizePixels.join(' × '))} pixels.` : ''}</p>` : '<p>Analysis settings unavailable.</p>')
+    + (areaGrid ? `<p>Measurement: ${escapeHtml(video.measurement.method)}. ${measurementSettings} ${video.tracking?.windowSizePixels ? `Tracking window: ${escapeHtml(video.tracking.windowSizePixels.join(' × '))} pixels.` : ''}</p>` : '<p>Analysis settings unavailable.</p>')
     + (configuration ? `<details class="retained-details"><summary>View exact recording settings</summary><pre>${escapeHtml(JSON.stringify(configuration, null, 2))}</pre></details>` : '')
     + (profile ? `<details class="retained-details"><summary>View exact analysis settings</summary><pre>${escapeHtml(JSON.stringify(profile, null, 2))}</pre></details>` : '');
 }

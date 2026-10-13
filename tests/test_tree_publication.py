@@ -133,7 +133,7 @@ def test_deduplicated_original_keeps_each_recordings_complete_references(tmp_pat
     try:
         imported = app.import_recording('later-pending', tmp_path / 'camera.avi', 'video')
         app.save_obstruction_review('later-pending', imported['recordingId'], 'clear', [])
-        analysis = app.start_analysis('later-pending', 'tree-development-1')
+        analysis = app.start_analysis('later-pending', 'tree-development-area-1')
         wait_result(app, 'later-pending', analysis['analysisId'])
         job = prepare_publication(app, series_id, 'test', inventory=inventory, software_test=True)
         original = next(digest for digest, item in job['manifest']['files'].items() if item['role'] == 'camera-original')
@@ -184,3 +184,18 @@ def test_methods_downloads_use_the_scored_series_frozen_source_documents(tmp_pat
                 assert published != (package / name).read_bytes()
         assert manifest['seriesBundle']['codeCheckpoint'] == checkpoint
     finally: app.close()
+
+
+def test_unsupported_scored_publication_is_rejected_before_job_or_snapshot_creation(tmp_path):
+    from study_profiles import area_profile
+    app, series_id, inventory = scored_application(tmp_path, profile=area_profile(), analyze=False)
+    try:
+        app.series_store.state['manifests'][series_id]['manifest']['profile']['video']['measurement']['method'] = 'unsupported-method'
+        with pytest.raises(AppError, match='Unsupported'):
+            prepare_publication(app, series_id, 'test', inventory=inventory, software_test=True)
+        with pytest.raises(AppError, match='Unsupported'):
+            app._call(app.publication_jobs.create, {'seriesId': series_id, 'environment': 'test', 'softwareTest': True})
+        assert app.publication_jobs.summaries()['jobs'] == []
+        assert not (app._hosted_root() / '_publications').exists()
+    finally:
+        app.close()

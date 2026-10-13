@@ -9,7 +9,7 @@ import zipfile
 
 PACKAGE = Path(__file__).resolve().parents[1]
 TOP_LEVEL = {'.gitignore', '.yarnrc.yml', 'README.md', 'protocol.md', 'analysis-methods.md', 'validation.md', 'requirements.txt',
-             'package.json', 'yarn.lock', 'wrangler.jsonc', 'analysis-profile.json', 'analysis-profile-area.json',
+             'package.json', 'yarn.lock', 'wrangler.jsonc', 'analysis-profile-area.json',
              'publication-release-guide.md', 'start-registry.config.json', 'LICENSE.md', 'LICENSE-PolyForm-Noncommercial-1.0.0.md',
              'LICENSE-CC-BY-NC-4.0.txt'}
 EXTENSIONS = {'src': {'.py'}, 'server': {'.mjs'}, 'web': {'.mjs', '.css', '.html', '.mp3', '.svg', '.webp', '.woff2'},

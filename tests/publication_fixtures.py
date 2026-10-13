@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 
 from study_app import StudyApplication
-from study_profiles import development_profile
+from study_profiles import canonical_profile
 from study_analysis import analyze_extracted_run
 from tree_fixtures import tree_bundle, write_bundle
 from test_tree_analysis import measured_pairs, recording
@@ -21,9 +21,9 @@ def fixture_source_checkpoint():
     raise ValueError('The software fixture needs Git or an exact extracted source inventory.')
 
 
-def scored_application(directory, *, missing=False, pending_first=False, purpose='scored'):
+def scored_application(directory, *, missing=False, pending_first=False, purpose='scored', profile=None, analyze=True):
     series_id = 'software-test-scored-series'
-    profile = development_profile()
+    profile = profile or canonical_profile()
     config = {'version': 'tree-targeting-3', 'experimentSlug': 'tree-targeting', 'mode': 'tree',
               'purpose': purpose, 'seriesId': series_id, 'analysisProfileId': profile['profileId'],
               'tree': {'preRollSeconds': 1, 'postRollSeconds': 1, 'responseSeconds': 2,
@@ -61,10 +61,11 @@ def scored_application(directory, *, missing=False, pending_first=False, purpose
     application.import_collection_bundle(series_path)
     for bundle in bundles:
         application.import_run_bundle(write_bundle(directory / (bundle['runId'] + '.json'), bundle))
-    imported = application.import_recording('completed-one', movie(directory / 'camera.avi'), 'video')
-    application.save_obstruction_review('completed-one', imported['recordingId'], 'clear', [])
-    analysis = application.start_analysis('completed-one', profile['profileId'])
-    wait_result(application, 'completed-one', analysis['analysisId'])
+    if analyze:
+        imported = application.import_recording('completed-one', movie(directory / 'camera.avi'), 'video')
+        application.save_obstruction_review('completed-one', imported['recordingId'], 'clear', [])
+        analysis = application.start_analysis('completed-one', profile['profileId'])
+        wait_result(application, 'completed-one', analysis['analysisId'])
     inventory = [{**member, 'tag': name, 'lifecycle': 'completed', 'recordingStartedAtMs': 1500 + index * 10000,
                   'finishedAtMs': 10000 + index * 10000} for index, (name, member) in enumerate(zip(names, members))]
     return application, series_id, inventory

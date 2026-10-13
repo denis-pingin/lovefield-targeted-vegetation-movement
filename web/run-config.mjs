@@ -11,6 +11,13 @@ const VERSION = 'tree-targeting-3';
 const MODES = new Set(['tree']);
 const PURPOSES = new Set(['preparation', 'scored']);
 
+export function requireAreaProfile(profile) {
+  if (profile?.version !== 'tree-profile-development-2' ||
+      profile?.video?.measurement?.method !== 'area-grid-mean-v1') {
+    throw new Error('Unsupported motion profile. Use area-weighted motion.');
+  }
+}
+
 export function defaultConfig(mode, purpose = 'preparation') {
   if (!MODES.has(mode)) throw new Error('Only Tree mode belongs to this study.');
   if (!PURPOSES.has(purpose)) throw new Error('Choose preparation or scored purpose.');
@@ -30,7 +37,7 @@ export function defaultConfig(mode, purpose = 'preparation') {
     siteId: null,
     setupId: null,
     seriesId: null,
-    analysisProfileId: 'tree-development-1',
+    analysisProfileId: 'tree-development-area-1',
   };
 }
 

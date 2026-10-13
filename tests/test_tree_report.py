@@ -8,7 +8,7 @@ import pytest
 from tree_report import build_tree_report
 from test_tree_series import result
 from tree_series import accumulate_series
-from study_profiles import development_profile
+from study_profiles import area_profile
 
 EXAMPLES = json.loads((Path(__file__).parents[1] / 'validation/results.json').read_text())['examples']
 
@@ -34,7 +34,7 @@ def test_retained_examples_use_reference_values_and_relative_units(name):
 def test_bounded_missing_and_single_label_are_visible_without_claiming_region_increases():
     run = result('one', 1)
     run['targets'][0]['bins'][0].update(usable=False, a=None, b=None, reasons=['obstructed_region'])
-    report = build_tree_report(accumulate_series([run], development_profile()))
+    report = build_tree_report(accumulate_series([run], area_profile()))
     assert report['counts']['missingBins'] == 1
     assert report['full']['estimate'] is None
     assert 'bounded unknown' in ' '.join(report['narrative'])
@@ -47,7 +47,7 @@ def test_bounded_missing_and_single_label_are_visible_without_claiming_region_in
 
 def test_incomplete_prefix_and_unverified_randomization_remain_visible():
     run = result('one', 1)
-    report = build_tree_report(accumulate_series([{'runId': 'earlier', 'status': 'pending'}, run], development_profile()))
+    report = build_tree_report(accumulate_series([{'runId': 'earlier', 'status': 'pending'}, run], area_profile()))
     assert report['pendingRuns'] == ['earlier', 'one']
     assert 'waiting' in ' '.join(report['narrative']).lower()
     assert report['randomizationStatus'] is None
@@ -55,7 +55,7 @@ def test_incomplete_prefix_and_unverified_randomization_remain_visible():
 
 
 def test_empty_series_has_only_pending_text_and_no_evidence_or_qualification_claim():
-    report = build_tree_report(accumulate_series([], development_profile()))
+    report = build_tree_report(accumulate_series([], area_profile()))
     assert report['status'] == 'Pending Tree result'
     assert report['counts']['targets'] == 0
     assert report['full'] is None and report['evidence'] is None
@@ -71,7 +71,7 @@ def test_series_history_joins_selected_individual_results_by_run_id_without_chan
     second['calculation']['streams']['-1']['effect_estimate'] = -.045
     first['calculation']['log_e'] = math.log(2)
     second['calculation']['log_e'] = math.log(4)
-    combined = accumulate_series([first, second], development_profile())
+    combined = accumulate_series([first, second], area_profile())
     cumulative_history = copy.deepcopy(combined['history'])
     combined['runs'].reverse()
     original = copy.deepcopy(combined)
@@ -92,7 +92,7 @@ def test_series_history_joins_selected_individual_results_by_run_id_without_chan
 
 
 def test_series_peak_sets_sequential_p_even_when_current_e_falls():
-    combined = accumulate_series([result('one', 1000)], development_profile())
+    combined = accumulate_series([result('one', 1000)], area_profile())
     combined['maxLogEvidence'] = math.log(100)
     combined['logEvidence'] = math.log(2)
     report = build_tree_report(combined)
@@ -108,7 +108,7 @@ def test_series_peak_sets_sequential_p_even_when_current_e_falls():
 
 @pytest.mark.parametrize('peak,expected', [(math.log(.5), '1'), (0, '1'), (math.log(20), '0.05')])
 def test_sequential_p_uses_initial_e_one_and_preserves_the_e_twenty_threshold(peak, expected):
-    combined = accumulate_series([result('one', 1000)], development_profile())
+    combined = accumulate_series([result('one', 1000)], area_profile())
     combined['maxLogEvidence'] = peak
     combined['logEvidence'] = peak
 
@@ -120,7 +120,7 @@ def test_sequential_p_uses_initial_e_one_and_preserves_the_e_twenty_threshold(pe
 
 
 def test_extreme_peak_keeps_finite_log_p_and_nonzero_scientific_label():
-    combined = accumulate_series([result('one', 1000)], development_profile())
+    combined = accumulate_series([result('one', 1000)], area_profile())
     combined['maxLogEvidence'] = 1000.
     combined['logEvidence'] = 0.
 
@@ -134,7 +134,7 @@ def test_extreme_peak_keeps_finite_log_p_and_nonzero_scientific_label():
 
 def test_missing_individual_estimate_retains_bounds_and_unmatched_run_warns(caplog):
     first, second = result('one', 1000), result('two', 10000)
-    combined = accumulate_series([first, second], development_profile())
+    combined = accumulate_series([first, second], area_profile())
     selected = combined['runs'][0]['calculation']['streams']['-1']
     selected['effect_estimate'] = None
     selected['effect_estimate_bounds'] = [-.2, .3]
@@ -172,7 +172,7 @@ def test_exported_motion_chart_crops_clock_filming_and_preserves_actual_absence(
     for pair in pairs['pairs']:
         if pair['end'] <= first_second or pair['start'] >= 28.2:
             pair.update(A_speed=1860., B_speed=1000.)
-    profile = development_profile()
+    profile = area_profile()
     run = analyze_extracted_run(bundle, pairs, profile, recording())
     retained = copy.deepcopy(run['timeline'])
     report = json.loads(json.dumps(build_tree_report(run)))
@@ -193,7 +193,7 @@ def test_timeline_uses_saved_target_intervals_and_exact_response_bins_without_mu
     from test_tree_analysis import measured_pairs, recording
 
     run = analyze_extracted_run(tree_bundle(response=2.4, labels=('A', 'A', 'B')),
-                                measured_pairs(60), development_profile(), recording())
+                                measured_pairs(60), area_profile(), recording())
     missing = run['targets'][1]['bins'][1]
     missing.update(usable=False, a=None, b=None, reasons=['obstructed_region'])
     original = copy.deepcopy(run)
@@ -226,7 +226,7 @@ def test_timeline_uses_saved_target_intervals_and_exact_response_bins_without_mu
 
     unplayed_bundle = tree_bundle(response=2.4, labels=('A', 'A', 'B'))
     unplayed_bundle['cues'][-1].update(playedAtMs=None, deliveryStatus='failed')
-    unplayed = analyze_extracted_run(unplayed_bundle, measured_pairs(60), development_profile(), recording())
+    unplayed = analyze_extracted_run(unplayed_bundle, measured_pairs(60), area_profile(), recording())
     unplayed_chart = next(item for item in build_tree_report(unplayed)['charts'] if item['kind'] == 'timeline')
     assert len(unplayed['targets']) == 3
     assert len(unplayed_chart['targetIntervals']) == 2
@@ -235,7 +235,7 @@ def test_timeline_uses_saved_target_intervals_and_exact_response_bins_without_mu
 
 def test_timeline_uses_each_recordings_saved_response_duration_without_changing_series():
     first, second = result('short', 1000, 2), result('long', 10000, 8)
-    combined = accumulate_series([first, second], development_profile())
+    combined = accumulate_series([first, second], area_profile())
     original = copy.deepcopy((first, second, combined))
     series_before = build_tree_report(combined)
 

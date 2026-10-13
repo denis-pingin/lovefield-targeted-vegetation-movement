@@ -522,12 +522,14 @@ class StudyApplication:
         if manifest_path.exists():
             manifest = self._hosted_manifest(run_id)
         else:
+            from study_profiles import canonical_profile
             manifest = {'experimentSlug':EXPERIMENT_SLUG, 'runId':run_id,
                 'provenance':{'experimentSlug':bundle.get('experimentSlug'), 'runId':run_id},
                 'mode':bundle.get('config',{}).get('mode'),
                 'purpose':bundle.get('config',{}).get('purpose'), 'bundles':[], 'recordings':{},
                 'timeMaps':[], 'obstructionReviews':[], 'analyses':{}, 'configHash':bundle.get('configHash'),
-                'profileHash':bundle.get('profileHash')}
+                'profileHash':bundle.get('profileHash'),
+                'selectedProfileId':canonical_profile()['profileId'] if bundle['config']['purpose'] == 'preparation' else None}
         if manifest['mode'] != bundle.get('config',{}).get('mode'):
             raise AppError('The run identity is already associated with another mode.', operation='import_bundle', status=409)
         if manifest.get('purpose') not in (None,bundle.get('config',{}).get('purpose')):
@@ -876,20 +878,30 @@ class StudyApplication:
         profile_path = self.directory / 'profiles' / f'{profile_id}.json'
         if not profile_path.is_file():
             raise AppError('The selected analysis profile is unavailable.', operation='analysis', status=404)
-        return load_profile(profile_path)
+        try:
+            return load_profile(profile_path)
+        except ValueError as error:
+            raise AppError(str(error), operation='analysis', code='invalid_profile') from error
 
 
     def _list_hosted_profiles(self):
-        from study_profiles import BUILTIN_PROFILE_PATHS, PROFILE_LABELS, load_profile
+        from study_profiles import BUILTIN_PROFILE_PATHS, PROFILE_LABELS, load_profile, measurement_method
         paths = [*BUILTIN_PROFILE_PATHS.values(), *sorted((self.directory / 'profiles').glob('*.json'))]
         profiles = []
         for path in paths:
-            loaded = load_profile(path)
+            try:
+                loaded = load_profile(path)
+            except ValueError as error:
+                if path in BUILTIN_PROFILE_PATHS.values():
+                    raise AppError(str(error), operation='profiles', code='invalid_profile') from error
+                logging.warning('Saved profile %s is not offered (%s); its retained file is unchanged', path.name, error)
+                continue
             identifier = loaded['profile']['profileId']
             if path not in BUILTIN_PROFILE_PATHS.values() and (identifier in BUILTIN_PROFILE_PATHS or path.stem != identifier):
                 raise AppError('A saved profile filename does not match its profile ID.', operation='profiles')
             profiles.append({'profileId':identifier,
                 'label':loaded['profile'].get('label', PROFILE_LABELS.get(identifier, identifier)),
+                'measurementMethod':measurement_method(loaded['profile']),
                 'sealedProfileJson':loaded['sealedProfileJson']})
         return {'profiles':profiles}
 
@@ -1005,9 +1017,11 @@ class StudyApplication:
             profile_hash = hashlib.sha256(sealed_profile.encode('utf-8')).hexdigest()
             if isinstance(resolved,dict) and resolved.get('sha256') not in (None, profile_hash):
                 raise AppError('The saved analysis profile hash does not match its bytes.', operation='analysis', status=409)
-        from study_profiles import AREA_GRID_MEAN, measurement_method
-        if bundle.get('config', {}).get('purpose') == 'scored' and measurement_method(profile) == AREA_GRID_MEAN:
-            raise AppError('The area-grid method is available for preparation only.', operation='analysis', status=409)
+        from study_profiles import validate_run_profile
+        try:
+            profile = validate_run_profile(profile, bundle)
+        except ValueError as error:
+            raise AppError(str(error), operation='analysis', code='invalid_profile', status=409) from error
         disposition = None
         if missing_reason is not None:
             available, disposition = self._missing_measurement_inputs(directory, manifest, bundle, profile, profile_hash, missing_reason)
@@ -1228,7 +1242,7 @@ class StudyApplication:
         try:
             saved = self.comparison_store.get(comparison_id)
         except (ValueError, OSError) as error:
-            raise AppError('The saved method comparison was not found.', operation='comparison', status=404) from error
+            raise AppError('The saved profile comparison was not found.', operation='comparison', status=404) from error
         return {**saved, 'leftDisplayReport': build_tree_report(saved['left']),
                 'rightDisplayReport': build_tree_report(saved['right'])}
 
@@ -1494,7 +1508,7 @@ class StudyApplication:
 
     def _accumulating_series(self, series_id=None):
         from tree_report import build_tree_report
-        from study_profiles import development_profile
+        from study_profiles import canonical_profile
         from study_bundle import load_series_bundle
         if series_id is not None and not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', series_id):
             raise AppError('Choose a retained Tree series.', operation='series')
@@ -1507,7 +1521,7 @@ class StudyApplication:
             except (ValueError, OSError) as error:
                 raise AppError('The retained series bundle is missing or changed.', operation='series',
                                code='series_bundle_changed', status=409) from error
-        value = self.series_store.evaluate(development_profile(), series_id=series_id)
+        value = self.series_store.evaluate(canonical_profile(), series_id=series_id)
         value['series'] = self.series_store.list_series()
         value['report'] = build_tree_report(value)
         if self.publication_jobs.is_software_test_series(series_id): value['softwareTest'] = True

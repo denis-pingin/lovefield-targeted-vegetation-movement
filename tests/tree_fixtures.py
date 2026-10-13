@@ -13,7 +13,7 @@ def write_bundle(path, bundle):
 
 def tree_bundle(run_id='tree-1', *, slug='wind-prestudy', mode='tree', response=2, labels=('A', 'B'), config=None, profile=None):
     config = config or {'version': f'{slug}-3', 'experimentSlug': slug, 'mode': mode,
-              'purpose': 'preparation', 'analysisProfileId': 'tree-development-1',
+              'purpose': 'preparation', 'analysisProfileId': 'tree-development-area-1',
               'tree': {'preRollSeconds': 1, 'postRollSeconds': 1, 'responseSeconds': response,
                        'recoverySeconds': 0, 'announceRelease': False, 'count': len(labels)}}
     profile = profile or {'profileId': 'retained-wind-profile', 'version': 'wind-prestudy-profile-2'}
@@ -50,3 +50,9 @@ def tree_bundle(run_id='tree-1', *, slug='wind-prestudy', mode='tree', response=
         event('cuePlayed', at, {'cueId': f'cue-{index}', 'playedAtMs': at, 'timeSource': 'server_receipt'})
     event('away', round(3000 + len(labels) * (response + .1) * 1000), {})
     return bundle
+
+
+def scored_tree_bundle(profile, run_id='tree-1', **changes):
+    config = tree_bundle(slug='tree-targeting', **changes)['config']
+    config.update(purpose='scored', analysisProfileId=profile['profileId'])
+    return tree_bundle(run_id, slug='tree-targeting', config=config, profile=profile, **changes)

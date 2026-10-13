@@ -9,7 +9,7 @@ for (const mode of ['local','global']) test(`Tree collection rejects ${mode}`, (
 });
 test('Tree configuration is independent and permits fractional response seconds', () => {
   const config = defaultConfig('tree');
-  assert.equal(config.analysisProfileId, 'tree-development-1');
+  assert.equal(config.analysisProfileId, 'tree-development-area-1');
   assert.equal(config.global, undefined);
   assert.equal(config.local, undefined);
   assert.equal(validateConfig({...config, tree: {...config.tree, responseSeconds: 2.4}}).tree.responseSeconds, 2.4);

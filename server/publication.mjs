@@ -1,6 +1,7 @@
 import {PART_SIZE, objectKey, sha256, verifyObjectHash as streamedHash, boundedBytes, servePublishedFile} from './publication-files.mjs';
 import {ArtifactIdentityError, selectArtifactIdentity} from './publication-identity.mjs';
 import {PUBLICATION_API_BASE, PUBLIC_API_BASE, PUBLIC_BASE, LEGACY_HOSTED_BASE, canonicalHostedStudyPath, publicStudyUrl} from '../web/study-paths.mjs';
+import {requireAreaProfile} from '../web/run-config.mjs';
 
 const API = PUBLICATION_API_BASE;
 const PUBLIC_API = PUBLIC_API_BASE;
@@ -170,18 +171,28 @@ export function createPublicationService({storage, bucket, getInventory, clock =
     }
   }
   async function artifactIdentities(manifest) {
-    const bundle = await readIdentity(manifest.seriesBundle.sha256, ['seriesId', 'config.purpose', 'collectionRunIds']);
+    const profilePaths = ['profile.version', 'profile.video.measurement.method'];
+    const scoredProfile = profile => {
+      try { requireAreaProfile(profile); }
+      catch (error) { throw new PublicationError(409, 'invalid_profile', error.message); }
+    };
+    const bundle = await readIdentity(manifest.seriesBundle.sha256, ['seriesId', 'config.purpose', 'collectionRunIds', ...profilePaths]);
     require(bundle.seriesId === manifest.seriesId && bundle.config?.purpose === 'scored' && JSON.stringify(bundle.collectionRunIds) === JSON.stringify(manifest.inventory.map(item => item.runId)), 'The retained series bundle differs from publication coverage.', 409);
-    const result = await readIdentity(manifest.accumulated.resultSha256, ['purpose', 'runIds', 'selectedRevisions']);
+    scoredProfile(bundle.profile);
+    const result = await readIdentity(manifest.accumulated.resultSha256, ['purpose', 'runIds', 'selectedRevisions', ...profilePaths]);
     require(result.purpose === 'scored' && JSON.stringify(result.runIds) === JSON.stringify(manifest.accumulated.included.map(item => item.runId)) && JSON.stringify(result.selectedRevisions) === JSON.stringify(manifest.accumulated.included.map(item => item.analysisId)), 'The saved accumulated result differs from its declared revisions.', 409);
+    scoredProfile(result.profile);
     for (const selected of manifest.includedAnalyses) {
-      const artifact = await readIdentity(selected.analysisSha256, ['runId', 'analysisId', 'result.runId', 'result.revisionId', 'result.purpose', 'inputHashes', 'derivedInputHashes']);
+      const artifact = await readIdentity(selected.analysisSha256, ['runId', 'analysisId', 'result.runId', 'result.revisionId', 'result.purpose', 'inputHashes', 'derivedInputHashes', ...profilePaths.map(path => `result.${path}`)]);
       require(artifact.runId === selected.runId && artifact.analysisId === selected.analysisId && artifact.result?.runId === selected.runId && artifact.result?.revisionId === selected.analysisId && artifact.result?.purpose === 'scored', 'The selected individual artifact has a mismatching identity.', 409);
+      scoredProfile(artifact.result.profile);
+      scoredProfile(await readIdentity(selected.profileSha256, ['version', 'video.measurement.method']));
       require(artifact.inputHashes && typeof artifact.inputHashes === 'object' && !Array.isArray(artifact.inputHashes) && artifact.derivedInputHashes && typeof artifact.derivedInputHashes === 'object' && !Array.isArray(artifact.derivedInputHashes), 'The selected artifact is missing its retained input identity maps.', 409);
       const required = [...Object.values(artifact.inputHashes ?? {}), ...Object.values(artifact.derivedInputHashes ?? {})];
       require(required.every(hash => selected.inputSha256s.includes(hash) && manifest.files[hash]), 'A selected analysis omitted an actual retained input.', 409);
-      const runBundle = await readIdentity(selected.runBundleSha256, ['runId', 'config.purpose']);
+      const runBundle = await readIdentity(selected.runBundleSha256, ['runId', 'config.purpose', ...profilePaths]);
       require(runBundle.runId === selected.runId && runBundle.config?.purpose === 'scored', 'The recording bundle differs from its scored identity.', 409);
+      scoredProfile(runBundle.profile);
     }
   }
   function receiptForBase(receipt, publicBase) {

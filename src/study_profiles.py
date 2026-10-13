@@ -6,42 +6,53 @@ import math
 import re
 from pathlib import Path
 
-DEFAULT_PROFILE_PATH = Path(__file__).resolve().parents[1] / 'analysis-profile.json'
 AREA_PROFILE_PATH = Path(__file__).resolve().parents[1] / 'analysis-profile-area.json'
-BUILTIN_PROFILE_PATHS = {'tree-development-1': DEFAULT_PROFILE_PATH,
-                         'tree-development-area-1': AREA_PROFILE_PATH}
-PROFILE_LABELS = {'tree-development-1': 'Tree 3000/41 - mean-track analysis',
-                  'tree-development-area-1': 'Tree 128-pixel grid - area-average analysis'}
-VERSION = 'tree-profile-development-1'
+BUILTIN_PROFILE_PATHS = {'tree-development-area-1': AREA_PROFILE_PATH}
+PROFILE_LABELS = {'tree-development-area-1': 'Area-weighted motion - 128-pixel grid'}
 AREA_VERSION = 'tree-profile-development-2'
-FEATURE_MEAN = 'feature-mean-v1'
 AREA_GRID_MEAN = 'area-grid-mean-v1'
 METHOD = 'tree-analysis-development-1'
-
-def development_profile():
-    return load_profile(DEFAULT_PROFILE_PATH)['profile']
 
 def area_profile():
     return load_profile(AREA_PROFILE_PATH)['profile']
 
+def canonical_profile():
+    return area_profile()
+
 def measurement_method(profile):
-    if profile['version'] == VERSION and 'measurement' not in profile['video']:
-        return FEATURE_MEAN
-    if profile['version'] == AREA_VERSION:
-        return profile['video']['measurement']['method']
-    raise ValueError('Unsupported Tree measurement profile')
+    if (not isinstance(profile, dict) or profile.get('version') != AREA_VERSION or
+        not isinstance(profile.get('video'), dict) or
+        not isinstance(profile['video'].get('measurement'), dict) or
+        profile['video']['measurement'].get('method') != AREA_GRID_MEAN):
+        raise ValueError('Unsupported motion profile. Use area-weighted motion.')
+    return AREA_GRID_MEAN
 
 def time_resolved_tree(profile):
     return profile.get('treeAnalysis', {}).get('method') == METHOD
+
+def validate_run_profile(profile, bundle):
+    validated = validate_profile(profile)
+    if bundle['config']['purpose'] == 'scored':
+        sealed = bundle.get('sealedProfileJson')
+        try:
+            frozen = json.loads(sealed) if isinstance(sealed, str) else None
+        except (ValueError, TypeError):
+            frozen = None
+        if (not isinstance(sealed, str) or frozen != bundle.get('profile') or frozen != validated or
+            bundle['config'].get('analysisProfileId') != validated['profileId'] or
+            hashlib.sha256(sealed.encode('utf-8')).hexdigest() != bundle.get('profileHash')):
+            raise ValueError('The scored analysis profile differs from its frozen bytes, identity or hash.')
+    return validated
 
 def validate_profile(profile):
     if not isinstance(profile, dict) or set(profile) - {'label'} != {'profileId', 'version', 'video', 'timing', 'treeAnalysis'}:
         raise ValueError('A Tree profile needs profileId, version, video, timing and treeAnalysis')
     if 'label' in profile and (not isinstance(profile['label'], str) or not profile['label'].strip()):
         raise ValueError('Enter a profile name')
-    if profile['version'] not in (VERSION, AREA_VERSION) or not isinstance(profile['profileId'], str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}', profile['profileId']):
+    measurement_method(profile)
+    if not isinstance(profile['profileId'], str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}', profile['profileId']):
         raise ValueError('Unsupported Tree profile version or identifier')
-    template = json.loads((AREA_PROFILE_PATH if profile['version'] == AREA_VERSION else DEFAULT_PROFILE_PATH).read_text())
+    template = json.loads(AREA_PROFILE_PATH.read_text())
     def structure(value, expected, location):
         if isinstance(expected, dict):
             if not isinstance(value, dict) or set(value) != set(expected):
@@ -57,21 +68,18 @@ def validate_profile(profile):
     structure({key: value for key, value in profile.items() if key != 'label'}, template, 'profile')
     if profile['treeAnalysis'] != template['treeAnalysis']:
         raise ValueError('Statistical settings belong to the named analysis method')
-    if profile['version'] == AREA_VERSION:
-        measurement = profile['video']['measurement']
-        if measurement['method'] != AREA_GRID_MEAN:
-            raise ValueError('Unsupported Tree spatial measurement method')
-        for name in ('cellSizePixels', 'pointsPerCell', 'minimumTracksPerCell'):
-            value = measurement[name]
-            if type(value) is not int or value < 1:
-                raise ValueError(f'{name} must be a positive integer')
-        if measurement['minimumTracksPerCell'] > measurement['pointsPerCell']:
-            raise ValueError('Minimum cell tracks cannot exceed points per cell')
-        coverage = measurement['minimumSpatialCoverageFraction']
-        if type(coverage) not in (int, float) or not math.isfinite(coverage) or not 0 < coverage <= 1:
-            raise ValueError('Spatial coverage fraction must be between zero and one')
-        if measurement['refreshPolicy'] not in ('timed', 'continuous'):
-            raise ValueError('Unknown grid refresh policy')
+    measurement = profile['video']['measurement']
+    for name in ('cellSizePixels', 'pointsPerCell', 'minimumTracksPerCell'):
+        value = measurement[name]
+        if type(value) is not int or value < 1:
+            raise ValueError(f'{name} must be a positive integer')
+    if measurement['minimumTracksPerCell'] > measurement['pointsPerCell']:
+        raise ValueError('Minimum cell tracks cannot exceed points per cell')
+    coverage = measurement['minimumSpatialCoverageFraction']
+    if type(coverage) not in (int, float) or not math.isfinite(coverage) or not 0 < coverage <= 1:
+        raise ValueError('Spatial coverage fraction must be between zero and one')
+    if measurement['refreshPolicy'] not in ('timed', 'continuous'):
+        raise ValueError('Unknown grid refresh policy')
     window = profile['video']['tracking']['windowSizePixels']
     if any(type(width) is not int or width <= 0 or width % 2 != 1 for width in window):
         raise ValueError('Tracking windows must have positive odd integer widths')

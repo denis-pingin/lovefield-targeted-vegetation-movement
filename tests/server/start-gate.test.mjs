@@ -6,12 +6,13 @@ import {createStartRegistry} from '../../server/start-registry.mjs';
 import {defaultConfig} from '../../web/run-config.mjs';
 import {harness, action, api, ready} from './service-fixtures.mjs';
 import {registryFixture, fixtureHash} from './start-registry-fixtures.mjs';
+import profile from '../../analysis-profile-area.json' with {type: 'json'};
 
 async function scored(h, runId = 'scored-run') {
   const config = defaultConfig('tree', 'scored'); config.seriesId = 'scored-series'; config.tree.preRollSeconds = 1;
   const state = {...createRunState(config, 1000, runId), lifecycle: 'prepared', phase: 'TREE_READY', recordingReady: true,
     testAudioPlayed: true, playbackDeviceId: 'phone', setupSnapshot: {setupId: 'setup', retrospective: false}, cues: []};
-  const record = await h.store.createRun({runId, experimentSlug: 'tree-targeting', config, profile: {}, codeCheckpoint: 'a'.repeat(40), state, tickets: []});
+  const record = await h.store.createRun({runId, experimentSlug: 'tree-targeting', config, profile, codeCheckpoint: 'a'.repeat(40), state, tickets: []});
   await h.storage.put('tree-targeting:series:scored-series', {seriesId: 'scored-series', status: 'frozen', config, members: [{runId, collectionStartedAtMs: null}], runIds: [runId]});
   return record;
 }

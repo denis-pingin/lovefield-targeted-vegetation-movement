@@ -29,13 +29,13 @@ Preparation establishes suitable collection settings, regions, and motion profil
 
 A scored series uses fresh recordings after its protocol, code release, complete scientific configuration, collection settings, measurement profile, quality rules, and statistical version have been published and frozen. Target count and timing are fixed across its runs; the total number of runs is open-ended. Evidence begins at E=1 using only that series' scored recordings.
 
-The same equations support preparation analyses with different response durations and target counts, saved before each run. Such an accumulation estimates the response across the tested procedures. Detailed profile comparison and reanalysis instructions are provided in the software's operating documentation.
+The same equations support preparation analyses with different response durations and target counts, saved before each run. Such an accumulation estimates the response across the tested procedures. Each analysis retains its exact area-weighted measurement profile.
 
 ## Apparatus, roles and site
 
 Use a Nikon Z8, a stable camera tripod, an Android instruction phone, and a Mac for setup and analysis. The practitioner can conduct the procedure independently, with optional help for practical setup. The phone and server record authenticated assignments and timing. The Mac retains camera originals and performs the analysis. Exported analyses accompany published results.
 
-Choose an accessible tree and two non-overlapping regions visible in one fixed camera view. Keep the practitioner, other people, and equipment outside those regions. Include a stationary reference surface for detecting camera shake. Frame the scene so that the expected leaf or branch motion can be tracked. Approximately similar region sizes are helpful; the measurement methods accommodate unequal polygon areas as specified in the analysis methods.
+Choose an accessible tree and two non-overlapping regions visible in one fixed camera view. Keep the practitioner, other people, and equipment outside those regions. Include a stationary reference surface for detecting camera shake. Frame the scene so that the expected leaf or branch motion can be tracked. Use regions that adequately represent the visible foliage. Area-weighted motion accommodates unequal polygon areas as specified in the analysis methods.
 
 Record weather and site context for each run. The practitioner may visit, set up, and test at the site beforehand and choose a suitable starting time. Once randomized instructions begin, follow the saved sequence and retain the run's outcomes, including interruptions.
 
@@ -114,22 +114,20 @@ The clock display advances on browser redraws. Timing precision is determined by
 
 Detect Shi-Tomasi image features and track them between successive original frames using pyramidal Lucas-Kanade optical flow. Motion is measured as displacement in the two-dimensional camera image, expressed in pixels per second using the actual frame presentation times. Its interpretation depends on camera geometry, visible texture, and tracking coverage. Retain frame-pair speeds, technical diagnostics, and the exact profile settings.
 
-The [analysis methods](analysis-methods.md#2-motion-measurement-methods) define two measurements:
+Use **area-weighted motion** for both preparation and scored analysis. Divide each selected region into a fixed image grid, calculate mean tracked speed within each cell, and average the measured cells using their area inside the region as weights. This gives equal image areas equal weight even when they contain different numbers of tracked points. The [analysis methods](analysis-methods.md#2-motion-measurement) specify sampling, aggregation, and coverage.
 
-- **Point-average motion:** the arithmetic mean speed of accepted tracks within a region. Each accepted track has equal weight, so the result depends on how visible features sample the region.
-- **Area-weighted motion:** local mean speeds on a fixed grid, weighted by each measured cell's area within the polygon. The result retains actual spatial coverage. Cells with insufficient reliable matches are unmeasured, and inadequate coverage makes the regional outcome unavailable.
-
-During preparation, compare methods on identical recordings, regions, clock mappings, obstruction reviews, and response intervals. Each is an alternative measurement of the same observations. Select the scored method through measurement qualification, retaining the comparisons and freezing the chosen method and complete profile before scored collection.
+A cell with too few reliable matches is unmeasured. Retain the measured fraction of each region; insufficient coverage makes its motion outcome unavailable. Preparation establishes suitable settings through measurement qualification. Freeze the complete qualified profile before scored collection.
 
 Qualification uses preparation footage and controlled image tests:
 
 - stationary images and known translations check units and displacement extraction;
 - localized moving patches test sensitivity when most of a region is still;
+- duplicated image content, unequal region areas, and varying sample density check the area weighting;
 - brightness-only variation tests spurious tracking;
 - annotated weak, strong, and localized foliage motion supports inspection of accepted tracks, counts, and regional curves;
 - stationary-background shake and saved obstruction reviews identify unusable spans.
 
-Conduct measurement qualification without displaying assignment-linked results, and record any prior knowledge of assignments. Controlled translations use shifts of 0, 0.25, 1, and 3 pixels per frame pair, including horizontal, vertical, and diagonal motion. For textured images, require mean speed error <=max(0.1 pixel/frame, 10% of supplied speed). For stationary and uniform brightness-only images, require <=0.05 pixel/frame residual. For a localized moving patch, compare known displacement at the accepted feature positions using the same tolerance. These tolerances assess controlled images; representative footage also requires inspection for track loss, wrong matches, and missed moving portions. Retain annotations and outcomes, including failures. Resolve qualification failures and version the revised profile before scored use.
+Conduct measurement qualification without displaying assignment-linked results, and record any prior knowledge of assignments. Controlled translations use shifts of 0, 0.25, 1, and 3 pixels per frame pair, including horizontal, vertical, and diagonal motion. For textured images, require mean speed error <=max(0.1 pixel/frame, 10% of supplied speed). For stationary and uniform brightness-only images, require <=0.05 pixel/frame residual. For a localized moving patch, compare known displacement at the accepted feature positions using the same tolerance, then verify the regional summary using the specified cell-area weights. These tolerances assess controlled images; representative footage also requires inspection for track loss, wrong matches, and missed moving portions. Retain annotations and outcomes, including failures. Resolve qualification failures and version the revised profile before scored use.
 
 ## Analysis and decision
 
